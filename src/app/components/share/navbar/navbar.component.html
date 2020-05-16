@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button>
+        <mat-icon (click)="sidenav.toggle()" >menu</mat-icon>
+      </button>
+      <h1>UaaAulaVirtual</h1>
+      <span class="menu-spacer"></span>
+      <div>
+        <a mat-button [routerLink]="'/accounts'" > Login </a>
+        <a mat-button [routerLink]="'/create-account'"> Crear cuenta </a>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+  
+        <a mat-list-item [routerLink]="'/accounts'"> Inicio </a>
+        <a mat-list-item [routerLink]="'/create-account'"> Categorias </a>
+        <a mat-list-item [routerLink]="'/contacts'"> Mis grupos </a>
+        <a mat-list-item [routerLink]="'/create-contact'"> Actividades </a>
+        
+        <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Cerrar</a>
+  
+      </mat-nav-list>
+    </mat-sidenav>
+    <!--<mat-sidenav-content>
+      <div style="height: 88vh;">
+  
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>-->
+  </mat-sidenav-container>
