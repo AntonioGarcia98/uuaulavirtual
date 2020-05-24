@@ -126,5 +126,10 @@
   "defaultProject": "uuaulavirtual",
   "cli": {
     "analytics": "674bd42a-340d-4670-bb5d-4ac9edb4943e"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "css"
+    }
   }
 }

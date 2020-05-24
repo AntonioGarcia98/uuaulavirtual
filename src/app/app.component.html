@@ -1,18 +1,14 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
     <h1>UaaAulaVirtual</h1>
     <span class="menu-spacer"></span>
     <div>
-      <a mat-button [routerLink]="'/accounts'"> Login </a>
-      <a mat-button [routerLink]="'/create-account'"> Crear cuenta </a>
-      <!--Mientras se desarrolloa bien-->
-      <a mat-button [routerLink]="'/group'"> Grupos </a>
-
+      <button mat-button [routerLink]="'/accounts'"> Login </button>
+      <button mat-button [routerLink]="'/create-account'"> Crear cuenta </button>
+      <button mat-button [routerLink]="'/group'"> Grupos </button>
     </div>
-  </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -30,7 +26,6 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div>
-
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

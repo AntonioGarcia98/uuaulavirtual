@@ -1,8 +1,34 @@
 <p>course works!</p>
 <div class="container">
-    <div style="background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');;width: 100%;height: 200px;color: white;">
-        <br>
-        <h1 class="mat-h1 m-3 " style="margin-top: 2rem;">Curso</h1>    
+  <div
+    style="background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');;width: 100%;height: 200px;color: white;">
+    <br>
+    <h1 class="mat-h1 m-3 " style="margin-top: 2rem;">Curso</h1>
     <p class="m-3">Descripcion del curso:loremlipsum </p>
-    </div>
+  </div>
+
+  <!--Card seccion-->
+  <div class="mt-5">
+    <ng-container *ngFor="let mat of material">
+      <mat-card style="margin: 1rem;padding: 1rem;">
+        <mat-card-title>{{mat._titulo}}</mat-card-title>
+        <mat-card-subtitle>{{mat._subtitulo}}</mat-card-subtitle>
+        <mat-card-content>{{mat._cuerpo}}</mat-card-content>
+        <div fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" (click)="selectActivity(mat)">Ir a la actividad</button>
+          </div>
+      </mat-card>
+    </ng-container>
+    <mat-card style="margin: 1rem;padding: 1rem;">
+      <mat-card-title>Hola</mat-card-title>
+      <mat-card-subtitle>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, totam repellat, illo enim,
+        quisquam incidunt nihil eveniet esse repudiandae perspiciatis voluptas a id vitae delectus! Magnam voluptatibus
+        dolorum perferendis voluptatum.</mat-card-subtitle>
+      <mat-card-content>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore, fugiat consectetur repellat
+        veniam amet commodi ex. Molestias commodi expedita id maxime delectus doloribus quam harum! Ratione voluptatem
+        soluta vitae sequi?</mat-card-content>
+    </mat-card>
+
+
+  </div>
 </div>
