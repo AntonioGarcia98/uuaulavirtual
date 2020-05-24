@@ -22,33 +22,23 @@ import { GroupComponent } from './components/group/group.component';
 import { ClassComponent } from './components/class/class.component';
 import {MatCardModule} from '@angular/material/card';
 import { CourseComponent } from './components/course/course.component';
+
+
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent,/* Se declararán solo modulos compartidos de forma global
     HomeComponent,
     LoginComponent,
     NavbarComponent,
     GroupComponent,
     ClassComponent,
-    CourseComponent,
-    
+    CourseComponent, */
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatSliderModule,
-    RouterModule.forRoot( ROUTES, { useHash: true } ),
-
-    //esto va en home agregar a su propio modulo
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
