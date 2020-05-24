@@ -22,6 +22,7 @@ import { GroupComponent } from './components/group/group.component';
 import { ClassComponent } from './components/class/class.component';
 import {MatCardModule} from '@angular/material/card';
 import { CourseComponent } from './components/course/course.component';
+import { ActivityComponent } from './components/activity/activity.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { CourseComponent } from './components/course/course.component';
     GroupComponent,
     ClassComponent,
     CourseComponent,
+    ActivityComponent,
     
   ],
   imports: [
