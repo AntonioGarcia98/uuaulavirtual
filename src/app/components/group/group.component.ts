@@ -29,7 +29,10 @@ export class GroupComponent implements OnInit {
 ]
   constructor(
     private router: Router
-  ) { }
+   
+  ) { 
+    console.log("hola")
+  }
 
   ngOnInit(): void {
   }

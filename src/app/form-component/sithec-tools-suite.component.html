@@ -1,0 +1,5 @@
+
+<s2-form-generator *ngIf="tool=='form-generator'" [S2FormGroup]="settings._formGroup" [groups]="settings._groups"
+    [translate]="settings._translate" [button]="settings._saveButton" (onKeyup)="fnEmitKeyup($event)" [idForm]="settings._id"
+    (onChange)="fnEmitChange($event)" (onSubmit)="fnEmitSubmit($event)" (onClickFormButton)="fnOnClickFormButton($event)"></s2-form-generator>
+
