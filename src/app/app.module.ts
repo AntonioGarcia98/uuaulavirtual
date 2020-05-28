@@ -9,7 +9,8 @@ import { NavbarComponent } from './components/share/navbar/navbar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
-import { MatButtonModule, MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MatButtonModule, MatButton } from '@angular/material/button';
     MatIconModule,
     MatToolbarModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

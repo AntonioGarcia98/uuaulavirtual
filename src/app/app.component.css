@@ -1,0 +1,14 @@
+.nav-buttons{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+mat-sidenav-container{
+    height: 100%;
+    overflow: auto;
+}
+
+router-outlet{
+    height: 100%;
+}

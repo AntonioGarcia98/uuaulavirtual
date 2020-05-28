@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
     { path: '', component: GroupComponent }
@@ -14,7 +15,8 @@ const routes: Routes = [
     imports: [
         CommonModule, 
         RouterModule.forChild(routes),
-        MatCardModule
+        MatCardModule,
+        MatButtonModule
     ],
     exports: [RouterModule],
     declarations: [GroupComponent],
