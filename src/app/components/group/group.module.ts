@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
 
 const routes: Routes = [
     { path: '', component: GroupComponent }
@@ -14,7 +16,9 @@ const routes: Routes = [
     imports: [
         CommonModule, 
         RouterModule.forChild(routes),
-        MatCardModule
+        MatCardModule,
+        MatButtonModule,
+        SithecSuiteModule,
     ],
     exports: [RouterModule],
     declarations: [GroupComponent],

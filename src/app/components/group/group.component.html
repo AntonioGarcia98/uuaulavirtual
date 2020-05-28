@@ -1,3 +1,10 @@
+<div class="card-body widget-body">
+  <sithec-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSend($event)">
+  </sithec-suite>
+
+</div>
+
+
 <div class="container mt-5 ">
     <h2 class="mat-h2">Grupos</h2>
     <ng-container *ngFor = "let grupo of group">
@@ -20,5 +27,11 @@
         </mat-card-actions>
       </mat-card>
     </ng-container>
-     
+
 </div>
+
+
+
+
+
+
