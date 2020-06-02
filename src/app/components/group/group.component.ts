@@ -51,12 +51,8 @@ export class GroupComponent implements OnInit {
     this.router.navigate([ '/class', grupo._id  ]);
   }
 
-
-  
-
   /*formulario*/
 
-  
   headersTable = [
     {
       _title: "Numero de folio",
@@ -142,7 +138,7 @@ export class GroupComponent implements OnInit {
               } as S2TableFormModel
             } as S2FormField
           } as S2FormGroupItemModel,
-    
+          
         ],
 
       } as S2FormGroupModel,

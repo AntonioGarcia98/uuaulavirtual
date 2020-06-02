@@ -1,22 +1,10 @@
-<mat-toolbar color="primary">
-    <button mat-icon-button>
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-    </button>
-    <h1>UaaAulaVirtual</h1>
-    <span class="menu-spacer"></span>
-    <div class="nav-buttons">
-      <button mat-button [routerLink]="['/accounts']">Iniciar Sesión</button>
-      <button mat-button [routerLink]="['/create-account']"> Crear cuenta </button>
-      <button mat-button [routerLink]="['/group']"> Grupos </button>
-    </div>
-</mat-toolbar>
+
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
 
       <h1 mat-subheader>Folders</h1>
-      
 
       <a mat-list-item [routerLink]="'/accounts'"><mat-icon matListIcon> home </mat-icon> Inicio </a>
       <a mat-list-item [routerLink]="'/create-account'"><mat-icon matListIcon> category </mat-icon> Categorias </a>
@@ -29,6 +17,18 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button mat-icon-button>
+          <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+        </button>
+        <h1>UaaAulaVirtual</h1>
+        <span class="menu-spacer"></span>
+        <div class="nav-buttons">
+          <button mat-button (click)="login()">Iniciar Sesión</button>
+          <button mat-button [routerLink]="['/create-account']"> Crear cuenta </button>
+          <button mat-button [routerLink]="['/group']"> Grupos </button>
+        </div>
+    </mat-toolbar>
       <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

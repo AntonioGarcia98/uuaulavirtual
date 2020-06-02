@@ -10,13 +10,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
+import { SithecSuiteModule } from './form-component/sithec-tools-suite.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,/* Se declararán solo modulos compartidos de forma global*/
-    NavbarComponent
+    NavbarComponent,
+    FormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +32,16 @@ import {MatDividerModule} from '@angular/material/divider';
     MatToolbarModule,
     MatListModule,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule,
+    SithecSuiteModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MatDialogRef,
+      useValue: null
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
