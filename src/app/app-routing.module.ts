@@ -16,15 +16,16 @@ const routes: Routes = [
     loadChildren: () => import('./components/group/group.module').then(m => m.GroupModule),
   },
   {
-    path: 'class:id',
-    loadChildren: () => import('./components/class/class.module').then(m => m.ClassModule),
+    path: 'class/:id',
+    loadChildren: () => import('./components/class/class.module').then(m =>{ 
+      return m.ClassModule}),
   },
   {
-    path: 'course:id',
+    path: 'course/:id',
     loadChildren: () => import('./components/course/course.module').then(m => m.CourseModule),
   },
   {
-    path: 'activity:id',
+    path: 'activity/:id',
     loadChildren: () => import('./components/activity/activity.module').then(m => m.ActivityModule),
   },
   {

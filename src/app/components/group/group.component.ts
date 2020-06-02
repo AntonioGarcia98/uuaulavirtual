@@ -48,6 +48,7 @@ export class GroupComponent implements OnInit {
 
   seleccionGrupo(grupo: any){
     console.log(grupo)
+    console.log(this.router.navigate)
     this.router.navigate([ '/class', grupo._id  ]);
   }
 
