@@ -1,10 +1,9 @@
 require('./config/config')
 
-//requires
+// requires
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const express = require('express')
-//app
 const app = express()
 
 // parse application/json
@@ -13,13 +12,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-//routes
+// routes
 app.use(require('./routes/user'))
 
-//db
-let db = 'mongodb+srv://edwir147:26DjOVjBpD0DDcmn@cluster0-h8wwc.mongodb.net/uaaulavirtual?retryWrites=true&w=majority'
+// db
 mongoose.connect(
-    db, 
+    process.env.db, 
     { 
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
@@ -31,7 +29,7 @@ mongoose.connect(
     }
 )
 
-//launcher
+// launcher
 app.listen(process.env.PORT, () => {
     console.log('Escuchando en el puerto', process.env.PORT)
 })
