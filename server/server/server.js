@@ -1,7 +1,7 @@
 require('./config/config')
+require('./config/db')
 
 // requires
-const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
@@ -13,21 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // routes
-app.use(require('./routes/user'))
-
-// db
-mongoose.connect(
-    process.env.db, 
-    { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true, 
-        useCreateIndex: true 
-    }, 
-    (err, res) => {
-        if (err) throw err;
-        console.log('DB online')
-    }
-)
+app.use(require('./routes/index'))
 
 // launcher
 app.listen(process.env.PORT, () => {
