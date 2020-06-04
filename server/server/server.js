@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 app.use(require('./routes/user'))
 
 //db
-let db = 'mongodb://127.0.0.1:27017/cafe'
+let db = 'mongodb+srv://edwir147:26DjOVjBpD0DDcmn@cluster0-h8wwc.mongodb.net/uaaulavirtual?retryWrites=true&w=majority'
 mongoose.connect(
     db, 
     { 
