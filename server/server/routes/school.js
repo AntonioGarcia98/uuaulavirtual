@@ -2,7 +2,6 @@
 const express = require('express')
 const app = express()
 // required
-const bcrypt = require('bcrypt')
 const _ = require('underscore')
 // global variables
 const vars = require('./var')
@@ -32,7 +31,7 @@ app.get('/school', (req, res) => {
                 return res.status(400).json({
                     ok: false,
                     error: {
-                        message: "escuelas no encontradas"
+                        message: 'escuelas no encontradas'
                     }
                 })
             }
@@ -59,7 +58,7 @@ app.get('/school/:id', (req, res) => {
             return res.status(404).json({
                 ok: false,
                 error: {
-                    message: "escuela no encontrada"
+                    message: 'escuela no encontrada'
                 }
             })
         }
@@ -119,7 +118,7 @@ app.put('/school/:id', (req, res) => {
             return res.status(404).json({
                 ok: false,
                 error: {
-                    message: "escuela no encontrada"
+                    message: 'escuela no encontrada'
                 }
             })
         }
@@ -147,7 +146,7 @@ app.delete('/school/:id', (req, res) => {
             return res.status(404).json({
                 ok: false,
                 error: {
-                    message: "escuela no encontrada"
+                    message: 'escuela no encontrada'
                 }
             })
         }

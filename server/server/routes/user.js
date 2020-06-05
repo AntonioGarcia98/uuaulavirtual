@@ -49,7 +49,7 @@ app.get('/user/:id', (req, res) => {
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message: "usuario no encontrado"
+                    message: 'usuario no encontrado'
                 }
             })
         }
@@ -139,7 +139,7 @@ app.delete('/user/:id', (req, res)=>{
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message: "usuario no encontrado"
+                    message: 'usuario no encontrado'
                 }
             })
         }
