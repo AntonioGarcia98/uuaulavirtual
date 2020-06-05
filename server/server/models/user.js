@@ -36,7 +36,8 @@ let userSchema = new Schema({
         },
         phone: {
             type: String,
-            unique: true
+            unique: true,
+            required: false
         }
     },
     profile: {

@@ -24,4 +24,4 @@ let studentSchema = new Schema({
     carrer: String
 })
 
-module.exports = mongoose.model('Teacher', teacherSchema)
+module.exports = mongoose.model('Student', studentSchema)
