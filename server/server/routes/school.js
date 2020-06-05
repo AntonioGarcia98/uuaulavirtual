@@ -14,7 +14,8 @@ const school = {
         'name',
         'direction',
         'location'
-    ]
+    ],
+    generateCrud: true
 }
 
 module.exports = school

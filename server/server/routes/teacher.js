@@ -26,7 +26,8 @@ const teacher = {
         'title',
         'professional_number',
         'schools'
-    ]
+    ],
+    generateCrud: true
 }
 
 module.exports = teacher

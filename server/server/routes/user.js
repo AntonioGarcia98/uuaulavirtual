@@ -26,7 +26,8 @@ const user = {
         'online',
         'contact',
         'profile'
-    ]
+    ],
+    generateCrud: true
 }
 
 module.exports = user

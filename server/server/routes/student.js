@@ -29,7 +29,8 @@ const student = {
         'groups',
         'school',
         'carrer'
-    ]
+    ],
+    generateCrud: true
 }
 
 module.exports = user
