@@ -7,18 +7,15 @@ let Schema = mongoose.Schema
 let schoolSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'El nombre es necesario']
+        required: [true, 'el nombre es necesario']
     },
     direction: {
         type: String,
-        required: [true, 'La direccion es necesario'],
-        unique: true
+        required: [true, 'la direccion es necesario']
     },
-    latitude: {
-        type: Double
-    },
-    longitude: {
-        type: Double
+    location: {
+        latitude: Double,
+        longitude: Double
     }
 })
 

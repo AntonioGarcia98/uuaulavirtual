@@ -1,32 +1,38 @@
+// app
 const express = require('express')
-const User = require('../models/user')
+const app = express()
+// required
 const bcrypt = require('bcrypt')
 const _ = require('underscore')
+// global variables
+const vars = require('./var')
 
-const app = express()
-
-const updatereq = {new : true, runValidators: true, context: 'query'}
+// model
+const User = require('../models/user')
 
 app.get('/user', (req, res) => {
+    // pagination
     let page = Number(req.query.page) || 1
     let limit = Number(req.query.limit) || 5
     page = (page-1) * limit
-    User.find({})
-    .skip(page)
-    .limit(limit)
-    .exec((err, users) => {
-        if(err){
-            return res.status(400).json({
-                ok: false,
-                error: err
-            })
-        }
 
-        return res.json({
-            ok: true,
-            users
+    // Query
+    User.find({})
+        .skip(page)
+        .limit(limit)
+        .exec((err, users) => {
+            if(err){
+                return res.status(400).json({
+                    ok: false,
+                    error: err
+                })
+            }
+
+            return res.json({
+                ok: true,
+                users
+            })
         })
-    })
 })
 
 app.get('/user/:id', (req, res) => {
@@ -43,7 +49,7 @@ app.get('/user/:id', (req, res) => {
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message: "Usuario no encontrado"
+                    message: "usuario no encontrado"
                 }
             })
         }
@@ -58,9 +64,15 @@ app.get('/user/:id', (req, res) => {
 app.post('/user', (req, res) => {
     let body = req.body
     let user = new User({
+        user_name: body.user_name,
+        password: bcrypt.hashSync( body.password, 10 ),
         name: body.name,
         email: body.email,
-        password: bcrypt.hashSync( body.password, 10 ) 
+        last_name: body.last_name,
+        birthdate: body.birthdate,
+        contact: body.contact,
+        profile: body.profile,
+        register_date: new Date()
     })
 
     user.save((err, newUser)=>{
@@ -80,9 +92,24 @@ app.post('/user', (req, res) => {
 
 app.put('/user/:id', (req, res) => {
     let id = req.params.id
-    let body = _.pick( req.body, ['name', 'email'] )
 
-    User.findByIdAndUpdate( id, body, updatereq ,(err, editedUser) => {
+    // define arguments that can be updated
+    let userParams = [
+        'user_name',
+        'password',
+        'name',
+        'last_name',
+        'birthdate',
+        'last_connection',
+        'online',
+        'contact',
+        'profile'
+    ]
+
+    // underscore function to only pick the arguments that can be updated
+    let body = _.pick( req.body, userParams )
+    // find and update
+    User.findByIdAndUpdate( id, body, vars.updateParams ,(err, editedUser) => {
         if(err){
             return res.status(400).json({
                 ok: false,
@@ -97,7 +124,7 @@ app.put('/user/:id', (req, res) => {
     })
 })
 
-app.delete('/user/complete/:id', (req, res)=>{
+app.delete('/user/:id', (req, res)=>{
     let id = req.params.id
 
     User.findByIdAndRemove(id, (err, deletedUser) => {
@@ -112,7 +139,7 @@ app.delete('/user/complete/:id', (req, res)=>{
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message: "Usuario no encontrado"
+                    message: "usuario no encontrado"
                 }
             })
         }
@@ -123,11 +150,11 @@ app.delete('/user/complete/:id', (req, res)=>{
         })
     })
 })
-
+/*
 app.delete('/user/:id', (req, res)=>{
     let id = req.params.id
 
-    User.findByIdAndUpdate(id, {state: false}, updatereq,(err, deletedUser) => {
+    User.findByIdAndUpdate(id, {state: false}, vars.updateParams,(err, deletedUser) => {
         if(err){
             return res.status(400).json({
                 ok: false,
@@ -139,7 +166,7 @@ app.delete('/user/:id', (req, res)=>{
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message: "Usuario no encontrado"
+                    message: "usuario no encontrado"
                 }
             })
         }
@@ -149,6 +176,6 @@ app.delete('/user/:id', (req, res)=>{
             user: deletedUser
         })
     })
-})
+}) */
 
 module.exports = app

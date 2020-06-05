@@ -4,19 +4,48 @@ const uniqueValidator = require('mongoose-unique-validator')
 let Schema = mongoose.Schema
 
 let userSchema = new Schema({
-    name: {
+    user_name: {
         type: String,
-        required: [true, 'El nombre es necesario']
-    },
-    email: {
-        type: String,
-        required: [true, 'El correo es necesario'],
-        unique: true,
-        dropDups: true
+        required: [true, 'nombre de usuario es necesario'],
+        unique: true
     },
     password: {
         type: String,
-        required: [true, 'La contrasenia es necesaria']
+        required: [true, 'contrasenia es necesaria']
+    },
+    name: {
+        type: String,
+        required: [true, 'nombre es necesario']
+    },
+    last_name: {
+        type: String,
+        required: [true, 'un apellido es necesario']
+    },
+    birthdate: {
+        type: Date,
+        required: [true, 'fecha de nacimiento es necesaria']
+    },
+    register_date: Date,
+    last_connection: Date,
+    online: Boolean,
+    contact: {
+        email: {
+            type: String,
+            required: [true, 'correo es necesario'],
+            unique: true
+        },
+        phone: {
+            type: String,
+            unique: true
+        }
+    },
+    profile: {
+        photo: String,
+        description: String,
+        public: {
+            type: Boolean,
+            default: false
+        }
     }
 })
 
