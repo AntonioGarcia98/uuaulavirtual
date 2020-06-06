@@ -12,16 +12,16 @@ export class FormDialogComponent implements OnInit {
     settings: any;
     tool: string;
 
-    fnOnClickButton = null;
-    fnOnOpenTableChange = null; 
-    fnOnClickInitFilter = null; 
-    fnOnClickFormButton = null; 
+    fnOnClickButton = (event) => {};
+    fnOnOpenTableChange = (event) => {};
+    fnOnClickInitFilter = (event) => {};
+    fnOnClickFormButton = (event) => {};
 
-    fnOnKeyup = null; 
-    fnOnSubmit = null; 
-    fnOnChange = null; 
+    fnOnKeyup = (event) => {};
+    fnOnSubmit = (event) => {};
+    fnOnChange = (event) => {};
 
-    fnOnClickSavebutton = null; 
+    fnOnClickSavebutton = (event) => {};
 
     info
 

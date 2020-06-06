@@ -1,32 +1,27 @@
-<div class="card-body widget-body">
-  <sithec-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSend($event)">
-  </sithec-suite>
-
-</div>
-
-
 <div class="container mt-5 ">
     <h2 class="mat-h2">Grupos</h2>
+    <div>
     <ng-container *ngFor = "let grupo of group">
-    <mat-card class="example-card"> 
-        <mat-card-header>
-            <mat-icon mat-card-avatar>home</mat-icon>
-          
-          <mat-card-title>{{grupo._nombre}}</mat-card-title>
-          <mat-card-subtitle>Usuario</mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image [src]="grupo._foto"alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-          {{grupo._cuerpo}}
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-         
-          <button mat-button  color="primary"(click)="seleccionGrupo(grupo)">Entrar</button>
-        </mat-card-actions>
-      </mat-card>
-    </ng-container>
+      <mat-card class="example-card"> 
+          <mat-card-header>
+              <mat-icon mat-card-avatar>home</mat-icon>
+            
+            <mat-card-title>{{grupo._nombre}}</mat-card-title>
+            <mat-card-subtitle>Usuario</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [src]="grupo._foto" alt="Photo of a Shiba Inu">
+          <mat-card-content>
+            <p>
+            {{grupo._cuerpo}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+           
+            <button mat-button  color="primary"(click)="seleccionGrupo(grupo)">Entrar</button>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+    </div>
 
 </div>
 

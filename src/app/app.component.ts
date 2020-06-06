@@ -24,170 +24,208 @@ export class AppComponent {
   title = 'uuaulavirtual';
 
   constructor(
-    private dialog : MatDialog
+    private dialog: MatDialog
   ) {
   }
-  
-  //Login params
-
-
-  inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
-
-  formGroup_newUserType: FormGroup = new FormGroup({
-    _nombre: new FormControl(null, Validators.required),
-    _idVenta:new FormControl(null, Validators.required),
-    _descripcion: new FormControl(null, Validators.required),
-  
-  });
-
-  headersTable = [
-    {
-      _title: "Numero de folio",
-      _columName: "_idVenta",
-      _filter: false
-    } as HeadersFormModel,
-    {
-      _title: "Numero ",
-      _columName: "_nombre",
-      _filter: true
-    } as HeadersFormModel,
- ]
-  
-
- arrayAux = [
-   {
-  _idVenta:1,
-  _nombre:"hola"
- },
- {
-  _idVenta:2,
-  _nombre:"hola"
- },
-]
-
-  /* settings_form = {
-    _formGroup: this.formGroup_newUserType,
-    _id: 'form-new-usertype',
-    _groups: [
-      {
-        _nameAs: 'user-type',
-        _items: [
-          {
-            _control: '_nombre',
-            _config: {
-              _id: '_nombre',
-              _type: 'text',
-              _input: {
-                _label: 'Nombre',
-                _placeholder: 'Ingresa un nombre',
-                _columns: this.inputColumns
-              } as S2InputForm
-            } as S2FormField
-          } as S2FormGroupItemModel,
-          {
-            _control: '_descripcion',
-            _config: {
-              _id: '_descripcion',
-              _type: 'text',
-              _input: {
-                _label: 'Descripcion',
-                _placeholder: 'Ingresa una descripcion',
-                _columns: this.inputColumns
-              } as S2InputForm
-            } as S2FormField
-          } as S2FormGroupItemModel,
-    
-        ],
-
-      } as S2FormGroupModel,
-     
-      
-    ],
-    
-    _saveButton: {
-      _text: 'Guardar',
-      _resetOnSuccess: true,
-      _validToSend: true
-    } as S2ButtonModel
-  } as S2SettingsFormGeneratorModel */
-
-  settings_form = {
-    _formGroup: this.formGroup_newUserType,
-    _id: 'form-new-usertype',
-    _groups: [
-      {
-        _nameAs: 'user-type',
-        _items: [
-          {
-            _control: '_nombre',
-            _config: {
-              _id: '_nombre',
-              _type: 'text',
-              _input: {
-                _label: 'Nombre',
-                _placeholder: 'Ingresa un nombre',
-                _columns: this.inputColumns
-              } as S2InputForm
-            } as S2FormField
-          } as S2FormGroupItemModel,
-          {
-            _control: '_descripcion',
-            _config: {
-              _id: '_descripcion',
-              _type: 'text',
-              _input: {
-                _label: 'Descripcion',
-                _placeholder: 'Ingresa una descripcion',
-                _columns: this.inputColumns
-              } as S2InputForm
-            } as S2FormField
-          } as S2FormGroupItemModel,
-          {
-            _control: '_idVenta',
-            _config: {
-              _id: "table",
-              _type: "table",
-              _table: {
-                _enableFilters: false,
-                _checkbox: true,
-                _checkboxHeader: true,
-                _label:"Hola",
-               // _limit: 1,
-                _primaryKey: '_idVenta',
-                _options: this.arrayAux,
-                _tableHeaders: this.headersTable,
-                _columns: this.inputColumns,
-               
-              } as S2TableFormModel
-            } as S2FormField
-          } as S2FormGroupItemModel,
-          
-        ],
-
-      } as S2FormGroupModel,
-     
-      
-    ],
-    
-    _saveButton: {
-      _text: 'Guardar',
-      _resetOnSuccess: true,
-      _validToSend: true
-    } as S2ButtonModel
-  } as S2SettingsFormGeneratorModel
 
   fnOnSend(event) {
     console.log(event)
   }
 
-  async login()
-  {
-    var config : SithecConfig = new SithecConfig()
-    config.settings = this.settings_form;
+  async createAccount() {
+
+    /*
+      Profile
+      {
+      photo: string, 
+        desc : string,
+        public : bool
+      }
+    */
+
+    var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
+
+    var formGroup_newUser: FormGroup = new FormGroup({
+      _username: new FormControl(null, Validators.required),
+      _name: new FormControl(null, Validators.required),
+      _lastName: new FormControl(null, Validators.required),
+      _birthdate: new FormControl(null, Validators.required),
+      _email : new FormControl(null, Validators.email),
+      _phone_number : new FormControl(null, []),
+      _password: new FormControl(null, []),
+    });
+
+    var config: SithecConfig = new SithecConfig()
+    config.settings =
+      {
+        _formGroup: formGroup_newUser,
+        _id: 'form-new-user',
+        _groups: [
+          {
+            _nameAs: 'user-credentials',
+            _items: [
+              {
+                _control: '_username',
+                _config: {
+                  _id: '_username',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Usuario',
+                    _placeholder: 'Ingresa su nombre de usuario',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_name',
+                _config: {
+                  _id: '_name',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Nombre(s)',
+                    _placeholder: 'Ingrese su(s) nombre(s)',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_lastName',
+                _config: {
+                  _id: '_lastName',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Apellido(s)',
+                    _placeholder: 'Ingrese su(s) apellido(s)',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_birthdate',
+                _config: {
+                  _id: '_birthdate',
+                  _type: 'date',
+                  _input: {
+                    _label: 'Fecha de Nacimiento',
+                    _placeholder: 'Ingrese su fecha de nacimiento',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_email',
+                _config: {
+                  _id: '_email',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Correo Electrónico',
+                    _placeholder: 'Ingresa su correo electrónico',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_phone_number',
+                _config: {
+                  _id: '_phone_number',
+                  _type: 'number',
+                  _input: {
+                    _label: 'Telefono(s)',
+                    _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_password',
+                _config: {
+                  _id: '_password',
+                  _type: 'password',
+                  _input: {
+                    _label: 'Contraseña',
+                    _placeholder: 'Ingrese una contraseña segura',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+            ],
+          } as S2FormGroupModel,
+        ],
+
+        _saveButton: {
+          _text: 'Registrarme',
+          _resetOnSuccess: true,
+          _validToSend: true
+        } as S2ButtonModel
+      } as S2SettingsFormGeneratorModel;
+
     config.tool = 'form-generator';
-    config.fnOnSubmit = this.fnOnSend
-    
-    this.dialog.open(FormDialogComponent, { data : config})
+
+    config.fnOnSubmit = (event) => { console.log(event) }
+
+    this.dialog.open(FormDialogComponent, { data: config })
   }
-  
+
+  async login() {
+
+    var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
+
+    var formGroup_newUser: FormGroup = new FormGroup({
+      _username: new FormControl(null, Validators.required),
+      _password: new FormControl(null, Validators.required),
+    });
+
+    var config: SithecConfig = new SithecConfig()
+    config.settings =
+      {
+        _formGroup: formGroup_newUser,
+        _id: 'form-new-user',
+        _groups: [
+          {
+            _nameAs: 'user-credentials',
+            _items: [
+              {
+                _control: '_username',
+                _config: {
+                  _id: '_username',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Usuario',
+                    _placeholder: 'Ingresa su nombre de usuario',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: '_password',
+                _config: {
+                  _id: '_password',
+                  _type: 'password',
+                  _input: {
+                    _label: 'Contraseña',
+                    _placeholder: 'Ingrese su contraseña',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+            ],
+          } as S2FormGroupModel,
+        ],
+
+        _saveButton: {
+          _text: 'Iniciar Sesión',
+          _resetOnSuccess: true,
+          _validToSend: true
+        } as S2ButtonModel
+      } as S2SettingsFormGeneratorModel;
+
+    config.tool = 'form-generator';
+
+    config.fnOnSubmit = (event) => { console.log(event) }
+
+    this.dialog.open(FormDialogComponent, { data: config })
+  }
+
 }

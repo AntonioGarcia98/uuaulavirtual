@@ -1,6 +1,11 @@
 
 <sithec-suite [settings]="settings" [tool]="'form-generator'"
-    (onClickButton)="fnOnClickButton" (onOpenTableChange)="fnOnOpenTableChange" (onClickInitFilter)="fnOnClickInitFilter"
-    (onClickFormButton)="fnOnClickFormButton" (onKeyup)="fnOnKeyup" (onSubmit)="fnOnSubmit" (onChange)="fnOnChange" 
-    (clickSavebutton)="fnOnClickSavebutton">
+    (onClickButton)="fnOnClickButton($event)"
+    (onOpenTableChange)="fnOnOpenTableChange($event)" 
+    (onClickInitFilter)="fnOnClickInitFilter($event)"
+    (onClickFormButton)="fnOnClickFormButton($event)" 
+    (onKeyup)="fnOnKeyup($event)" 
+    (onSubmit)="fnOnSubmit($event)" 
+    (onChange)="fnOnChange($event)" 
+    (clickSavebutton)="fnOnClickSavebutton($event)">
 </sithec-suite>

@@ -4,7 +4,7 @@
   <mat-sidenav #sidenav>
     <mat-nav-list>
 
-      <h1 mat-subheader>Folders</h1>
+      <h1 mat-subheader>Opciones de Usuario</h1>
 
       <a mat-list-item [routerLink]="'/accounts'"><mat-icon matListIcon> home </mat-icon> Inicio </a>
       <a mat-list-item [routerLink]="'/create-account'"><mat-icon matListIcon> category </mat-icon> Categorias </a>
@@ -25,7 +25,7 @@
         <span class="menu-spacer"></span>
         <div class="nav-buttons">
           <button mat-button (click)="login()">Iniciar Sesión</button>
-          <button mat-button [routerLink]="['/create-account']"> Crear cuenta </button>
+          <button mat-button (click)="createAccount()"> Crear cuenta </button>
           <button mat-button [routerLink]="['/group']"> Grupos </button>
         </div>
     </mat-toolbar>
