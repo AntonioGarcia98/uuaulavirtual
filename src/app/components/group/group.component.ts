@@ -161,6 +161,12 @@ export class GroupComponent implements OnInit {
   fnOnSend(event) {
     console.log(event)
   }
+
+
+  fnNewGroup(){
+    this.router.navigate(['/new-group']);
+    
+  }
   
 
 }

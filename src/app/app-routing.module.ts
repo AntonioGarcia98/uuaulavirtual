@@ -17,8 +17,9 @@ const routes: Routes = [
   },
   {
     path: 'class/:id',
-    loadChildren: () => import('./components/class/class.module').then(m =>{ 
-      return m.ClassModule}),
+    loadChildren: () => import('./components/class/class.module').then(m => {
+      return m.ClassModule
+    }),
   },
   {
     path: 'course/:id',
@@ -28,6 +29,15 @@ const routes: Routes = [
     path: 'activity/:id',
     loadChildren: () => import('./components/activity/activity.module').then(m => m.ActivityModule),
   },
+
+  {
+    path: 'new-class',
+    loadChildren: () => import('./components/new-class/new-class.module').then(m => m.NewClassModule),
+  },
+  {
+    path: 'new-group',
+    loadChildren: () => import('./components/new-group/new-group.module').then(m => m.NewGroupModule),
+   },
   {
     path: '',
     redirectTo: '/home',
@@ -44,3 +54,11 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+ /*{
+ path: 'new-group',
+ loadChildren: () => import('./components/new-group/new-group.module').then(m => m.NewGroupModule),
+},
+{
+ path: 'new-class',
+ loadChildren: () => import('./components/new-class/new-class.module').then(m => m.NewClassModule),
+}, /*fin admin grupo*/

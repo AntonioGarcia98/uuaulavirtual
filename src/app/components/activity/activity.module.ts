@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const routes: Routes = [
     { path: '', component: ActivityComponent }
@@ -17,6 +18,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         MatCardModule,
         MatButtonModule,
+        MatGridListModule
     ],
     exports: [RouterModule],
     declarations: [ActivityComponent],

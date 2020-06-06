@@ -1,11 +1,17 @@
-
 <div class="container">
 
-    <div
-style="background-color:  #3f51b5;width: 100%;height: 200px;color: white;" class="mt-5">
-<br>
-<h1 class="mat-h1 m-3 " style="margin-top: 2rem;">Actividad</h1>
-<p class="m-3">Descripcion de la actividad: Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, id veritatis. Nostrum est iusto quaerat distinctio tempora quos aspernatur ex odit, eum quia. Error quidem voluptatem nisi rerum culpa mollitia?</p>
-</div>
+  <div style="background-color:  #3f51b5;width: 100%;height: 200px;color: white;" class="mt-5">
+    <br>
+    <h1 class="mat-h1 m-3 " style="margin-top: 2rem;">Actividad</h1>
+    <p class="m-3">Descripcion de la actividad: Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, id
+      veritatis. Nostrum est iusto quaerat distinctio tempora quos aspernatur ex odit, eum quia. Error quidem voluptatem
+      nisi rerum culpa mollitia?</p>
+  </div>
 
 </div>
+
+<mat-grid-list class="mt-5" cols="4" rowHeight="100px">
+  <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
+    {{tile.text}}
+  </mat-grid-tile>
+</mat-grid-list>
