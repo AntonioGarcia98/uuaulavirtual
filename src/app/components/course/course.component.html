@@ -1,13 +1,48 @@
-
 <div class="container">
-  <div
-    style="background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');;width: 100%;height: 200px;color: white;">
-    <br>
-    <h1 class="mat-h1 m-3 " style="margin-top: 2rem;">Curso</h1>
-    <p class="m-3">Descripcion del curso:loremlipsum </p>
-  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel style="
+    background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');">
+      <mat-expansion-panel-header class="course-panel">
+        <mat-panel-title>
+          <div class="course-title">
+            <span>Curso</span>
+            <span>Ingenieria en Sistemas Computacionales</span>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+
+      <p class="m-3">Descripcion del curso: loremlipsum </p>
+    </mat-expansion-panel>
+  </mat-accordion>
 
   <!--Card seccion-->
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header class="activity-panel">
+        <mat-panel-title>
+          Actividad 1
+        </mat-panel-title>
+        <mat-panel-description style="justify-content: flex-end;">
+          Matematicas
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="activity-container">
+        <div class="description">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptatum cumque corrupti maxime?
+          Fugit pariatur voluptate cum vel aspernatur ratione libero unde incidunt nobis, voluptatem, voluptatibus
+          assumenda placeat excepturi aliquid.
+        </div>
+        <div class="buttons">
+          <button mat-raised-button color="primary" >Ir a la actividad</button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <div class="mt-5">
     <ng-container *ngFor="let mat of material">
       <mat-card style="margin: 1rem;padding: 1rem;">
@@ -15,8 +50,8 @@
         <mat-card-subtitle>{{mat._subtitulo}}</mat-card-subtitle>
         <mat-card-content>{{mat._cuerpo}}</mat-card-content>
         <div fxLayoutAlign="center center">
-            <button mat-raised-button color="primary" (click)="selectActivity(mat)">Ir a la actividad</button>
-          </div>
+          <button mat-raised-button color="primary" (click)="selectActivity(mat)">Ir a la actividad</button>
+        </div>
       </mat-card>
     </ng-container>
     <mat-card style="margin: 1rem;padding: 1rem;">
@@ -32,4 +67,3 @@
 
   </div>
 </div>
-

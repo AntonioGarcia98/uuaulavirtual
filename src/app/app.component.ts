@@ -34,15 +34,6 @@ export class AppComponent {
 
   async createAccount() {
 
-    /*
-      Profile
-      {
-      photo: string, 
-        desc : string,
-        public : bool
-      }
-    */
-
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var formGroup_newUser: FormGroup = new FormGroup({
@@ -159,12 +150,12 @@ export class AppComponent {
           _validToSend: true
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
-
     config.tool = 'form-generator';
-
     config.fnOnSubmit = (event) => { console.log(event) }
+    config.title = "Crear cuenta"
+    config.message = "Registrate en el mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config })
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" })
   }
 
   async login() {
@@ -220,12 +211,12 @@ export class AppComponent {
           _validToSend: true
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
-
     config.tool = 'form-generator';
-
     config.fnOnSubmit = (event) => { console.log(event) }
+    config.title = "Iniciar Sesión"
+    config.message = "Accede ya al mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config })
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi"})
   }
 
 }

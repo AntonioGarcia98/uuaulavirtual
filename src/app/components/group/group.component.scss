@@ -1,11 +1,30 @@
 :host{
   height: 100%;
 
-  .example-card {
+  .cards-container{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .group-card {
+    flex: 1 1 33%;
     max-width: 300px;
-    margin-bottom: 50px;
-    margin-left: 2rem;
+    margin: 1rem 2rem; 
     float: left;
+    background-color: #3f51b5;
+    mat-card-header{
+      cursor: pointer;
+      color: white !important;
+      mat-card-subtitle{
+        color: white !important;
+      }
+    }
+  }
+
+  .add-button{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
   }
 
   .example-header-image {
@@ -14,6 +33,3 @@
   }
 }
 
-.mat-icon {
-  font-size: 40px;
-}

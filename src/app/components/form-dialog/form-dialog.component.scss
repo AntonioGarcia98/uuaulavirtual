@@ -1,0 +1,18 @@
+:host{
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    max-width: 700px;
+
+    .all-container{
+        .info-container{
+            padding: 15px;
+        }
+    }
+
+    .close-button{
+        position: absolute;
+        right: -25px;
+        top: -25px;
+    }
+}

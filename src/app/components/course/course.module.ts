@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const routes: Routes = [
     { path: '', component: CourseComponent }
@@ -19,6 +20,7 @@ const routes: Routes = [
         MatCardModule,
         MatButtonModule,
         SithecSuiteModule,
+        MatExpansionModule
     ],
     exports: [RouterModule],
     declarations: [CourseComponent],
