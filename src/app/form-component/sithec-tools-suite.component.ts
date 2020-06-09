@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ButtonTableMode } from './models/buttons-table.model';
 
 @Component({
-  selector: 'sithec-suite',
+  selector: 'form-suite',
   templateUrl: './sithec-tools-suite.component.html',
   styleUrls: ['./sithec-tools-suite.component.css']
 })
