@@ -11,16 +11,16 @@ const create = (model, object) => new model(object)
 const populate = (path, model) =>  { return { path, model } }
 const populatePost = (s, to, p) => s.post(to, (d, n) => d.populate(p).execPopulate().then(() => n()))
 const populatePre = (s, to, p) => s.pre(to, function() { this.populate(p) })
-const populateCon = (s, to, p, f) => s.post(to, async (docs) => docs.filter(f).map(async doc => await doc.populate(p).execPopulate()))
 
-const update = (req, res, route) => route.model.findByIdAndUpdate(
-    req.params.id,
-    _.pick(req.body, route.updateParams),
+const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
+    _.pick(body, params),
     { new : true, runValidators: true, context: 'query' }, 
     (err, edited) => {
-        if(err) return errorHandler(err, res)
-        if(!edited) return notFound(res)
-        return ok(edited, res)
+        if(res){
+            if(err) return errorHandler(err, res)
+            if(!edited) return notFound(res)
+            return ok(edited, res)
+        }
     })
 
 module.exports = { 
@@ -32,6 +32,5 @@ module.exports = {
     populate,
     populatePost,
     populatePre,
-    populateCon,
     update
 }
