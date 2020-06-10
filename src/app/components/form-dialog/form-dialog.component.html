@@ -1,11 +1,19 @@
-
-<form-suite [settings]="settings" [tool]="'form-generator'"
-    (onClickButton)="fnOnClickButton($event)"
-    (onOpenTableChange)="fnOnOpenTableChange($event)" 
-    (onClickInitFilter)="fnOnClickInitFilter($event)"
-    (onClickFormButton)="fnOnClickFormButton($event)" 
-    (onKeyup)="fnOnKeyup($event)" 
-    (onSubmit)="fnOnSubmit($event)" 
-    (onChange)="fnOnChange($event)" 
-    (clickSavebutton)="fnOnClickSavebutton($event)">
-</form-suite>
+<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> <mat-icon>close</mat-icon> </button>
+<div class="all-container">
+    <div class="info-container">
+        <h2 *ngIf="title">
+            {{data.title}}
+        </h2>
+        <div *ngIf="message">
+            {{data.message}}
+        </div>
+    </div>
+    <div class="form-util">
+        <form-suite [settings]="settings" [tool]="'form-generator'" (onClickButton)="fnOnClickButton($event)"
+            (onOpenTableChange)="fnOnOpenTableChange($event)" (onClickInitFilter)="fnOnClickInitFilter($event)"
+            (onClickFormButton)="fnOnClickFormButton($event)" (onKeyup)="fnOnKeyup($event)"
+            (onSubmit)="fnOnSubmit($event)" (onChange)="fnOnChange($event)"
+            (clickSavebutton)="fnOnClickSavebutton($event)">
+        </form-suite>
+    </div>
+</div>

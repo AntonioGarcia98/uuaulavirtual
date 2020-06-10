@@ -23,13 +23,15 @@ export class FormDialogComponent implements OnInit {
 
     fnOnClickSavebutton = (event) => {};
 
-    info
+    title : string = null;
+    message : string = null;
 
     constructor(
         @Inject(MAT_DIALOG_DATA)  public data : SithecConfig,
         public dialogRef: MatDialogRef<FormDialogComponent>
     ) { 
-        this.info = data;
+        //Disable close on click outside of the dialog
+        this.dialogRef.disableClose = true;
         Object.keys(data).map(k => {
             this[k] = data[k];
         })
@@ -39,4 +41,6 @@ export class FormDialogComponent implements OnInit {
 
     ngOnInit(): void { 
     }
+
+    closeDialog = () => this.dialogRef.close();
 }
