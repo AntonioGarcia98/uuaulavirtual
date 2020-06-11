@@ -1,10 +1,9 @@
 const _ = require('underscore')
 const express = require('express')
 const app = express()
-
 const routes = require('./routes')
 const { ok, errorHandler, notFound, update } = require('../config/functions')
-const {verify, noauth} = require('../middlewares/auth')
+const { noauth } = require('../middlewares/auth')
 
 routes
     .filter(route => route.crud)

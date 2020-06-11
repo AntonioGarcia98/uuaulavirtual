@@ -26,7 +26,9 @@ const user = {
         'last_connection',
         'online',
         'contact',
-        'profile'
+        'profile',
+        'teacher',
+        'student'
     ],
     crud: true
 }

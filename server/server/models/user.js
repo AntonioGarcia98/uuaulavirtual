@@ -68,22 +68,18 @@ let userSchema = new Schema({
 
 userSchema.methods.toJSON = function() {
     let userObject = this.toObject()
-    /*if(!userObject.profile.public){
-        delete userObject.profile
-        delete userObject.contact
-        delete userObject.birthdate
-        delete userObject.last_name
-        delete userObject.name
-    }*/
     delete userObject.password
     return userObject
 }
 
 userSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser unico'})
 
-let paths = ['save', 'find', 'findOne']
+let pre = ['find', 'findOne', 'findByIdAndUpdate']
+pre.map(path => populatePre(userSchema, path, populate('teacher', Teacher)))
+pre.map(path => populatePre(userSchema, path, populate('student', Student)))
 
-paths.map(path => populatePost(userSchema, path, populate('teacher', Teacher)))
-paths.map(path => populatePost(userSchema, path, populate('student', Student)))
+let post = ['save', 'findByIdAndUpdate']
+post.map(path => populatePost(userSchema, path, populate('teacher', Teacher)))
+post.map(path => populatePost(userSchema, path, populate('student', Student)))
 
 module.exports = mongoose.model('User', userSchema)

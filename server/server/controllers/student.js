@@ -7,19 +7,18 @@ let student = {
     model: Student,
     create: async body => {
         let newst = create(Student, {
-            scholarship: body.scholarship,
-            grade: body.grade,
-            groups: body.groups,
-            school: body.school,
-            carrer: body.carrer
+            scholarship: body.student.scholarship,
+            grade: body.student.grade,
+            groups: body.student.groups,
+            school: body.student.school,
+            carrer: body.student.carrer
         })
         let res = null
         await newst.save().then( async item => { 
-            body.user.student = item._id; 
-            let newu = await user.create(body.user) 
+            body.student = item._id; 
+            let newu = await user.create(body) 
             await newu.save().then(async u => {
                 res = u
-                //await Student.findByIdAndUpdate(item._id, {user: u._id}, {new: true})
             }).catch(async err => { await Student.findByIdAndRemove(item._id); throw err})
         }).catch(err => { throw err })
         return res

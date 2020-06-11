@@ -7,15 +7,15 @@ const teacher = {
     model: Teacher,
     create: async body => {
         let newt = create(Teacher, {
-            title: body.title,
-            professional_number: body.professional_number,
-            schools: body.schools,
-            role: body.role
+            title: body.teacher.title,
+            professional_number: body.teacher.professional_number,
+            schools: body.teacher.schools,
+            role: body.teacher.role
         })
         let res = null
         await newt.save().then( async item => { 
-            body.user.teacher = item._id; 
-            let newu = await user.create(body.user) 
+            body.teacher = item._id; 
+            let newu = await user.create(body) 
             await newu.save().then(u => {
                 res = u
             }).catch(async err => { await Teacher.findByIdAndRemove(item._id); throw err})
