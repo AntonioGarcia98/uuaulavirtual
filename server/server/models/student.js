@@ -15,10 +15,14 @@ let studentSchema = new Schema({
         type: String,
         required: [true, 'el grado es necesario']
     }, 
-    groups: [{ type : Schema.Types.ObjectId, ref: 'Group' }],  
+    groups: [{ 
+        type : Schema.Types.ObjectId, 
+        ref: 'Group' 
+    }],  
     school:  {
         type: Schema.Types.ObjectId,
-        ref: 'School'
+        ref: 'School',
+        required: [true, 'la escuela es necesaria']
     }, 
     carrer: String
 })

@@ -15,13 +15,15 @@ let groupSchema = new Schema({
         type: String,
         required: [true, 'el grado es necesario']
     },
-    rooms: [{ 
-        type : Schema.Types.ObjectId, 
-        ref: 'Room' 
-    }],
     createdBy: { 
         type: Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
+        required: [true, 'el creador es necesario']
+    },
+    school:  {
+        type: Schema.Types.ObjectId,
+        ref: 'School',
+        required: [true, 'la escuela es necesaria']
     }
 })
 

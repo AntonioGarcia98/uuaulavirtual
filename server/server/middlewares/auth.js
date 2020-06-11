@@ -32,6 +32,23 @@ let admin = (req, res, next) => {
     })
 }
 
+let teacher = (req, res, next) => {
+    let item = getDecoded(req)
+    User.findById( item.user._id, (err, found) => {
+        if(err) return errorHandler(err, res, 500)
+        if(!found) return errorHandler(error, res, 401)
+        if(!found.teacher) return errorHandler(error, res, 401)
+        else next()
+    })
+}
+
+let userid = (req, res, next) => {
+    let id = req.body.user
+    let item = getDecoded(req)
+    if(id == item.user._id) next()
+    else return errorHandler(error, res, 401)
+}
+
 let personalUser = (req, res, next) => {
     let item = getDecoded(req)
     User.findById(item.user._id, (err, found) => {
@@ -66,4 +83,4 @@ let personalTeacher = (req, res, next) => {
     })
 }
 
-module.exports = { verify, noauth, admin, personalUser, personalStudent, personalTeacher }
+module.exports = { userid, verify, noauth, admin, personalUser, personalStudent, personalTeacher, teacher}

@@ -1,4 +1,4 @@
-const {verify, admin} = require('../middlewares/auth')
+const {verify, admin, userid} = require('../middlewares/auth')
 const {create} = require('../config/functions')
 
 const Group = require('../models/group')
@@ -12,7 +12,8 @@ let group = {
             scholarship: body.scholarship,
             grade: body.grade,
             rooms: body.rooms,
-            createdBy: body.user._id
+            createdBy: body.user,
+            school: body.school
         })
         let res = null
         await newObj.save()
@@ -23,12 +24,11 @@ let group = {
     updateParams:[
         'name',
         'scholarship',
-        'grade',
-        'rooms'
+        'grade'
     ],
     crud: true,
     middlewares: {
-        post: [ verify, admin ],
+        post: [ verify, admin, userid],
         put: [ verify, admin ],
         delete: [ verify, admin ]
     }
