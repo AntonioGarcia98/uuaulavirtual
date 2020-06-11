@@ -3,6 +3,7 @@ const school = require('../controllers/school')
 const teacher = require('../controllers/teacher')
 const student = require('../controllers/student')
 const group = require('../controllers/group')
+const room = require('../controllers/room')
 const login = require('./login')
 
 const routes = [
@@ -11,7 +12,8 @@ const routes = [
     teacher,
     student,
     login,
-    group
+    group,
+    room
 ]
 
 module.exports = routes
