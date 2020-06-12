@@ -10,7 +10,7 @@ let activitySchema = new Schema({
     publish_date: Date,
     limit_date: Date,
     description: String,
-    createdBy: { 
+    user: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',
         required: [true, 'el creador es necesario']

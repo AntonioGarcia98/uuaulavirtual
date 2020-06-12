@@ -15,7 +15,7 @@ let groupSchema = new Schema({
         type: String,
         required: [true, 'el grado es necesario']
     },
-    createdBy: { 
+    user: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',
         required: [true, 'el creador es necesario']

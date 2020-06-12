@@ -10,7 +10,7 @@ let resource = {
         let newObj = create(Resource, {
             file: body.file,
             description: body.description,
-            uploadedBy: body.user
+            user: body.user
         })
         let res = null
         await newObj.save()

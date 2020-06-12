@@ -8,7 +8,7 @@ let resourceSchema = new Schema({
         required: [true, 'el archivo es necesario']
     },
     description: String,
-    uploadedBy: { 
+    user: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',
         required: [true, 'el creador es necesario']

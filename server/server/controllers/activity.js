@@ -9,7 +9,7 @@ let activity = {
     create: async body => {
         let newObj = create(Activity, {
             title: body.title,
-            createdBy: body.user,
+            user: body.user,
             assigned_to: body.assigned_to,
             publish_date: body.publish_date,
             limit_date: body.limit_date,

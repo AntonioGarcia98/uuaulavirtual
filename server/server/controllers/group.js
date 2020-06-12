@@ -12,7 +12,7 @@ let group = {
             scholarship: body.scholarship,
             grade: body.grade,
             rooms: body.rooms,
-            createdBy: body.user,
+            user: body.user,
             school: body.school
         })
         let res = null
