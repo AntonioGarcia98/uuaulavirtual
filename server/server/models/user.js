@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const bcrypt = require('bcrypt')
-const {create} = require('../config/functions')
+const {populatePost, populatePre, populate} = require('../config/functions')
+const Teacher  = require('../models/teacher')
+const Student = require('../models/student')
 
 let Schema = mongoose.Schema
 
@@ -54,6 +55,14 @@ let userSchema = new Schema({
             type: Boolean,
             default: false
         }
+    },
+    teacher: {
+        type: Schema.Types.ObjectId,
+        ref: 'Teacher'
+    },
+    student: {
+        type: Schema.Types.ObjectId,
+        ref: 'Student'
     }
 })
 
@@ -65,33 +74,12 @@ userSchema.methods.toJSON = function() {
 
 userSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser unico'})
 
-const User = mongoose.model('User', userSchema)
+let pre = ['find', 'findOne', 'findByIdAndUpdate']
+pre.map(path => populatePre(userSchema, path, populate('teacher', Teacher)))
+pre.map(path => populatePre(userSchema, path, populate('student', Student)))
 
-const user = {
-    name: '/user',
-    model: User,
-    create: async body => create(User, {
-        user_name: body.user_name,
-        password: (body.password) ? bcrypt.hashSync( body.password, 10 ) : null,
-        name: body.name,
-        email: body.email,
-        last_name: body.last_name,
-        birthdate: body.birthdate,
-        contact: body.contact,
-        profile: body.profile,
-        register_date: new Date()
-    }),
-    updateParams: [
-        'user_name',
-        'name',
-        'last_name',
-        'birthdate',
-        'last_connection',
-        'online',
-        'contact',
-        'profile'
-    ],
-    crud: true
-}
+let post = ['save', 'findByIdAndUpdate']
+post.map(path => populatePost(userSchema, path, populate('teacher', Teacher)))
+post.map(path => populatePost(userSchema, path, populate('student', Student)))
 
-module.exports = user
+module.exports = mongoose.model('User', userSchema)

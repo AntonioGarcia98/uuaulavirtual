@@ -19,7 +19,7 @@ import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.
 export class GroupComponent implements OnInit {
 
   group =[{
-    _foto:"../../../assets/students.png",
+    _foto:"https://img.icons8.com/plasticine/2x/classroom.png",
     _nombre:"Grupo A",
     _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo A",
     _id:1,

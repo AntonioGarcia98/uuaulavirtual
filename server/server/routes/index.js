@@ -1,6 +1,6 @@
+const _ = require('underscore')
 const express = require('express')
 const app = express()
-
 const routes = require('./routes')
 const { ok, errorHandler, notFound, update } = require('../config/functions')
 const { noauth } = require('../middlewares/auth')
@@ -34,20 +34,21 @@ routes
             })
         })
 
-        route.middlewares.post = route.middlewares.post ||  [ noauth ] 
+        route.middlewares.post = route.middlewares.post ||  noauth 
         app.post(route.name, route.middlewares.post, (req, res) => {
-            route.create(req.body).then((item) => {
-                item.save((err, newItem)=>{
-                    if(err) return errorHandler(err, res)
+            route.create(req.body)
+                .then((newItem) => {
                     return ok(newItem, res)
                 })
-            }).catch(e => {
-                return errorHandler(e, res)
-            })
+                .catch((err) => {
+                    return errorHandler(err, res)
+                })
         })
-
+        
         route.middlewares.put = route.middlewares.put ||  noauth
-        app.put(route.name+'/:id', route.middlewares.put, (req, res) => update(req, res, route))
+        app.put(route.name+'/:id', 
+                route.middlewares.put, 
+                (req, res) => update(req.params.id, req.body, route.model, route.updateParams, res))
 
         route.middlewares.delete = route.middlewares.delete ||  noauth
         app.delete(route.name+'/:id', route.middlewares.delete,(req, res) => {

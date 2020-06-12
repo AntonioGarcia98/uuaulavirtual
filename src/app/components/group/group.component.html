@@ -9,8 +9,9 @@
           <mat-card-title class="group-title" (click)="seleccionGrupo(grupo)">{{grupo._nombre}} </mat-card-title>
           <mat-card-subtitle>Usuario</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="grupo._foto" alt="Photo of a Shiba Inu">
+      
         <mat-card-content>
+          <img mat-card-image [src]="grupo._foto" alt="Photo of a Shiba Inu">
           <p>
             {{grupo._cuerpo}}
           </p>
@@ -20,18 +21,18 @@
       </mat-card>
     </ng-container>
   </div>
-  
 
-  <div style="display: flex; margin: 0 31px;">
-    <button mat-raised-button color="primary"> 
+
+  <div style="display: flex; margin:  31px;">
+    <button mat-raised-button color="primary">
       <mat-icon>add</mat-icon>Agregar nuevo grupo
-  </button>
+    </button>
   </div>
 
 
 
 
-<!-- <div style="display: flex;
+  <!-- <div style="display: flex;
 align-items:flex-end;
 justify-content: flex-end; margin:1rem"> <a href="javascript:void(0)" (click)="fnNewGroup()" data-toggle="tooltip"
     title="Nuevo grupo">
@@ -39,7 +40,7 @@ justify-content: flex-end; margin:1rem"> <a href="javascript:void(0)" (click)="f
   </a>
 </div> -->
 
-<!-- <h2 class="m-2">Grupos</h2>
+  <!-- <h2 class="m-2">Grupos</h2>
 <ng-container *ngFor="let grupo of group">
   <mat-card class="example-card">
     <mat-card-header>

@@ -1,24 +1,26 @@
-<div class="container mt-5 ">
-    <h2 class="mat-h2">Grupos</h2>
+<div class="container mt-5 d-flex flex-column">
+    <h2 class="mat-h2">Clases</h2>
+    <div class="cards-container">
     <ng-container *ngFor = "let clase of clases">
-    <mat-card class="example-card"> 
-        <mat-card-header>
-            <mat-icon mat-card-avatar>home</mat-icon>
+    <mat-card  class="group-card"> 
+        <mat-card-header (click)="seleccionClase(clase)">
+            <mat-icon mat-card-avatar>note</mat-icon>
           
-          <mat-card-title color="primary">{{clase._nombre}}</mat-card-title>
-          <mat-card-subtitle>Usuario</mat-card-subtitle>
+          <mat-card-title color="primary" >{{clase._nombre}}</mat-card-title>
+          <mat-card-subtitle>Clase</mat-card-subtitle>
         </mat-card-header >
-        <img mat-card-image  class="image" [src]="clase._foto"alt="Imagen">
+      
+       
         <mat-card-content>
+          <img mat-card-image  class="image" [src]="clase._foto"alt="Imagen">
           <p>
           {{clase._cuerpo}}
           </p>
         </mat-card-content>
         <mat-card-actions>
-         
-          <button mat-button  color="primary"(click)="seleccionClase(clase)">Entrar</button>
         </mat-card-actions>
       </mat-card>
     </ng-container>
      
 </div>
+<!--   <button mat-button  color="primary"(click)="seleccionClase(clase)">Entrar</button>-->
