@@ -1,9 +1,8 @@
 <div class="container">
 
   <mat-accordion>
-    <mat-expansion-panel style="
-    background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');">
-      <mat-expansion-panel-header class="course-panel">
+    <mat-expansion-panel class="group-header">
+      <mat-expansion-panel-header class="course-panel" [collapsedHeight]="'200px'" [expandedHeight]="'300px'">
         <mat-panel-title>
           <div class="course-title">
             <span>Curso</span>
@@ -14,36 +13,38 @@
 
 
       <p class="m-3">Descripcion del curso: loremlipsum </p>
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="activities.openAll()">Ver todas las actividades</button>
+        <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar todas las actividades</button>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 
-  <!--Card seccion-->
-
-  <mat-accordion>
-    <mat-expansion-panel>
+  <!-- Activities -->
+  <mat-accordion multi #activities="matAccordion">
+    <!-- Activity -->
+    <mat-expansion-panel class="panel" *ngFor="let mat of material">
       <mat-expansion-panel-header class="activity-panel">
         <mat-panel-title>
-          Actividad 1
+          {{mat._titulo}}
         </mat-panel-title>
         <mat-panel-description style="justify-content: flex-end;">
-          Matematicas
+          {{mat._subtitulo}}
         </mat-panel-description>
       </mat-expansion-panel-header>
 
       <div class="activity-container">
         <div class="description">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptatum cumque corrupti maxime?
-          Fugit pariatur voluptate cum vel aspernatur ratione libero unde incidunt nobis, voluptatem, voluptatibus
-          assumenda placeat excepturi aliquid.
+          {{mat._cuerpo}}
         </div>
         <div class="buttons">
-          <button mat-raised-button color="primary" >Ir a la actividad</button>
+          <button mat-raised-button color="primary" (click)="selectActivity(mat)">Ir a la actividad</button>
         </div>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
 
-  <div class="mt-5">
+  <!-- <div class="mt-5">
     <ng-container *ngFor="let mat of material">
       <mat-card style="margin: 1rem;padding: 1rem;">
         <mat-card-title>{{mat._titulo}}</mat-card-title>
@@ -65,5 +66,5 @@
     </mat-card>
 
 
-  </div>
+  </div> -->
 </div>

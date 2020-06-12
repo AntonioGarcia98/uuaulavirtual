@@ -1,0 +1,17 @@
+<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> <mat-icon>close</mat-icon></button>
+
+<div class="all-container">
+    <div class="info-container">
+        <h2 *ngIf="data.title">
+            {{data.title}}
+        </h2>
+        <div *ngIf="data.message">
+            {{data.message}}
+        </div>
+    </div>
+    <div class="buttons-container" *ngIf="data.actions">
+        <button mat-raised-button [color]="a.color" *ngFor="let a of data.actions"> 
+            <mat-icon *ngIf="a.icon">{{a.icon}}</mat-icon>{{a.text}}
+        </button>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HeadersFormModel } from './form-component/models/s2-headers-form.model';
 import { S2BootstrapColumnsModel } from './form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,6 +14,12 @@ import { CollapseTableComponent } from './form-component/sithec-tools-suite.comp
 import { async } from '@angular/core/testing';
 import { SithecConfig } from './components/form-dialog/sithec.config.model';
 import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
+import { SessionService } from './services/session.service';
+import { UserService } from './services/user.service';
+import { User } from './models/user.model';
+import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { MessageConfig } from './components/message-dialog/message-dialog.model';
+import { LoginRequest } from './models/login-request.model';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +30,9 @@ export class AppComponent {
   title = 'uuaulavirtual';
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sessionService : SessionService,
+    private userService : UserService
   ) {
   }
 
@@ -34,16 +42,18 @@ export class AppComponent {
 
   async createAccount() {
 
+    var response : any = null;
+
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var formGroup_newUser: FormGroup = new FormGroup({
-      _username: new FormControl(null, Validators.required),
-      _name: new FormControl(null, Validators.required),
-      _lastName: new FormControl(null, Validators.required),
-      _birthdate: new FormControl(null, Validators.required),
-      _email : new FormControl(null, Validators.email),
-      _phone_number : new FormControl(null, []),
-      _password: new FormControl(null, []),
+      user_name: new FormControl(null, Validators.required),
+      name: new FormControl(null, Validators.required),
+      last_name: new FormControl(null, Validators.required),
+      birthdate: new FormControl(null, Validators.required),
+      email : new FormControl(null, Validators.email),
+      /* phone_number : new FormControl(null, []), */
+      password: new FormControl(null, []),
     });
 
     var config: SithecConfig = new SithecConfig()
@@ -54,11 +64,12 @@ export class AppComponent {
         _groups: [
           {
             _nameAs: 'user-credentials',
+            _title: 'Información personal',
             _items: [
               {
-                _control: '_username',
+                _control: 'user_name',
                 _config: {
-                  _id: '_username',
+                  _id: 'user_name',
                   _type: 'text',
                   _input: {
                     _label: 'Usuario',
@@ -68,9 +79,9 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: '_name',
+                _control: 'name',
                 _config: {
-                  _id: '_name',
+                  _id: 'name',
                   _type: 'text',
                   _input: {
                     _label: 'Nombre(s)',
@@ -80,9 +91,9 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: '_lastName',
+                _control: 'last_name',
                 _config: {
-                  _id: '_lastName',
+                  _id: 'last_name',
                   _type: 'text',
                   _input: {
                     _label: 'Apellido(s)',
@@ -92,9 +103,9 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: '_birthdate',
+                _control: 'birthdate',
                 _config: {
-                  _id: '_birthdate',
+                  _id: 'birthdate',
                   _type: 'date',
                   _input: {
                     _label: 'Fecha de Nacimiento',
@@ -104,33 +115,9 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: '_email',
+                _control: 'password',
                 _config: {
-                  _id: '_email',
-                  _type: 'text',
-                  _input: {
-                    _label: 'Correo Electrónico',
-                    _placeholder: 'Ingresa su correo electrónico',
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-              {
-                _control: '_phone_number',
-                _config: {
-                  _id: '_phone_number',
-                  _type: 'number',
-                  _input: {
-                    _label: 'Telefono(s)',
-                    _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-              {
-                _control: '_password',
-                _config: {
-                  _id: '_password',
+                  _id: 'password',
                   _type: 'password',
                   _input: {
                     _label: 'Contraseña',
@@ -142,6 +129,37 @@ export class AppComponent {
 
             ],
           } as S2FormGroupModel,
+          {
+            _nameAs: 'contact-credentials',
+            _title: 'Contacto del Usuario',
+            _items: [
+              {
+                _control: 'email',
+                _config: {
+                  _id: 'email',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Correo Electrónico',
+                    _placeholder: 'Ingresa su correo electrónico',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              
+              /* {
+                _control: 'phone_number',
+                _config: {
+                  _id: 'phone_number',
+                  _type: 'number',
+                  _input: {
+                    _label: 'Telefono(s)',
+                    _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel, */
+            ],
+          } as S2FormGroupModel,
         ],
 
         _saveButton: {
@@ -151,11 +169,48 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = (event) => { console.log(event) }
+    config.fnOnSubmit = (event, ref : MatDialogRef<any>) => { 
+      var newUser : User = new User()
+
+      console.log(event.data)
+
+      Object.keys(event.data['user-credentials']).map(k => {
+        newUser[k] = event.data['user-credentials'][k]
+      })
+
+      newUser['contact'] = event.data['contact-credentials'];
+      
+      this.userService.create(newUser).toPromise()
+      .then((res) => {
+        console.log(res)
+        console.log('done');
+        ref.close(true)
+      })
+      .catch((err) => {
+        ref.close(false)
+      })
+    }
     config.title = "Crear cuenta"
     config.message = "Registrate en el mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" })
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" , height: "600px"}).afterClosed()
+    .toPromise()
+    .then((res) => {
+      if(res)
+      {
+        var message : MessageConfig = {
+          title: "Crear usuario",
+          message : "Usuario creado correctamente."
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
+      }else{
+        var message : MessageConfig = {
+          title: "Crear usuario",
+          message : "Ocurrio un error al tratar de crear el usuario."
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
+      }
+    })
   }
 
   async login() {
@@ -163,8 +218,8 @@ export class AppComponent {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var formGroup_newUser: FormGroup = new FormGroup({
-      _username: new FormControl(null, Validators.required),
-      _password: new FormControl(null, Validators.required),
+      user_name: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
     });
 
     var config: SithecConfig = new SithecConfig()
@@ -177,9 +232,9 @@ export class AppComponent {
             _nameAs: 'user-credentials',
             _items: [
               {
-                _control: '_username',
+                _control: 'user_name',
                 _config: {
-                  _id: '_username',
+                  _id: 'user_name',
                   _type: 'text',
                   _input: {
                     _label: 'Usuario',
@@ -189,9 +244,9 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: '_password',
+                _control: 'password',
                 _config: {
-                  _id: '_password',
+                  _id: 'password',
                   _type: 'password',
                   _input: {
                     _label: 'Contraseña',
@@ -212,11 +267,40 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = (event) => { console.log(event) }
+    config.fnOnSubmit = (event, ref : MatDialogRef<any>) => { 
+      var loginRequest : LoginRequest = new LoginRequest()
+
+      console.log(event.data)
+
+      Object.keys(event.data['user-credentials']).map(k => {
+        loginRequest[k] = event.data['user-credentials'][k]
+      })
+      
+      this.sessionService.login(loginRequest)
+      .then((res) => {
+        console.log(res)
+        console.log('done');
+        ref.close(true)
+      })
+      .catch((err) => {
+        ref.close(false)
+      })
+    }
     config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi"})
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi"}).afterClosed()
+    .toPromise()
+    .then((res) => {
+      if(!res)
+      {
+        var message : MessageConfig = {
+          title: "Iniciar sesión",
+          message : "Usuario y/o contraseña incorrecto(s)."
+        } 
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
+      }
+    })
   }
 
 }

@@ -1,4 +1,16 @@
 :host{
+    .container{
+        padding: 50px 0 0 0;
+    }
+
+    .group-header{
+        background-image: url('https://gstatic.com/classroom/themes/img_code.jpg');
+    }
+
+    .panel{
+        margin: 25px 0 !important;
+    }
+
     .course-panel{
         width: 100%; 
         height: 200px !important;
@@ -12,6 +24,7 @@
 
     .activity-panel{
         width: 100%;
+        margin: 25px 0;
         height: 80px !important;
         font-size: 20px;
         mat-panel-description{
