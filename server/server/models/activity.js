@@ -15,7 +15,7 @@ let activitySchema = new Schema({
         ref: 'User',
         required: [true, 'el creador es necesario']
     },
-    assigned_to:  {
+    room:  {
         type: Schema.Types.ObjectId,
         ref: 'Room',
         required: [true, 'la room es necesaria']

@@ -1,4 +1,4 @@
-const {verify, admin, userid, teacher} = require('../middlewares/auth')
+const {verify, admin, userid, teacher, owner} = require('../middlewares/auth')
 const {create} = require('../config/functions')
 
 const Resource = require('../models/resource')
@@ -24,8 +24,8 @@ let resource = {
     crud: true,
     middlewares: {
         post: [ verify ],
-        put: [ verify, /* owner */ ],
-        delete: [ verify, /* owner */ ]
+        put: [ verify, owner ],
+        delete: [ verify, owner ]
     }
 }
 

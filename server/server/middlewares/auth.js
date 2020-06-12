@@ -1,17 +1,18 @@
 const jwt = require('jsonwebtoken')
-const {errorHandler, ok} = require('../config/functions') 
+const {errorHandler, ok, match, find} = require('../config/functions') 
 
-const error = {message: 'token no valido'}
+const error = {message: 'acceso denegado'}
 
 const getToken = (req) => req.get('authorization')
 const getDecoded = (req) => jwt.decode(getToken(req), {json: true})
 const db = require('../models/db')
 
-let noauth = (req, res, next) => {
+
+const noauth = (req, res, next) => {
     next()
 }
 
-let verify = (req, res, next) => {
+const verify = (req, res, next) => {
     let token = getToken(req)
     jwt.verify( token, process.env.JWT_SEED, (err, dec) => {
         if(err) return errorHandler(error, res, 401)
@@ -19,7 +20,7 @@ let verify = (req, res, next) => {
     })
 }
 
-let admin = (req, res, next) => {
+const admin = (req, res, next) => {
     let item = getDecoded(req)
     db.User.findById( item.user._id, (err, found) => {
         if(err) return errorHandler(err, res, 500)
@@ -29,7 +30,7 @@ let admin = (req, res, next) => {
     })
 }
 
-let teacher = (req, res, next) => {
+const teacher = (req, res, next) => {
     let item = getDecoded(req)
     db.User.findById( item.user._id, (err, found) => {
         if(err) return errorHandler(err, res, 500)
@@ -39,14 +40,30 @@ let teacher = (req, res, next) => {
     })
 }
 
-let userid = (req, res, next) => {
+const property = (model, idDoc, idUser, res, next) => {
+    model.findOne({ $and: [{_id: idDoc},{user: idUser}] }, (err, found) => {
+        if(err) return errorHandler(err, res, 500)
+        if(!found) return errorHandler(error, res, 401)
+        if(found) next()
+    })
+}
+
+const owner = (req, res, next) => {
+    let item = getDecoded(req)
+    let id = req.params.id
+    match(req.route.path)
+        .on(x => x.includes('delivery'), () => property(db.Delivery, id, item.user._id, res, next))
+        .otherwise(x => errorHandler({message: 'error al encontrar ruta'}, res, 400))
+}
+
+const userid = (req, res, next) => {
     let id = req.body.user
     let item = getDecoded(req)
     if(id == item.user._id) next()
     else return errorHandler(error, res, 401)
 }
 
-let personalUser = (req, res, next) => {
+const personalUser = (req, res, next) => {
     let item = getDecoded(req)
     db.User.findById(item.user._id, (err, found) => {
         if(err) return errorHandler(err, res, 500)
@@ -58,7 +75,7 @@ let personalUser = (req, res, next) => {
 }
 
 
-let personalStudent = (req, res, next) => {
+const personalStudent = (req, res, next) => {
     let item = getDecoded(req)
     db.Student.findOne({user: item.user._id}, (err, found) => {
         if(err) return errorHandler(err, res, 500)
@@ -69,7 +86,7 @@ let personalStudent = (req, res, next) => {
     })
 }
 
-let personalTeacher = (req, res, next) => {
+const personalTeacher = (req, res, next) => {
     let item = getDecoded(req)
     db.Teacher.findOne({user: item.user._id}, (err, found) => {
         if(err) return errorHandler(err, res, 500)
@@ -80,4 +97,4 @@ let personalTeacher = (req, res, next) => {
     })
 }
 
-module.exports = { userid, verify, noauth, admin, personalUser, personalStudent, personalTeacher, teacher}
+module.exports = { userid, verify, noauth, admin, personalUser, personalStudent, personalTeacher, teacher, owner}

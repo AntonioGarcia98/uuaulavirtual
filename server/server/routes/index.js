@@ -22,10 +22,10 @@ routes
         route.middlewares = initMid(route.middlewares)
 
         app.get(route.name, route.middlewares.get, (req, res) => 
-            find(req, route.model, {}, res))
+            find(route.model, {}, res))
 
         app.get(route.name+'/:id', route.middlewares.get, (req, res) => 
-            find(req, route.model, {_id: req.params.id}, res, 1))
+            find(route.model, {_id: req.params.id}, res, 1))
 
         app.post(route.name, route.middlewares.post, (req, res) => route.create(req.body)
                 .then((newItem) => ok(newItem, res))

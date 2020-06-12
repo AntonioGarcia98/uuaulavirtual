@@ -1,4 +1,4 @@
-const {verify, admin, userid, teacher} = require('../middlewares/auth')
+const {verify,owner, admin, userid, teacher} = require('../middlewares/auth')
 const {create} = require('../config/functions')
 
 const Delivery = require('../models/delivery')
@@ -33,9 +33,9 @@ let delivery = {
     ],
     crud: true,
     middlewares: {
-        post: [ verify ],
-        put: [ verify, /* owner */ ],
-        delete: [ verify, /* owner */ ]
+        post: [ verify, userid ],
+        put: [ verify, owner ],
+        delete: [ verify, owner ]
     }
 }
 

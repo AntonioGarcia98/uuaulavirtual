@@ -34,8 +34,8 @@ const user = {
     ],
     crud: true,
     extra: app => {
-        app.get('/user/filter/student', (req, res) => find(req, User, { student:{ $exists: true} }, res)),
-        app.get('/user/filter/teacher', (req, res) => find(req, User, { teacher:{ $exists: true} }, res))
+        app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, res)),
+        app.get('/user/filter/teacher', (req, res) => find(User, { teacher:{ $exists: true} }, res))
     }
 }
 

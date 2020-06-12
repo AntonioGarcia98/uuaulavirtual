@@ -20,14 +20,28 @@ const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
         return ok(edited, res)
     })
 
-const find = (req, model, condition, res, limit = 5, page = 1) => model.find(condition)
+const find = (model, condition, res, limit = 5, page = 1) => model.find(condition)
     .skip((page-1) * limit)
     .limit(limit)
     .exec((err, items) => {
-        if(err) return errorHandler(err, res)
-        if(!items) return notFound(res)
-        return (limit > 1)? ok(items, res) : ok(items[0], res)
+        if(res){
+            if(err) return errorHandler(err, res)
+            if(!items) return notFound(res)
+            return (limit > 1)? ok(items, res) : ok(items[0], res)
+        }
+        
+        return items
     })
+
+const matched = x => ({
+    on: () => matched(x),
+    otherwise: () => x,
+})
+    
+const match = x => ({  
+    on: (pred, fn) => (pred(x) ? matched(fn(x)) : match(x)),
+    otherwise: fn => fn(x),
+})
 
 module.exports = { 
     errorHandler, 
@@ -39,5 +53,6 @@ module.exports = {
     populatePost,
     populatePre,
     update,
-    find
+    find,
+    match
 }

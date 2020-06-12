@@ -10,7 +10,7 @@ let activity = {
         let newObj = create(Activity, {
             title: body.title,
             user: body.user,
-            assigned_to: body.assigned_to,
+            room: body.room,
             publish_date: body.publish_date,
             limit_date: body.limit_date,
             description: body.description,

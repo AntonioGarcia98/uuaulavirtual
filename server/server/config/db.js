@@ -11,4 +11,4 @@ mongoose.connect(
         if (err) throw err;
         console.log('DB online')
     }
-)
+).catch(err => console.log(err))
