@@ -14,12 +14,17 @@ let roomSchema = new Schema({
     },
     students:  [{
         type: Schema.Types.ObjectId,
-        ref: 'Student'
+        ref: 'User'
     }],
     teachers:  [{
         type: Schema.Types.ObjectId,
-        ref: 'Teacher'
+        ref: 'User'
     }],
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'el creador es necesario']
+    }
 })
 
 module.exports = mongoose.model('Room', roomSchema)

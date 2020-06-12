@@ -11,7 +11,8 @@ let room = {
             name: body.name,
             group: body.group,
             students: body.students,
-            teachers: body.teachers
+            teachers: body.teachers,
+            createdBy: body.user
         })
         let res = null
         await newObj.save()

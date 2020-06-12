@@ -2,7 +2,6 @@ const _ = require('underscore')
 
 const errorHandler = (error, res, status = 400) => res.status(status).json({ ok:false, error })
 const notFound = (res) => errorHandler({message: 'no encontrado'}, res, 404)
-
 const ok = (item, res) => res.json({ ok:true, item })
 
 const isundefined = (...values) => values.filter( v => v === undefined).length > 0
@@ -16,11 +15,18 @@ const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
     _.pick(body, params),
     { new : true, runValidators: true, context: 'query' }, 
     (err, edited) => {
-        if(res){
-            if(err) return errorHandler(err, res)
-            if(!edited) return notFound(res)
-            return ok(edited, res)
-        }
+        if(err) return errorHandler(err, res)
+        if(!edited) return notFound(res)
+        return ok(edited, res)
+    })
+
+const find = (req, model, condition, res, limit = 5, page = 1) => model.find(condition)
+    .skip((page-1) * limit)
+    .limit(limit)
+    .exec((err, items) => {
+        if(err) return errorHandler(err, res)
+        if(!items) return notFound(res)
+        return (limit > 1)? ok(items, res) : ok(items[0], res)
     })
 
 module.exports = { 
@@ -32,5 +38,6 @@ module.exports = {
     populate,
     populatePost,
     populatePre,
-    update
+    update,
+    find
 }

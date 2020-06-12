@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
-const {create} = require('../config/functions')
+const {create, notFound, ok, find} = require('../config/functions')
 const User = require('../models/user')
+const db = require('../models/db')
 
 const user = {
     name: '/user',
@@ -18,6 +19,9 @@ const user = {
         teacher: body.teacher,
         student: body.student
     }),
+    postUpdate: async (user, body) => {
+       await db.Teacher.findByIdAndUpdate(user.teacher, body.teacher)
+    },
     updateParams: [
         'user_name',
         'name',
@@ -26,11 +30,13 @@ const user = {
         'last_connection',
         'online',
         'contact',
-        'profile',
-        'teacher',
-        'student'
+        'profile'
     ],
-    crud: true
+    crud: true,
+    extra: app => {
+        app.get('/user/filter/student', (req, res) => find(req, User, { student:{ $exists: true} }, res)),
+        app.get('/user/filter/teacher', (req, res) => find(req, User, { teacher:{ $exists: true} }, res))
+    }
 }
 
 module.exports = user

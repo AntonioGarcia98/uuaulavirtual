@@ -74,7 +74,7 @@ userSchema.methods.toJSON = function() {
 
 userSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser unico'})
 
-let pre = ['find', 'findOne', 'findByIdAndUpdate']
+let pre = ['find', 'findOne', 'findByIdAndUpdate', 'update']
 pre.map(path => populatePre(userSchema, path, populate('teacher', Teacher)))
 pre.map(path => populatePre(userSchema, path, populate('student', Student)))
 
