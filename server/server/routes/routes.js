@@ -6,6 +6,7 @@ const group = require('../controllers/group')
 const room = require('../controllers/room')
 const activity = require('../controllers/activity')
 const resource = require('../controllers/resource')
+const delivery = require('../controllers/delivery')
 const login = require('./login')
 
 const routes = [
@@ -17,7 +18,8 @@ const routes = [
     group,
     room,
     activity,
-    resource
+    resource,
+    delivery
 ]
 
 module.exports = routes
