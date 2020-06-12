@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SithecConfig } from 'src/app/components/form-dialog/sithec.config.model';
 
 @Component({
-    selector: 'form-dialog',
+    selector: 'app-form-dialog',
     templateUrl: './form-dialog.component.html',
     styleUrls: ['./form-dialog.component.scss']
 })
@@ -18,7 +18,7 @@ export class FormDialogComponent implements OnInit {
     fnOnClickFormButton = (event) => {};
 
     fnOnKeyup = (event) => {};
-    fnOnSubmit = (event) => {};
+    fnOnSubmit = (event, ref) => {};
     fnOnChange = (event) => {};
 
     fnOnClickSavebutton = (event) => {};

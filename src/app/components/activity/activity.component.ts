@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivityModel } from './activity.model';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-activity',
@@ -8,17 +10,25 @@ import { Router } from '@angular/router';
 })
 export class ActivityComponent implements OnInit {
 
+  title : string = ""
 
-  tiles: Tile[] = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
+  autor : string = ""
+
+  description : string = ""
+
+  delivery_date : string = ""
+
+  points : number = 0;
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,/* 
+    @Inject(MAT_DIALOG_DATA)  public data : ActivityModel,
+    public dialogRef: MatDialogRef<ActivityComponent> */
+  ) { 
+    /* Object.keys(this.data).map(k => {
+      this[k] = this.data[k]; 
+    }) */
+  }
 
   ngOnInit(): void {
   }

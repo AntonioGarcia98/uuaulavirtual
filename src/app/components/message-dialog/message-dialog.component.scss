@@ -11,6 +11,10 @@
         flex-flow: column;
         .info-container{
             padding: 15px;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
         }
     }
 
@@ -20,8 +24,12 @@
         right: -20px;
     }
 
-    .form-util{
-        overflow-y: auto;
-        overflow-x: hidden;
+    .buttons-container{
+        /* overflow-y: auto;
+        overflow-x: hidden; */
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
     }
 }

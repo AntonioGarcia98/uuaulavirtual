@@ -4,9 +4,14 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .dialog-fuchi mat-dialog-container{
-    overflow-x: hidden;
-}
+    overflow: unset;
+    position: relative;
+}   
 
 .mat-expansion-panel-body{
     background-color: white !important;
+}
+
+.cdk-overlay-pane{
+    overflow: unset !important;
 }

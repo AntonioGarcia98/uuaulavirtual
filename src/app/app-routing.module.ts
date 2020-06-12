@@ -1,42 +1,49 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule),
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {} */
   },
   {
     path: 'group',
     loadChildren: () => import('./components/group/group.module').then(m => m.GroupModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
   },
   {
     path: 'class/:id',
-    loadChildren: () => import('./components/class/class.module').then(m => {
-      return m.ClassModule
-    }),
+    loadChildren: () => import('./components/class/class.module').then(m => { return m.ClassModule}),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
   },
   {
     path: 'course/:id',
     loadChildren: () => import('./components/course/course.module').then(m => m.CourseModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
   },
-  {
+  /* {
     path: 'activity/:id',
     loadChildren: () => import('./components/activity/activity.module').then(m => m.ActivityModule),
-  },
+  }, */
 
   {
     path: 'new-class',
     loadChildren: () => import('./components/new-class/new-class.module').then(m => m.NewClassModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
   },
   {
     path: 'new-group',
     loadChildren: () => import('./components/new-group/new-group.module').then(m => m.NewGroupModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
    },
   {
     path: '',
@@ -54,11 +61,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
- /*{
- path: 'new-group',
- loadChildren: () => import('./components/new-group/new-group.module').then(m => m.NewGroupModule),
-},
-{
- path: 'new-class',
- loadChildren: () => import('./components/new-class/new-class.module').then(m => m.NewClassModule),
-}, /*fin admin grupo*/
