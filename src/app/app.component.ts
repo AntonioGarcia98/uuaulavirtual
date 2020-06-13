@@ -30,18 +30,15 @@ import { S2SelectFormModel } from './form-component/models/s2-select-form.model'
 export class AppComponent {
   title = 'uuaulavirtual';
 
-
-  userTypeOptions: any = [{
-    idUserType: 1,
-    name: "Alumnos"
-
-  },
-  {
-    idUserType: 2,
-    name: "Maestro"
-
-  },
-
+  userTypeOptions: any = [
+    {
+      idUserType: 1,
+      name: "Alumnos"
+    },
+    {
+      idUserType: 2,
+      name: "Maestro"
+    },
   ]
 
   constructor(
@@ -70,8 +67,11 @@ export class AppComponent {
       /* phone_number : new FormControl(null, []), */
       password: new FormControl(null, []),
       userType: new FormControl(null, []),
+      
+      //estudiante
       scholarship: new FormControl(null, []),
       grade: new FormControl(null),
+      school : new FormControl(null),
 
       //maestro
       title: new FormControl(null),
@@ -79,7 +79,7 @@ export class AppComponent {
 
     });
 
-    let  config: SithecConfig = new SithecConfig()
+    let config: SithecConfig = new SithecConfig()
     config.settings =
       {
         _formGroup: formGroup_newUser,
@@ -179,11 +179,11 @@ export class AppComponent {
                     _valueKey: 'idUserType',
                     _label: 'Tipo de usuario',
                     _columns: inputColumns
-    
+
                   } as S2SelectFormModel
                 } as S2FormField
               } as S2FormGroupItemModel,
-    
+
               {
                 _control: 'scholarship',
                 _config: {
@@ -282,52 +282,46 @@ export class AppComponent {
       })
   }
 
-  
-  fnOnChange(event, settings)
-  {
-      console.log("cambio",event)
-      let SelectidUserType = event.event.target.value;
-      if(event.id =="UserType"){
-        if(SelectidUserType==1){
-          settings._groups[1]._items[2]._config._hide = false;
-          settings._groups[1]._items[3]._config._hide = false;
-          settings._groups[1]._items[4]._config._hide = true;
-          settings._groups[1]._items[5]._config._hide = true;
+  fnOnChange(event, settings) {
+    //console.log("cambio", event)
+    let SelectidUserType = event.event.target.value;
+    if (event.id == "UserType") {
+      if (SelectidUserType == 1) {
+        settings._groups[1]._items[2]._config._hide = false;
+        settings._groups[1]._items[3]._config._hide = false;
+        settings._groups[1]._items[4]._config._hide = true;
+        settings._groups[1]._items[5]._config._hide = true;
 
-        }else if(SelectidUserType ==2){
-          settings._groups[1]._items[2]._config._hide = true;
-          settings._groups[1]._items[3]._config._hide = true;
-          settings._groups[1]._items[4]._config._hide = false;
-          settings._groups[1]._items[5]._config._hide = false;
-        }
+      } else if (SelectidUserType == 2) {
+        settings._groups[1]._items[2]._config._hide = true;
+        settings._groups[1]._items[3]._config._hide = true;
+        settings._groups[1]._items[4]._config._hide = false;
+        settings._groups[1]._items[5]._config._hide = false;
       }
+    }
   }
 
-  fnNewUser(event, ref: MatDialogRef<any>)
-  {
-      var newUser: User = new User()
+  fnNewUser(event, ref: MatDialogRef<any>) {
+    var newUser: User = new User()
 
-      console.log(event.data)
+    console.log(event.data)
 
-      Object.keys(event.data['user-credentials']).map(k => {
-        newUser[k] = event.data['user-credentials'][k]
+    Object.keys(event.data['user-credentials']).map(k => {
+      newUser[k] = event.data['user-credentials'][k]
+    })
+
+    newUser['contact'] = event.data['contact-credentials'];
+
+    this.userService.create(newUser).toPromise()
+      .then((res) => {
+        console.log(res)
+        console.log('done');
+        ref.close(1)
       })
-
-      newUser['contact'] = event.data['contact-credentials'];
-
-      this.userService.create(newUser).toPromise()
-        .then((res) => {
-          console.log(res)
-          console.log('done');
-          ref.close(1)
-        })
-        .catch((err) => {
-          ref.close(-1)
-        })
+      .catch((err) => {
+        ref.close(-1)
+      })
   }
-
-
-
 
   async login() {
 

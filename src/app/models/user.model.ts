@@ -11,6 +11,14 @@ export class User{
     }
 }
 
+export class Student extends User{
+    student : {
+        scholarship : string;
+        grade : number;
+        school : string;
+    };
+}
+
 /* {
     "user_name" : "juanito",
 
