@@ -21,6 +21,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
 import { MessageConfig } from './components/message-dialog/message-dialog.model';
 import { LoginRequest } from './models/login-request.model';
 import { S2SelectFormModel } from './form-component/models/s2-select-form.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { config } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -49,6 +51,7 @@ export class AppComponent {
     private sessionService: SessionService,
     private userService: UserService
   ) {
+    
   }
 
   fnOnSend(event) {
@@ -68,9 +71,9 @@ export class AppComponent {
       birthdate: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
-      password: new FormControl(null, []),
-      userType: new FormControl(null, []),
-      scholarship: new FormControl(null, []),
+      password: new FormControl(null),
+      userType: new FormControl(1),
+      scholarship: new FormControl(null),
       grade: new FormControl(null),
 
       //maestro
@@ -79,7 +82,7 @@ export class AppComponent {
 
     });
 
-    let  config: SithecConfig = new SithecConfig()
+    let config: SithecConfig = new SithecConfig()
     config.settings =
       {
         _formGroup: formGroup_newUser,
@@ -169,7 +172,7 @@ export class AppComponent {
                 } as S2FormField
               } as S2FormGroupItemModel,
               {
-                _control: "idUserType",
+                _control: "userType",
                 _config: {
                   _id: "UserType",
                   _type: "select",
@@ -179,72 +182,75 @@ export class AppComponent {
                     _valueKey: 'idUserType',
                     _label: 'Tipo de usuario',
                     _columns: inputColumns
-    
+
+
                   } as S2SelectFormModel
                 } as S2FormField
               } as S2FormGroupItemModel,
-    
-              {
-                _control: 'scholarship',
-                _config: {
-                  _id: 'scholarship',
-                  _type: 'text',
-                  _input: {
-                    _label: 'Escolaridad',
-                    _placeholder: 'Ingresa la escolaridad',
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-              {
-                _control: 'grade',
-                _config: {
-                  _id: 'grade',
-                  _type: 'text',
-                  _input: {
-                    _label: 'Grado',
-                    _placeholder: 'Ingresa el grado',
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-              {
-                _control: 'title',
-                _config: {
-                  _id: 'title',
-                  _type: 'text',
-                  _input: {
-                    _label: 'Titulo academico',
-                    _placeholder: 'Ingresa su titulo academico',
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-              {
-                _control: 'professional_number',
-                _config: {
-                  _id: 'professional_number',
-                  _type: 'text',
-                  _input: {
-                    _label: 'Cedula Profesional',
-                    _placeholder: 'Ingresa su cedula profesional',
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel,
-
-              /* {
-                _control: 'phone_number',
-                _config: {
-                  _id: 'phone_number',
-                  _type: 'number',
-                  _input: {
-                    _label: 'Telefono(s)',
-                    _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
-                    _columns: inputColumns
-                  } as S2InputForm
-                } as S2FormField
-              } as S2FormGroupItemModel, */
+               
+                      {
+                        _control: 'scholarship',
+                        _config: {
+                          _id: 'scholarship',
+                          _type: 'text',
+                          _input: {
+                            _label: 'Escolaridad',
+                            _placeholder: 'Ingresa la escolaridad',
+                            _columns: inputColumns
+                          } as S2InputForm
+                        } as S2FormField
+                      } as S2FormGroupItemModel,
+                      {
+                        _control: 'grade',
+                        _config: {
+                          _id: 'grade',
+                          _type: 'text',
+                          _input: {
+                            _label: 'Grado',
+                            _placeholder: 'Ingresa el grado',
+                            _columns: inputColumns
+                          } as S2InputForm
+                        } as S2FormField
+                      } as S2FormGroupItemModel,
+                      {
+                        _control: 'title',
+                        _config: {
+                          _id: 'title',
+                          _type: 'text',
+                          _hide:true,
+                          _input: {
+                            _label: 'Titulo academico',
+                            _placeholder: 'Ingresa su titulo academico',
+                            _columns: inputColumns
+                          } as S2InputForm
+                        } as S2FormField
+                      } as S2FormGroupItemModel,
+                      {
+                        _control: 'professional_number',
+                        _config: {
+                          _id: 'professional_number',
+                          _type: 'text',
+                          _hide:true,
+                          _input: {
+                            _label: 'Cedula Profesional',
+                            _placeholder: 'Ingresa su cedula profesional',
+                            _columns: inputColumns
+                          } as S2InputForm
+                        } as S2FormField
+                      } as S2FormGroupItemModel,
+        
+                      /* {
+                        _control: 'phone_number',
+                        _config: {
+                          _id: 'phone_number',
+                          _type: 'number',
+                          _input: {
+                            _label: 'Telefono(s)',
+                            _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
+                            _columns: inputColumns
+                          } as S2InputForm
+                        } as S2FormField
+                      } as S2FormGroupItemModel, */
             ],
           } as S2FormGroupModel,
         ],
@@ -282,48 +288,49 @@ export class AppComponent {
       })
   }
 
-  
-  fnOnChange(event, settings)
-  {
-      console.log("cambio",event)
-      let SelectidUserType = event.event.target.value;
-      if(event.id =="UserType"){
-        if(SelectidUserType==1){
-          settings._groups[1]._items[2]._config._hide = false;
-          settings._groups[1]._items[3]._config._hide = false;
-          settings._groups[1]._items[4]._config._hide = true;
-          settings._groups[1]._items[5]._config._hide = true;
 
-        }else if(SelectidUserType ==2){
-          settings._groups[1]._items[2]._config._hide = true;
-          settings._groups[1]._items[3]._config._hide = true;
-          settings._groups[1]._items[4]._config._hide = false;
-          settings._groups[1]._items[5]._config._hide = false;
-        }
+  fnOnChange(event, settings) {
+    console.log("cambio", event)
+    let SelectidUserType = event.event.target.value;
+    if (event.id == "UserType") {
+      if (SelectidUserType == 1) {
+        settings._groups[1]._items[2]._config._hide = false;
+        settings._groups[1]._items[3]._config._hide = false;
+        settings._groups[1]._items[4]._config._hide = true;
+        settings._groups[1]._items[5]._config._hide = true;
+
+      } else if (SelectidUserType == 2) {
+        settings._groups[1]._items[2]._config._hide = true;
+        settings._groups[1]._items[3]._config._hide = true;
+        settings._groups[1]._items[4]._config._hide = false;
+        settings._groups[1]._items[5]._config._hide = false;
       }
+    } else {
+      return
+    }
   }
 
-  fnNewUser(event, ref: MatDialogRef<any>)
-  {
-      var newUser: User = new User()
+  fnNewUser(event, ref: MatDialogRef<any>) {
+    console.log("event")
+    var newUser: User = new User()
 
-      console.log(event.data)
+    console.log(event.data)
 
-      Object.keys(event.data['user-credentials']).map(k => {
-        newUser[k] = event.data['user-credentials'][k]
+    Object.keys(event.data['user-credentials']).map(k => {
+      newUser[k] = event.data['user-credentials'][k]
+    })
+
+    newUser['contact'] = event.data['contact-credentials'];
+    console.log(newUser)
+    /*this.userService.create(newUser).toPromise()
+      .then((res) => {
+        console.log(res)
+        console.log('done');
+        ref.close(1)
       })
-
-      newUser['contact'] = event.data['contact-credentials'];
-
-      this.userService.create(newUser).toPromise()
-        .then((res) => {
-          console.log(res)
-          console.log('done');
-          ref.close(1)
-        })
-        .catch((err) => {
-          ref.close(-1)
-        })
+      .catch((err) => {
+        ref.close(-1)
+      })*/
   }
 
 
