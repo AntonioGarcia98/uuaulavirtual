@@ -326,12 +326,9 @@ export class AppComponent {
         })
   }
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 0f235cff91274db003e6dabc347dc43c96958545
   async login() {
 
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
