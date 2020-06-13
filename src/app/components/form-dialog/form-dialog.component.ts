@@ -42,5 +42,5 @@ export class FormDialogComponent implements OnInit {
     ngOnInit(): void { 
     }
 
-    closeDialog = () => this.dialogRef.close();
+    closeDialog(state? : number) { this.dialogRef.close(state) };
 }

@@ -39,7 +39,7 @@ export class SessionService {
             .then((res: any) => {
                 console.log(res)
                 
-                var session = this.tokenToSession(res.token);
+                var session = this.tokenToSession(res.item.token);
                 this.session.next(session);
                 localStorage.setItem(SessionService.SESSION_TAG, session.token);
             })
@@ -89,8 +89,8 @@ export class SessionService {
             return null;
         var session : any = {}
 
-        session.token = decoded.item.token
-        session.user = JSON.parse(JSON.stringify(decoded.item.user));
+        session.token = token
+        session.user = JSON.parse(JSON.stringify(decoded.user));
 
         return session;
     }

@@ -31,8 +31,8 @@ export class AppComponent {
 
   constructor(
     private dialog: MatDialog,
-    private sessionService : SessionService,
-    private userService : UserService
+    private sessionService: SessionService,
+    private userService: UserService
   ) {
   }
 
@@ -42,7 +42,7 @@ export class AppComponent {
 
   async createAccount() {
 
-    var response : any = null;
+    var response: any = null;
 
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
@@ -51,7 +51,7 @@ export class AppComponent {
       name: new FormControl(null, Validators.required),
       last_name: new FormControl(null, Validators.required),
       birthdate: new FormControl(null, Validators.required),
-      email : new FormControl(null, Validators.email),
+      email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
       password: new FormControl(null, []),
     });
@@ -145,7 +145,7 @@ export class AppComponent {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
-              
+
               /* {
                 _control: 'phone_number',
                 _config: {
@@ -169,8 +169,34 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = (event, ref : MatDialogRef<any>) => { 
-      var newUser : User = new User()
+    config.fnOnSubmit = this.fnNewUser;
+    config.title = "Crear cuenta"
+    config.message = "Registrate en el mejor sistema academico!"
+
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi", height: "600px" }).afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          if (res == 1) {
+            var message: MessageConfig = {
+              title: "Crear usuario",
+              message: "Usuario creado correctamente."
+            }
+            this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          } else if (res == -1) {
+            var message: MessageConfig = {
+              title: "Crear usuario",
+              message: "Ocurrio un error al tratar de crear el usuario."
+            }
+            this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          }
+        }
+      })
+  }
+
+  fnNewUser(event, ref: MatDialogRef<any>)
+  {
+      var newUser: User = new User()
 
       console.log(event.data)
 
@@ -179,38 +205,16 @@ export class AppComponent {
       })
 
       newUser['contact'] = event.data['contact-credentials'];
-      
-      this.userService.create(newUser).toPromise()
-      .then((res) => {
-        console.log(res)
-        console.log('done');
-        ref.close(true)
-      })
-      .catch((err) => {
-        ref.close(false)
-      })
-    }
-    config.title = "Crear cuenta"
-    config.message = "Registrate en el mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" , height: "600px"}).afterClosed()
-    .toPromise()
-    .then((res) => {
-      if(res)
-      {
-        var message : MessageConfig = {
-          title: "Crear usuario",
-          message : "Usuario creado correctamente."
-        }
-        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
-      }else{
-        var message : MessageConfig = {
-          title: "Crear usuario",
-          message : "Ocurrio un error al tratar de crear el usuario."
-        }
-        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
-      }
-    })
+      this.userService.create(newUser).toPromise()
+        .then((res) => {
+          console.log(res)
+          console.log('done');
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
   }
 
   async login() {
@@ -267,40 +271,39 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = (event, ref : MatDialogRef<any>) => { 
-      var loginRequest : LoginRequest = new LoginRequest()
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
+      var loginRequest: LoginRequest = new LoginRequest()
 
       console.log(event.data)
 
       Object.keys(event.data['user-credentials']).map(k => {
         loginRequest[k] = event.data['user-credentials'][k]
       })
-      
+
       this.sessionService.login(loginRequest)
-      .then((res) => {
-        console.log(res)
-        console.log('done');
-        ref.close(true)
-      })
-      .catch((err) => {
-        ref.close(false)
-      })
+        .then((res) => {
+          console.log(res)
+          console.log('done');
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
     }
     config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!"
 
-    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi"}).afterClosed()
-    .toPromise()
-    .then((res) => {
-      if(!res)
-      {
-        var message : MessageConfig = {
-          title: "Iniciar sesión",
-          message : "Usuario y/o contraseña incorrecto(s)."
-        } 
-        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi"});
-      }
-    })
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" }).afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (res && res == -1) {
+          var message: MessageConfig = {
+            title: "Iniciar sesión",
+            message: "Usuario y/o contraseña incorrecto(s)."
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        }
+      })
   }
 
 }
