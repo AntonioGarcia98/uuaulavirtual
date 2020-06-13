@@ -35,8 +35,9 @@ export class FormDialogComponent implements OnInit {
         Object.keys(data).map(k => {
             this[k] = data[k];
         })
+     
+        console.log("info",data);
 
-        console.log(data);
     }
 
     ngOnInit(): void { 

@@ -104,15 +104,15 @@ export class GroupComponent implements OnInit {
 
   settings_form = {
     _formGroup: this.formGroup_newUserType,
-    _id: 'form-new-usertype',
+    _id: 'form-new-group',
     _groups: [
       {
-        _nameAs: 'user-type',
+        _nameAs: 'new-group',
         _items: [
           {
-            _control: '_nombre',
+            _control: 'name',
             _config: {
-              _id: '_nombre',
+              _id: 'name',
               _type: 'text',
               _input: {
                 _label: 'Nombre',
@@ -122,37 +122,30 @@ export class GroupComponent implements OnInit {
             } as S2FormField
           } as S2FormGroupItemModel,
           {
-            _control: '_descripcion',
+            _control: 'scholarship',
             _config: {
-              _id: '_descripcion',
+              _id: 'scholarship',
               _type: 'text',
               _input: {
-                _label: 'Descripcion',
-                _placeholder: 'Ingresa una descripcion',
+                _label: 'Escolaridad',
+                _placeholder: 'Ingrese la escolaridad',
                 _columns: this.inputColumns
               } as S2InputForm
             } as S2FormField
           } as S2FormGroupItemModel,
           {
-            _control: '_idVenta',
+            _control: 'grade',
             _config: {
-              _id: "table",
-              _type: "table",
-              _table: {
-                _enableFilters: false,
-                _checkbox: true,
-                _checkboxHeader: true,
-                _label:"Hola",
-               // _limit: 1,
-                _primaryKey: '_idVenta',
-                _options: this.arrayAux,
-                _tableHeaders: this.headersTable,
-                _columns: this.inputColumns,
-               
-              } as S2TableFormModel
+              _id: 'grade',
+              _type: 'text',
+              _input: {
+                _label: 'Grado',
+                _placeholder: 'Ingrese el grado',
+                _columns: this.inputColumns
+              } as S2InputForm
             } as S2FormField
           } as S2FormGroupItemModel,
-          
+        
         ],
 
       } as S2FormGroupModel,
