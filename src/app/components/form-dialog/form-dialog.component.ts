@@ -35,8 +35,7 @@ export class FormDialogComponent implements OnInit {
         Object.keys(data).map(k => {
             this[k] = data[k];
         })
-        this.data.settings._group[1]
-
+     
         console.log("info",data);
 
     }

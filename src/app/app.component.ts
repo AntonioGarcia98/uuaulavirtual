@@ -72,7 +72,7 @@ export class AppComponent {
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
       password: new FormControl(null),
-      userType: new FormControl(1),
+      userType: new FormControl(null),
       scholarship: new FormControl(null),
       grade: new FormControl(null),
 
