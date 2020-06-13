@@ -168,6 +168,70 @@ export class AppComponent {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: "idUserType",
+                _config: {
+                  _id: "UserType",
+                  _type: "select",
+                  _select: {
+                    _options: this.userTypeOptions,
+                    _optionKey: 'name',
+                    _valueKey: 'idUserType',
+                    _label: 'Tipo de usuario',
+                    _columns: inputColumns
+    
+                  } as S2SelectFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+    
+              {
+                _control: 'scholarship',
+                _config: {
+                  _id: 'scholarship',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Escolaridad',
+                    _placeholder: 'Ingresa la escolaridad',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'grade',
+                _config: {
+                  _id: 'grade',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Grado',
+                    _placeholder: 'Ingresa el grado',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'title',
+                _config: {
+                  _id: 'title',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Titulo academico',
+                    _placeholder: 'Ingresa su titulo academico',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'professional_number',
+                _config: {
+                  _id: 'professional_number',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Cedula Profesional',
+                    _placeholder: 'Ingresa su cedula profesional',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
 
               /* {
                 _control: 'phone_number',
@@ -262,6 +326,12 @@ export class AppComponent {
         })
   }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 0f235cff91274db003e6dabc347dc43c96958545
   async login() {
 
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
