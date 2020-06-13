@@ -20,6 +20,7 @@ import { User } from './models/user.model';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 import { MessageConfig } from './components/message-dialog/message-dialog.model';
 import { LoginRequest } from './models/login-request.model';
+import { S2SelectFormModel } from './form-component/models/s2-select-form.model';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,20 @@ import { LoginRequest } from './models/login-request.model';
 })
 export class AppComponent {
   title = 'uuaulavirtual';
+
+
+  userTypeOptions: any = [{
+    idUserType: 1,
+    name: "Alumnos"
+
+  },
+  {
+    idUserType: 2,
+    name: "Maestro"
+
+  },
+
+  ]
 
   constructor(
     private dialog: MatDialog,
@@ -54,9 +69,17 @@ export class AppComponent {
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
       password: new FormControl(null, []),
+      userType: new FormControl(null, []),
+      scholarship: new FormControl(null, []),
+      grade: new FormControl(null),
+
+      //maestro
+      title: new FormControl(null),
+      professional_number: new FormControl(null)
+
     });
 
-    var config: SithecConfig = new SithecConfig()
+    let  config: SithecConfig = new SithecConfig()
     config.settings =
       {
         _formGroup: formGroup_newUser,
@@ -170,6 +193,7 @@ export class AppComponent {
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
     config.fnOnSubmit = this.fnNewUser;
+    config.fnOnChange = this.fnOnChange;
     config.title = "Crear cuenta"
     config.message = "Registrate en el mejor sistema academico!"
 
@@ -194,6 +218,27 @@ export class AppComponent {
       })
   }
 
+  
+  fnOnChange(event, settings)
+  {
+      console.log("cambio",event)
+      let SelectidUserType = event.event.target.value;
+      if(event.id =="UserType"){
+        if(SelectidUserType==1){
+          settings._groups[1]._items[2]._config._hide = false;
+          settings._groups[1]._items[3]._config._hide = false;
+          settings._groups[1]._items[4]._config._hide = true;
+          settings._groups[1]._items[5]._config._hide = true;
+
+        }else if(SelectidUserType ==2){
+          settings._groups[1]._items[2]._config._hide = true;
+          settings._groups[1]._items[3]._config._hide = true;
+          settings._groups[1]._items[4]._config._hide = false;
+          settings._groups[1]._items[5]._config._hide = false;
+        }
+      }
+  }
+
   fnNewUser(event, ref: MatDialogRef<any>)
   {
       var newUser: User = new User()
@@ -216,6 +261,17 @@ export class AppComponent {
           ref.close(-1)
         })
   }
+
+
+ /* fnStudentSelectActive(){
+    this.config.settings._groups[1]._items[2]._config._hide = true;
+    this
+    config.settings._groups[1]._items[3]._config._hide = true;
+  }
+
+  fnTeacherSelectActive(){
+
+  }*/
 
   async login() {
 

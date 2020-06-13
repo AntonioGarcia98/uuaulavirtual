@@ -19,7 +19,7 @@ export class FormDialogComponent implements OnInit {
 
     fnOnKeyup = (event) => {};
     fnOnSubmit = (event, ref) => {};
-    fnOnChange = (event) => {};
+    fnOnChange = (event, settings) => {};
 
     fnOnClickSavebutton = (event) => {};
 

@@ -1,12 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { S2InputForm } from 'src/app/form-component/models/s2-input-form.model';
-import { S2FormGroupItemModel } from 'src/app/form-component/models/s2-form-group-item.model';
-import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.model';
-import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
-import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
+
 import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
 import { MatAccordion } from '@angular/material/expansion';
 
@@ -50,7 +44,8 @@ export class CourseComponent implements OnInit {
 
   selectActivity(activity: any) {
     console.log(activity)
-    this.router.navigate(['/activity', activity._id]);
+    console.log(activity._id)
+    this.router.navigate(['activity', activity._id]);
   }
 
   
