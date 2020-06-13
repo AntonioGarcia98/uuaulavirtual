@@ -262,17 +262,6 @@ export class AppComponent {
         })
   }
 
-
- /* fnStudentSelectActive(){
-    this.config.settings._groups[1]._items[2]._config._hide = true;
-    this
-    config.settings._groups[1]._items[3]._config._hide = true;
-  }
-
-  fnTeacherSelectActive(){
-
-  }*/
-
   async login() {
 
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
