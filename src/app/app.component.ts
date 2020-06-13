@@ -68,17 +68,11 @@ export class AppComponent {
       birthdate: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
-<<<<<<< HEAD
       password: new FormControl(null, []),
       userType: new FormControl(null, []),
       
       //estudiante
       scholarship: new FormControl(null, []),
-=======
-      password: new FormControl(null),
-      userType: new FormControl(1),
-      scholarship: new FormControl(null),
->>>>>>> 48e2d7eea8c1165491bde69446a2e5594a4a47ad
       grade: new FormControl(null),
       school : new FormControl(null),
 
