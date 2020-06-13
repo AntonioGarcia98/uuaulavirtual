@@ -28,10 +28,12 @@ const routes: Routes = [
     /* canActivate: [AuthGuard], */
     /* data: {sessionRequired  : true} */
   },
-  /* {
+   {
     path: 'activity/:id',
-    loadChildren: () => import('./components/activity/activity.module').then(m => m.ActivityModule),
-  }, */
+    loadChildren: () => import('./components/activity/activity.module').then(m =>{ 
+      console.log(m)
+      m.ActivityModule}),
+  }, 
 
   {
     path: 'new-class',

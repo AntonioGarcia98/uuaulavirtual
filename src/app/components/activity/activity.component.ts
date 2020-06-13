@@ -28,13 +28,14 @@ export class ActivityComponent implements OnInit {
     /* Object.keys(this.data).map(k => {
       this[k] = this.data[k]; 
     }) */
+    console.log("data")
   }
 
   ngOnInit(): void {
   }
 
   
-  selectActivity(activity: any){
+selectActivity(activity: any){
     console.log(activity)
    this.router.navigate([ '/activity', activity._id  ]);
   }
