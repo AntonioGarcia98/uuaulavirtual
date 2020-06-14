@@ -3,7 +3,7 @@ import { GroupModel } from '../components/group/group.model';
 import { ServiceBase } from './base.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +15,6 @@ export class GroupService extends ServiceBase<GroupModel>  {
   constructor(
       protected http : HttpClient
   ) { 
-      super(GroupModel);
+      super(GroupModel)
   }
+}

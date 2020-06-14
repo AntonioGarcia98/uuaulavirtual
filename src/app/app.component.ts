@@ -46,7 +46,7 @@ export class AppComponent {
     public sessionService: SessionService,
     public studentService: StudentService,
     public teacherService: TeacherService,
-    public schoolService : SchoolService
+    public schoolService: SchoolService
   ) {
     this.getCatalogs()
   }
@@ -55,10 +55,9 @@ export class AppComponent {
     return Promise.all([
       this.schoolService.getAll().toPromise()
     ])
-    .then((catalogs : any) => {
-      this.schools = catalogs[0].item
-      console.log(this.schools)
-    })
+      .then((catalogs: any) => {
+        this.schools = catalogs[0].item
+      })
   }
 
   fnOnSend(event) {
@@ -284,71 +283,71 @@ export class AppComponent {
     config.tool = 'form-generator';
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => { //Los servicios no funcionan cuando se define la función y se asigna al objeto
       var userType: number = event.data['user-credentials'].userType;
-      var newUser : any = {};
-   
+      var newUser: any = {};
+
       if (userType == 1)//Usuario alumno
       {
-        var auxUser : Student = new Student();
+        var auxUser: Student = new Student();
         Object.keys(auxUser).map(k => {
-          var value =  event.data['user-credentials'][k] || null;
+          var value = event.data['user-credentials'][k] || null;
           auxUser[k] = value;
         })
-        
+
         //Student
-        auxUser.student = 
-          {
-            scholarship : event.data['user-credentials']['scholarship'],
-            grade : event.data['user-credentials']['grade'],
-            school : event.data['user-credentials']['school'],
-          }
+        auxUser.student =
+        {
+          scholarship: event.data['user-credentials']['scholarship'],
+          grade: event.data['user-credentials']['grade'],
+          school: event.data['user-credentials']['school'],
+        }
 
         newUser = JSON.parse(JSON.stringify(auxUser));
-  
+
       } else {
-        
+
         //Usuario maestro
-        var auxTeacher : Teacher = new Teacher();
+        var auxTeacher: Teacher = new Teacher();
         Object.keys(auxTeacher).map(k => {
-          var value =  event.data['user-credentials'][k] || null;
+          var value = event.data['user-credentials'][k] || null;
           auxTeacher[k] = value;
         })
-        
+
         //Teacher
-        auxTeacher.teacher = 
-          {
-            title : event.data['user-credentials']['title'],
-            professional_number : event.data['user-credentials']['professional_number'],
-            role : event.data['user-credentials']['role'],
-          }
+        auxTeacher.teacher =
+        {
+          title: event.data['user-credentials']['title'],
+          professional_number: event.data['user-credentials']['professional_number'],
+          role: event.data['user-credentials']['role'],
+        }
 
 
         newUser = JSON.parse(JSON.stringify(auxTeacher));
       }
-  
+
       if (userType == 1)//Usuario alumno
       {
         this.studentService.create(newUser).toPromise()
-        .then((res) => {
-          console.log(res)
-          console.log('done');
-          ref.close(1)
-        })
-        .catch((err) => {
-          ref.close(-1)
-        })
-  
+          .then((res) => {
+            console.log(res)
+            console.log('done');
+            ref.close(1)
+          })
+          .catch((err) => {
+            ref.close(-1)
+          })
+
       } else {//Usuario maestro
         this.teacherService.create(newUser).toPromise()
-        .then((res) => {
-          console.log(res)
-          console.log('done');
-          ref.close(1)
-        })
-        .catch((err) => {
-          ref.close(-1)
-        })
+          .then((res) => {
+            console.log(res)
+            console.log('done');
+            ref.close(1)
+          })
+          .catch((err) => {
+            ref.close(-1)
+          })
       }
-      
+
     }
 
     config.fnOnChange = this.fnOnChange;
@@ -398,7 +397,7 @@ export class AppComponent {
       return
     }
   }
-  
+
 
   async login() {
 

@@ -39,6 +39,7 @@ export class GroupComponent implements OnInit {
 
   fnGetColumnSize(item: S2FormGroupItemModel, size: string) {
 
+   
     switch (item._config._type) {
       case 'text':
       case 'number':

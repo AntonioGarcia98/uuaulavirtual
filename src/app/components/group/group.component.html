@@ -1,19 +1,23 @@
 <div class="container mt-5 d-flex flex-column">
   <h2 class="mat-h2">Grupos</h2>
   <div class="cards-container">
-    <ng-container *ngFor="let grupo of group">
+    <ng-container *ngFor="let ItemGrup of group">
       <mat-card class="group-card">
         <mat-card-header>
-          <mat-icon mat-card-avatar>group</mat-icon>
+          <mat-icon mat-card-avatar>class</mat-icon>
 
-          <mat-card-title class="group-title" (click)="seleccionGrupo(grupo)">{{grupo._nombre}} </mat-card-title>
-          <mat-card-subtitle>Usuario</mat-card-subtitle>
+          <mat-card-title class="group-title" (click)="selectGroup(ItemGrup)">{{ItemGrup.name}} </mat-card-title>
+          <mat-card-subtitle>Grupo</mat-card-subtitle>
+          <mat-icon style="display: flex;flex-direction: row-reverse;" (click)="editGroup(ItemGrup)">edit</mat-icon>
         </mat-card-header>
       
         <mat-card-content>
-          <img mat-card-image [src]="grupo._foto" alt="Photo of a Shiba Inu">
+          <img mat-card-image src="https://img.icons8.com/plasticine/2x/classroom.png" alt="Photo of a Shiba Inu">
           <p>
-            {{grupo._cuerpo}}
+            Escolaridad: {{ItemGrup.scholarship}}
+          </p>
+          <p>
+           Grado: {{ItemGrup.grade}}
           </p>
         </mat-card-content>
         <mat-card-actions>

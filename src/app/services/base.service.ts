@@ -11,7 +11,7 @@ export class ServiceBase<TClass> {
         protected TCreator: { new(): TClass; }
     ) {}
 
-    get(id: number) {
+    get(id: any) {
         return this.http.get(this.url + '/' + id, {
         });
     }
@@ -25,11 +25,11 @@ export class ServiceBase<TClass> {
         return this.http.post(this.url, item);
     }
 
-    delete(id: number) {
+    delete(id: any) {
         return this.http.delete(this.url + '/' + id);
     }
 
-    update(id: number, item: TClass) {
+    update(id: any, item: TClass) {
         return this.http.put(this.url + '/' + id, item);
     }
 }

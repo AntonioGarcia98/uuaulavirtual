@@ -1,54 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
+import { Session } from 'inspector';
+import { SessionService } from 'src/app/services/session.service';
+import { GroupService } from 'src/app/services/group.service';
+import { SchoolService } from 'src/app/services/school.service';
+import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { S2InputForm } from 'src/app/form-component/models/s2-input-form.model';
 import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
 import { S2FormGroupItemModel } from 'src/app/form-component/models/s2-form-group-item.model';
-import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
+import { S2SelectFormModel } from 'src/app/form-component/models/s2-select-form.model';
 import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.model';
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
-import { S2SelectFormModel } from 'src/app/form-component/models/s2-select-form.model';
-import { SessionService } from 'src/app/services/session.service';
-import { GroupService } from 'src/app/services/group.service';
-import { SchoolService } from 'src/app/services/school.service';
-import { School } from 'src/app/models/school.model';
-import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { SelectComponent } from 'src/app/form-component/controls/form-generator/form-fields/select/select.component';
-import { Session } from 'protractor';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-new-group',
-  templateUrl: './new-group.component.html',
-  styleUrls: ['./new-group.component.css']
+  selector: 'app-edit-group',
+  templateUrl: './edit-group.component.html',
+  styleUrls: ['./edit-group.component.css']
 })
-export class NewGroupComponent implements OnInit {
-
+export class EditGroupComponent implements OnInit {
 
   schoolsArraySelect: any[]
 
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
-  sessionData: Session
-  constructor(
-    private sessionService: SessionService,
-    private groupService: GroupService,
-    private schoolService: SchoolService,
-    private formService: SithecSuiteService
-  ) { }
+  data:any
 
-  ngOnInit(): void {
-    this.getSchools()
-    this.subscribeSession()
-  }
 
-  subscribeSession(): void {
-    this.sessionService._session.subscribe(data => {
-      console.log(data)
-      this.sessionData = data
-    })
-  }
+  
 
-  formGroup_newGroup: FormGroup = new FormGroup({
+  formGroup_EditGroup: FormGroup = new FormGroup({
+    _id: new FormControl(null, Validators.required),
+    user: new FormControl(null, Validators.required),
     name: new FormControl(null, Validators.required),
     scholarship: new FormControl(null, Validators.required),
     grade: new FormControl(null, Validators.required),
@@ -57,13 +42,30 @@ export class NewGroupComponent implements OnInit {
   });
 
   settings_form = {
-    _formGroup: this.formGroup_newGroup,
+    _formGroup: this.formGroup_EditGroup,
 
-    _id: 'form-new-Group',
+    _id: 'form-edit-Group',
     _groups: [
       {
         _nameAs: 'new-group',
         _items: [
+          {
+            _control: "_id",
+            _config: {
+              _id: "_id",
+              _type: "string",
+              _hide: true,
+            } as S2FormField
+          } as S2FormGroupItemModel,
+          {
+            _control: "user",
+            _config: {
+              _id: "user",
+              _type: "string",
+              _hide: true,
+            } as S2FormField
+          } as S2FormGroupItemModel,
+
           {
             _control: 'name',
             _config: {
@@ -132,14 +134,50 @@ export class NewGroupComponent implements OnInit {
   } as S2SettingsFormGeneratorModel
 
 
+  constructor(
+    private groupService: GroupService,
+    private schoolService: SchoolService,
+    private formService: SithecSuiteService,
+    private activateRouter: ActivatedRoute
+  ) { }
+  num_idEdit: string
+  ngOnInit(): void {
+    this.getSchools()
+    this.num_idEdit = this.activateRouter.snapshot.params.id;
+    this.getGroupById()
+  }
 
+
+
+  getGroupById(): void {
+    this.groupService.get(this.num_idEdit).toPromise()
+      .then((res: any) => {
+        this.data = res.item
+        this.subscribeForm()
+      })
+      .catch((rej) => {
+
+      })
+  }
+
+  subscribeForm(): void {
+    if (this.data) {
+      this.formGroup_EditGroup.setValue({
+        _id: this.data._id,
+        user: this.data.user,
+        name: this.data.name,
+        scholarship: this.data.scholarship,
+        grade: this.data.grade,
+        school: this.data.school
+      })
+    }
+
+  }
   getSchools(): void {
     this.schoolService.getAll().toPromise()
       .then((res: any) => {
-        console.log(res)
         this.schoolsArraySelect = res.item;
         this.fnPutData()
-        console.log(this.schoolsArraySelect);
       })
       .catch((rej) => {
         console.log(rej)
@@ -147,9 +185,9 @@ export class NewGroupComponent implements OnInit {
   }
 
   fnPutData() {
-    let select: SelectComponent = this.formService.fnGetFormElement('form-new-Group', 'School');
+    let select: SelectComponent = this.formService.fnGetFormElement('form-edit-Group', 'School');
     if (this.schoolsArraySelect.length > 0) {
-      select.fnReloadOptions(this.schoolsArraySelect, this.schoolsArraySelect[0]._id);
+      select.fnReloadOptions(this.schoolsArraySelect, 0);
 
     } else {
       select.fnReloadOptions([], null);
@@ -158,26 +196,18 @@ export class NewGroupComponent implements OnInit {
 
 
   fnOnSend(event): void {
-    console.log(event)
     let grouptoSend = event.data['new-group']
-    console.log(this.sessionData)
-    grouptoSend.user = this.sessionData['user']._id
-    console.log(grouptoSend)
-    this.groupService.create(grouptoSend).toPromise()
+
+    this.groupService.update(this.num_idEdit, grouptoSend).toPromise()
       .then((res) => {
         console.log(res)
         event.fnOffSpinner(true);
-        console.log('done');
 
       })
       .catch((err) => {
         event.fnOffSpinner(false);
       })
   }
-
-
-
-
 
 
 

@@ -10,6 +10,9 @@ import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
+import { Session } from 'protractor';
+import { SessionService } from 'src/app/services/session.service';
+import { GroupService } from 'src/app/services/group.service';
 
 @Component({
   selector: 'app-group',
@@ -51,18 +54,39 @@ export class GroupComponent implements OnInit {
   
 ]
   constructor(
-    private router: Router
+    private router: Router,
+    private sessionService: SessionService,
+    private groupService:GroupService
   ) { 
-    console.log('group')
   }
 
   ngOnInit(): void {
+    this.subscribeSession()
+    this.getGroups()
   }
 
-  seleccionGrupo(grupo: any){
-    console.log(grupo)
-    console.log(this.router.navigate)
-    this.router.navigate([ '/class', grupo._id  ]);
+  getGroups():void{
+    this.groupService.getAll().toPromise()
+    .then((res:any)=>{
+      this.group = res.item
+    })
+    .catch((rej)=>{
+
+    })
+  }
+
+  subscribeSession():void{
+    this.sessionService._session.subscribe(data =>{
+      console.log(data)
+    })
+  }
+
+  selectGroup(group: any):void{
+    this.router.navigate([ '/class', group._id  ]);
+  }
+
+  editGroup(group: any):void{
+    this.router.navigate([ '/edit-group', group._id]);
   }
 
   /*formulario*/
