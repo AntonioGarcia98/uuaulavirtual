@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
 import { Session } from 'inspector';
 import { SessionService } from 'src/app/services/session.service';
@@ -15,6 +15,40 @@ import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { SelectComponent } from 'src/app/form-component/controls/form-generator/form-fields/select/select.component';
 import { ActivatedRoute } from '@angular/router';
+import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
+import { SithecConfig } from '../form-dialog/sithec.config.model';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { LoginRequest } from 'src/app/models/login-request.model';
+import { FormDialogComponent } from '../form-dialog/form-dialog.component';
+import { MessageConfig } from '../message-dialog/message-dialog.model';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
+import { UserService } from 'src/app/services/user.service';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { group } from 'console';
+import { ClassService } from 'src/app/services/class.service';
+
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+];
 
 @Component({
   selector: 'app-edit-group',
@@ -26,10 +60,8 @@ export class EditGroupComponent implements OnInit {
   schoolsArraySelect: any[]
 
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
-  data:any
+  data: any
 
-
-  
 
   formGroup_EditGroup: FormGroup = new FormGroup({
     _id: new FormControl(null, Validators.required),
@@ -123,6 +155,7 @@ export class EditGroupComponent implements OnInit {
 
       } as S2FormGroupModel,
 
+     
 
     ],
 
@@ -138,13 +171,19 @@ export class EditGroupComponent implements OnInit {
     private groupService: GroupService,
     private schoolService: SchoolService,
     private formService: SithecSuiteService,
-    private activateRouter: ActivatedRoute
+    private activateRouter: ActivatedRoute,
+    private dialog: MatDialog,
+    private userService: UserService,
+    private classService: ClassService
   ) { }
   num_idEdit: string
   ngOnInit(): void {
     this.getSchools()
     this.num_idEdit = this.activateRouter.snapshot.params.id;
     this.getGroupById()
+    this.getUserStudents()
+    this.getUserTeachers();
+    this.dataSource.sort = this.sort;
   }
 
 
@@ -184,6 +223,33 @@ export class EditGroupComponent implements OnInit {
       })
   }
 
+  getUserStudents(): void {
+    this.userService.getStudents().toPromise()
+      .then((res:any) => {
+        console.log(res)
+        this.arrayAuxStudent = res.item
+        console.log('done');
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  
+  getUserTeachers(): void {
+    this.userService.getTeachers().toPromise()
+      .then((res:any) => {
+        console.log(res)
+        this.arrayAuxTeacher = res.item
+        console.log('done');
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   fnPutData() {
     let select: SelectComponent = this.formService.fnGetFormElement('form-edit-Group', 'School');
     if (this.schoolsArraySelect.length > 0) {
@@ -208,6 +274,213 @@ export class EditGroupComponent implements OnInit {
         event.fnOffSpinner(false);
       })
   }
+
+
+
+
+
+  /*formulario*/
+
+  headersTable = [
+  
+    {
+      _title: "Nombre de usuario ",
+      _columName: "user_name",
+      _filter: true
+    } as HeadersFormModel,
+    {
+      _title: "Nombre",
+      _columName: "name",
+      _filter: false
+    } as HeadersFormModel,
+    {
+      _title: "Apellido",
+      _columName: "last_name",
+      _filter: false
+    } as HeadersFormModel,
+  ]
+
+
+  arrayAuxStudent = [
+    {
+      _idUsuario: 1,
+      _user_name: "Apellido",
+      _name: "hola",
+      _last_name: "Apellido"
+    },
+    {
+      _idUsuario: 2,
+      _user_name: "Apellido",
+      _name: "hola",
+      _last_name: "Apellido"
+    },
+  ]
+  
+  arrayAuxTeacher = [
+    {
+      _idUsuario: 1,
+      _user_name: "Apellido",
+      _name: "hola",
+      _last_name: "Apellido"
+    },
+    {
+      _idUsuario: 2,
+      _user_name: "Apellido",
+      _name: "hola",
+      _last_name: "Apellido"
+    },
+  ]
+
+
+
+
+
+  async fnNewClass() {
+
+    var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
+
+    var formGroup_newClass: FormGroup = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      teachers: new FormControl(null, Validators.required),
+      students: new FormControl(null, Validators.required),
+      user: new FormControl(null),
+      group: new FormControl(null)
+    });
+
+    var config: SithecConfig = new SithecConfig()
+    config.settings =
+      {
+        _formGroup: formGroup_newClass,
+        _id: 'form-new-class',
+        _groups: [
+          {
+            _nameAs: 'new-class',
+            _items: [
+              {
+                _control: "group",
+                _config: {
+                  _id: "group",
+                  _type: "string",
+                  _hide: true,
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: "user",
+                _config: {
+                  _id: "user",
+                  _type: "string",
+                  _hide: true,
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'name',
+                _config: {
+                  _id: '_nombre',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Nombre',
+                    _placeholder: 'Ingresa un nombre',
+                    _columns: this.inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+              {
+                _control: 'teachers',
+                _config: {
+                  _id: "table",
+                  _type: "table",
+                  _table: {
+                    _enableFilters: true,
+                    _checkbox: true,
+                    _checkboxHeader: false,
+                    _label: "Profesores",
+                    _limit: 1,
+                    _primaryKey: '_id',
+                    _options: this.arrayAuxTeacher,
+                    _tableHeaders: this.headersTable,
+                    _columns: this.inputColumns,
+
+                  } as S2TableFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+              {
+                _control: 'students',
+                _config: {
+                  _id: "table",
+                  _type: "table",
+                  _table: {
+                    _enableFilters: true,
+                    _checkbox: true,
+                    _checkboxHeader: true,
+                    _label: "Alumnos",
+                    //_limit: 1,
+                    _primaryKey: '_id',
+                    _options: this.arrayAuxStudent,
+                    _tableHeaders: this.headersTable,
+                    _columns: this.inputColumns,
+
+                  } as S2TableFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+            ],
+
+          } as S2FormGroupModel,
+        ],
+
+        _saveButton: {
+          _text: 'Crear clase',
+          _resetOnSuccess: true,
+          _validToSend: true
+        } as S2ButtonModel
+      } as S2SettingsFormGeneratorModel;
+    config.tool = 'form-generator';
+
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
+     
+      console.log(event.data)
+
+     let classToSend: any = event.data['new-class'];
+     classToSend.user = this.data.user,
+     classToSend.group =this.num_idEdit
+     console.log(classToSend)
+      ref.close(1)
+       this.classService.create(classToSend).toPromise()
+         .then((res) => {
+           console.log(res)
+           console.log('done');
+           ref.close(1)
+         })
+         .catch((err) => {
+           ref.close(-1)
+         })
+    }
+
+    config.title = "Crear clase"
+    config.message = "Crea clases para tu grupo!"
+
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi", height: "600px" }).afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (res && res == -1) {
+          var message: MessageConfig = {
+            title: "Iniciar sesión",
+            message: "Usuario y/o contraseña incorrecto(s)."
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        }
+      })
+  }
+
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+
+
 
 
 

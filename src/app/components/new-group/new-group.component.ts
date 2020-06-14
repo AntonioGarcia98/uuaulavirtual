@@ -16,6 +16,12 @@ import { School } from 'src/app/models/school.model';
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { SelectComponent } from 'src/app/form-component/controls/form-generator/form-fields/select/select.component';
 import { Session } from 'protractor';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SithecConfig } from '../form-dialog/sithec.config.model';
+import { LoginRequest } from 'src/app/models/login-request.model';
+import { FormDialogComponent } from '../form-dialog/form-dialog.component';
+import { MessageConfig } from '../message-dialog/message-dialog.model';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-new-group',
@@ -33,7 +39,7 @@ export class NewGroupComponent implements OnInit {
     private sessionService: SessionService,
     private groupService: GroupService,
     private schoolService: SchoolService,
-    private formService: SithecSuiteService
+    private formService: SithecSuiteService,
   ) { }
 
   ngOnInit(): void {
@@ -156,7 +162,6 @@ export class NewGroupComponent implements OnInit {
     }
   }
 
-
   fnOnSend(event): void {
     console.log(event)
     let grouptoSend = event.data['new-group']
@@ -174,7 +179,6 @@ export class NewGroupComponent implements OnInit {
         event.fnOffSpinner(false);
       })
   }
-
 
 
 

@@ -5,7 +5,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import {MatTableModule} from '@angular/material/table';
 
 const routes: Routes = [
   { path: '', component: EditGroupComponent }
@@ -19,6 +21,10 @@ const routes: Routes = [
     SithecSuiteModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
+    MatTableModule
+
   ]
 })
 export class EditGroupModule { }
