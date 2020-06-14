@@ -39,7 +39,7 @@ export class AppComponent {
     },
   ]
 
-  schools : any = []
+  schools : any[] = []
 
   constructor(
     private dialog: MatDialog,
@@ -57,6 +57,7 @@ export class AppComponent {
     ])
     .then((catalogs : any) => {
       this.schools = catalogs[0].item
+      console.log(this.schools)
     })
   }
 
@@ -83,7 +84,7 @@ export class AppComponent {
       //estudiante
       scholarship: new FormControl(null, []),
       grade: new FormControl(null),
-      school: new FormControl(null),
+      school: new FormControl(1),
 
       //maestro
       title: new FormControl(null),
@@ -171,6 +172,20 @@ export class AppComponent {
                     _optionKey: 'name',
                     _valueKey: 'idUserType',
                     _label: 'Tipo de usuario',
+                    _columns: inputColumns
+                  } as S2SelectFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: "school",
+                _config: {
+                  _id: "school",
+                  _type: "select",
+                  _select: {
+                    _options: this.schools.map(s => { return {schoolId : s._id, name : s.name} }),
+                    _optionKey: 'name',
+                    _valueKey: 'schoolId',
+                    _label: 'Escuela',
                     _columns: inputColumns
                   } as S2SelectFormModel
                 } as S2FormField
@@ -361,22 +376,23 @@ export class AppComponent {
       })
   }
 
-
   fnOnChange(event, settings) {
     //console.log("cambio", event)
-    let SelectidUserType = event.event.target.value;
+    let SelectidUserType = event.event.target.value; 
     if (event.id == "UserType") {
       if (SelectidUserType == 1) {
-        settings._groups[0]._items[6]._config._hide = false;
         settings._groups[0]._items[7]._config._hide = false;
-        settings._groups[0]._items[8]._config._hide = true;
-        settings._groups[0]._items[9]._config._hide = true;
-
-      } else if (SelectidUserType == 2) {
-        settings._groups[0]._items[6]._config._hide = true;
-        settings._groups[0]._items[7]._config._hide = true;
         settings._groups[0]._items[8]._config._hide = false;
         settings._groups[0]._items[9]._config._hide = false;
+        settings._groups[0]._items[10]._config._hide = true;
+        settings._groups[0]._items[11]._config._hide = true;
+
+      } else if (SelectidUserType == 2) {
+        settings._groups[0]._items[7]._config._hide = true;
+        settings._groups[0]._items[8]._config._hide = true;
+        settings._groups[0]._items[9]._config._hide = true;
+        settings._groups[0]._items[10]._config._hide = false;
+        settings._groups[0]._items[11]._config._hide = false;
       }
     } else {
       return
