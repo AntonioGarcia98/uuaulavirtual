@@ -1,0 +1,19 @@
+:host{
+    display: flex;
+    height: 100%;
+    flex-flow: column;
+    max-width: 700px;
+
+    .all-container{
+        overflow: unset;
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+    }
+
+    /* .close-button{
+        position: absolute;
+        top: -20px;
+        right: -20px;
+    } */
+}

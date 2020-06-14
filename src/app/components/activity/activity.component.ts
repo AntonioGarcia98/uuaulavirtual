@@ -21,30 +21,18 @@ export class ActivityComponent implements OnInit {
   points : number = 0;
 
   constructor(
-    private router: Router,/* 
     @Inject(MAT_DIALOG_DATA)  public data : ActivityModel,
-    public dialogRef: MatDialogRef<ActivityComponent> */
+    public dialogRef: MatDialogRef<ActivityComponent>
   ) { 
-    /* Object.keys(this.data).map(k => {
+    Object.keys(this.data).map(k => {
       this[k] = this.data[k]; 
-    }) */
-    console.log("data")
+    })
+    console.log(this.data)
   }
 
   ngOnInit(): void {
   }
 
-  
-selectActivity(activity: any){
-    console.log(activity)
-   this.router.navigate([ '/activity', activity._id  ]);
-  }
+  closeDialog(state? : number) { this.dialogRef.close(state) };
 
-}
-
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
 }
