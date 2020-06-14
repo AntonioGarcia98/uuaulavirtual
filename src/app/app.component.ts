@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { S2BootstrapColumnsModel } from './form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -19,13 +19,15 @@ import { S2SelectFormModel } from './form-component/models/s2-select-form.model'
 import { StudentService } from './services/student.service';
 import { TeacherService } from './services/teacher.service';
 import { SchoolService } from './services/school.service';
+import { SelectComponent } from './form-component/controls/form-generator/form-fields/select/select.component';
+import { SithecSuiteService } from './form-component/sithec-suite.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'uuaulavirtual';
 
   userTypeOptions: any = [
@@ -39,15 +41,18 @@ export class AppComponent {
     },
   ]
 
-  schools: any = []
+  schools : any[] = []
 
   constructor(
     private dialog: MatDialog,
     public sessionService: SessionService,
     public studentService: StudentService,
     public teacherService: TeacherService,
-    public schoolService: SchoolService
+    public schoolService: SchoolService,
   ) {
+  }
+
+  ngOnInit(){
     this.getCatalogs()
   }
 
@@ -60,9 +65,7 @@ export class AppComponent {
       })
   }
 
-  fnOnSend(event) {
-    console.log(event)
-  }
+  
 
   async createAccount() {
 
@@ -83,7 +86,7 @@ export class AppComponent {
       //estudiante
       scholarship: new FormControl(null, []),
       grade: new FormControl(null),
-      school: new FormControl(null),
+      school: new FormControl(1),
 
       //maestro
       title: new FormControl(null),
@@ -171,6 +174,20 @@ export class AppComponent {
                     _optionKey: 'name',
                     _valueKey: 'idUserType',
                     _label: 'Tipo de usuario',
+                    _columns: inputColumns
+                  } as S2SelectFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: "school",
+                _config: {
+                  _id: "school",
+                  _type: "select",
+                  _select: {
+                    _options: this.schools,
+                    _optionKey: 'name',
+                    _valueKey: '_id',
+                    _label: 'Escuela',
                     _columns: inputColumns
                   } as S2SelectFormModel
                 } as S2FormField
@@ -303,19 +320,20 @@ export class AppComponent {
         {
           title: event.data['user-credentials']['title'],
           professional_number: event.data['user-credentials']['professional_number'],
-          role: event.data['user-credentials']['role'],
+          //role: event.data['user-credentials']['role'],
+          role: "ADMIN_ROLE"
         }
 
 
         newUser = JSON.parse(JSON.stringify(auxTeacher));
       }
 
+      newUser.contact = event.data['contact-credentials']
+
       if (userType == 1)//Usuario alumno
       {
         this.studentService.create(newUser).toPromise()
           .then((res) => {
-            console.log(res)
-            console.log('done');
             ref.close(1)
           })
           .catch((err) => {
@@ -325,8 +343,6 @@ export class AppComponent {
       } else {//Usuario maestro
         this.teacherService.create(newUser).toPromise()
           .then((res) => {
-            console.log(res)
-            console.log('done');
             ref.close(1)
           })
           .catch((err) => {
@@ -339,6 +355,8 @@ export class AppComponent {
     config.fnOnChange = this.fnOnChange;
     config.title = "Crear cuenta"
     config.message = "Registrate en el mejor sistema academico!"
+
+    
 
     this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi", height: "600px" }).afterClosed()
       .toPromise()
@@ -361,22 +379,22 @@ export class AppComponent {
       })
   }
 
-
   fnOnChange(event, settings) {
-    //console.log("cambio", event)
-    let SelectidUserType = event.event.target.value;
+    let SelectidUserType = event.event.target.value; 
     if (event.id == "UserType") {
       if (SelectidUserType == 1) {
         settings._groups[0]._items[6]._config._hide = false;
         settings._groups[0]._items[7]._config._hide = false;
-        settings._groups[0]._items[8]._config._hide = true;
+        settings._groups[0]._items[8]._config._hide = false;
         settings._groups[0]._items[9]._config._hide = true;
+        settings._groups[0]._items[10]._config._hide = true;
 
       } else if (SelectidUserType == 2) {
         settings._groups[0]._items[6]._config._hide = true;
         settings._groups[0]._items[7]._config._hide = true;
-        settings._groups[0]._items[8]._config._hide = false;
+        settings._groups[0]._items[8]._config._hide = true;
         settings._groups[0]._items[9]._config._hide = false;
+        settings._groups[0]._items[10]._config._hide = false;
       }
     } else {
       return
@@ -442,16 +460,12 @@ export class AppComponent {
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
       var loginRequest: LoginRequest = new LoginRequest()
 
-      console.log(event.data)
-
       Object.keys(event.data['user-credentials']).map(k => {
         loginRequest[k] = event.data['user-credentials'][k]
       })
 
       this.sessionService.login(loginRequest)
         .then((res) => {
-          console.log(res)
-          console.log('done');
           ref.close(1)
         })
         .catch((err) => {

@@ -1,15 +1,17 @@
-<div class="container">
-
+<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> 
+  <mat-icon>close</mat-icon> 
+</button>
+<div class="all-container">
   <div class="mt-5" style="background-color:  #3f51b5;width: 100%;height: 200px;color: white;">
     <div>
-      <h1 class="">Actividad</h1>
+      <h1 class="">{{title}} fsdf</h1>
+      {{autor}}
     </div>
     <div>
 
     </div>
-      Descripcion de la actividad: Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, id
-      veritatis. Nostrum est iusto quaerat distinctio tempora quos aspernatur ex odit, eum quia. Error quidem voluptatem
-      nisi rerum culpa mollitia?
+    Descripcion de la actividad:
+    {{description}}
   </div>
-
-</div>
+  {{delivery_date}} : Puntos = {{points}}
+</div><!--  -->
