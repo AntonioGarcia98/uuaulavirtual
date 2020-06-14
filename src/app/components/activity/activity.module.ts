@@ -5,16 +5,21 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
     declarations: [ActivityComponent],
     imports: [
         CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
+        MatCardModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
+    MatTableModule
+
     ],
     exports: [ActivityComponent],
     providers: [],
 })
-export class EmailConfigModule { }
+export class ActivityModule { }
