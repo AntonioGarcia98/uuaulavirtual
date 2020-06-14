@@ -1,6 +1,7 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SithecConfig } from 'src/app/components/form-dialog/sithec.config.model';
+import { StudentService } from 'src/app/services/student.service';
 
 @Component({
     selector: 'app-form-dialog',
@@ -35,9 +36,6 @@ export class FormDialogComponent implements OnInit {
         Object.keys(data).map(k => {
             this[k] = data[k];
         })
-     
-        console.log("info",data);
-
     }
 
     ngOnInit(): void { 

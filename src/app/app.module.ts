@@ -20,6 +20,9 @@ import { HttpInterceptorService } from './services/http.interceptor';
 import { UserService } from './services/user.service';
 import { User } from './models/user.model';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { TeacherService } from './services/teacher.service';
+import { StudentService } from './services/student.service';
+import { SchoolService } from './services/school.service';
 
 
 @NgModule({
@@ -45,7 +48,10 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
   ],
   providers: [
     UserService,
+    TeacherService,
+    StudentService,
     SessionService,
+    SchoolService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

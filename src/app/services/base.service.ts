@@ -17,15 +17,7 @@ export class ServiceBase<TClass> {
     }
 
     getAll() {
-
-        return this.http.get(this.url, {
-        }).pipe(
-            map((x: any) => {
-                console.log(x)
-                x.items = x.items.map(i => Object.assign(new this.TCreator(), i));
-                return x;
-            })
-        )
+        return this.http.get(this.url);
     }
 
 
