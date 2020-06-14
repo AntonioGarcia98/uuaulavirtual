@@ -9,6 +9,9 @@ import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.mod
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivityModule } from '../activity/activity.module'
+import { ActivityComponent } from '../activity/activity.component';
 
 const routes: Routes = [
     { path: '', component: CourseComponent }
@@ -19,13 +22,14 @@ const routes: Routes = [
         CommonModule, 
         RouterModule.forChild(routes),
         MatCardModule,
+        MatIconModule,
         MatButtonModule,
         SithecSuiteModule,
         MatExpansionModule,
-        MatDialogModule
+        MatDialogModule,
     ],
     exports: [RouterModule],
-    declarations: [CourseComponent],
+    declarations: [CourseComponent, ActivityComponent],
     providers: [],
 })
 export class CourseModule { }

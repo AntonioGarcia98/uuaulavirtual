@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
     declarations: [ActivityComponent],
     imports: [
         CommonModule,
+        MatIconModule,
         MatButtonModule,
         MatIconModule,
         MatDialogModule,
@@ -17,4 +18,4 @@ import { MatIconModule } from '@angular/material/icon';
     exports: [ActivityComponent],
     providers: [],
 })
-export class EmailConfigModule { }
+export class ActivityModule { }
