@@ -15,5 +15,15 @@ export class UserService extends ServiceBase<User> {
     ) { 
         super(User);
     }
+
+    getStudents()
+    {
+        return this.http.get(this.url + "/filter/student")
+    }
+
+    getTeachers() : Observable<any>
+    {
+        return this.http.get(this.url + "/filter/teacher")
+    }
     
 }
