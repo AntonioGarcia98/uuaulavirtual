@@ -10,6 +10,8 @@ import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
+import { Session } from 'protractor';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-group',
@@ -51,12 +53,20 @@ export class GroupComponent implements OnInit {
   
 ]
   constructor(
-    private router: Router
+    private router: Router,
+    private sessionService: SessionService
   ) { 
     console.log('group')
   }
 
   ngOnInit(): void {
+    this.subscribeSession()
+  }
+
+  subscribeSession():void{
+    this.sessionService._session.subscribe(data =>{
+      console.log(data)
+    })
   }
 
   seleccionGrupo(grupo: any){

@@ -9,6 +9,7 @@ import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.mo
 import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.model';
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-new-class',
@@ -17,9 +18,12 @@ import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-s
 })
 export class NewClassComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private userService: UserService
+  ) { }
 
   ngOnInit(): void {
+    this.getUsers()
   }
 
 
@@ -52,15 +56,15 @@ export class NewClassComponent implements OnInit {
   arrayAux = [
     {
       _idUsuario: 1,
-      _user_name :"Apellido",
+      _user_name: "Apellido",
       _name: "hola",
-      _last_name:"Apellido"
+      _last_name: "Apellido"
     },
     {
       _idUsuario: 2,
-      _user_name :"Apellido",
+      _user_name: "Apellido",
       _name: "hola",
-      _last_name:"Apellido"
+      _last_name: "Apellido"
     },
   ]
 
@@ -68,11 +72,14 @@ export class NewClassComponent implements OnInit {
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
   formGroup_newClass: FormGroup = new FormGroup({
-    _name: new FormControl(null, Validators.required),
-    _teachers: new FormControl(null, Validators.required),
-    _students: new FormControl(null, Validators.required),
+    name: new FormControl(null, Validators.required),
+    teachers: new FormControl(null, Validators.required),
+    students: new FormControl(null, Validators.required),
+   // group: new FormControl(null,)user
 
   });
+
+
 
   settings_form = {
     _formGroup: this.formGroup_newClass,
@@ -82,7 +89,7 @@ export class NewClassComponent implements OnInit {
         _nameAs: 'new-class',
         _items: [
           {
-            _control: '_name',
+            _control: 'name',
             _config: {
               _id: '_nombre',
               _type: 'text',
@@ -95,7 +102,7 @@ export class NewClassComponent implements OnInit {
           } as S2FormGroupItemModel,
 
           {
-            _control: '_teachers',
+            _control: 'teachers',
             _config: {
               _id: "table",
               _type: "table",
@@ -115,7 +122,7 @@ export class NewClassComponent implements OnInit {
           } as S2FormGroupItemModel,
 
           {
-            _control: '_students',
+            _control: 'students',
             _config: {
               _id: "table",
               _type: "table",
@@ -150,7 +157,17 @@ export class NewClassComponent implements OnInit {
   } as S2SettingsFormGeneratorModel
 
 
+  getUsers(): void {
+    this.userService.getAll().toPromise()
+      .then((res) => {
+        console.log(res)
+        console.log('done');
 
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
 
   fnOnSend(event) {
