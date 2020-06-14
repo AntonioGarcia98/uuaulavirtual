@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivityModule } from '../activity/activity.module'
 import { ActivityComponent } from '../activity/activity.component';
 
 const routes: Routes = [
@@ -27,9 +26,10 @@ const routes: Routes = [
         SithecSuiteModule,
         MatExpansionModule,
         MatDialogModule,
+        MatIconModule
     ],
     exports: [RouterModule],
-    declarations: [CourseComponent, ActivityComponent],
+    declarations: [CourseComponent,ActivityComponent],
     providers: [],
 })
 export class CourseModule { }

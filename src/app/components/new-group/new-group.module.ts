@@ -5,6 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
+import { NewClassComponent } from '../new-class/new-class.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 const routes: Routes = [
@@ -19,6 +21,7 @@ const routes: Routes = [
     MatCardModule,
     MatButtonModule,
     SithecSuiteModule,
+    MatDialogModule,
   ],
   exports: [RouterModule],
 })
