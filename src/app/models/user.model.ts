@@ -1,14 +1,16 @@
 export class User{
-    user_name : string;
+    user_name : string = "";
 
-    name : string;
-    last_name : string;
-    password : string;
-    birthdate : string;
+    name : string = "";
+    last_name : string ="";
+    password : string = "";
+    birthdate : string = "";
 
     contact : {
         email : string;
-    }
+    } = { 
+            email : ""
+        }
 }
 
 export class Student extends User{
@@ -16,7 +18,23 @@ export class Student extends User{
         scholarship : string;
         grade : number;
         school : string;
-    };
+    } =  {
+            scholarship : "",
+            grade : 0,
+            school : ""
+        }
+}
+
+export class Teacher extends User{
+    teacher : {
+        title : string;
+        professional_number : string;
+        role : string;
+    } = {
+            title : "",
+            professional_number : "",
+            role : ""
+        }
 }
 
 /* {

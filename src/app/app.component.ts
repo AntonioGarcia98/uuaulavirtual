@@ -1,28 +1,24 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { HeadersFormModel } from './form-component/models/s2-headers-form.model';
 import { S2BootstrapColumnsModel } from './form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { S2InputForm } from './form-component/models/s2-input-form.model';
 import { S2FormField } from './form-component/models/s2-form-field.model';
 import { S2FormGroupItemModel } from './form-component/models/s2-form-group-item.model';
-import { S2TableFormModel } from './form-component/models/s2-table-form.model';
 import { S2FormGroupModel } from './form-component/models/s2-form-group.model';
 import { S2ButtonModel } from './form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from './form-component/models/s2-settings-form-generator.model';
-import { CollapseTableComponent } from './form-component/sithec-tools-suite.component';
-import { async } from '@angular/core/testing';
 import { SithecConfig } from './components/form-dialog/sithec.config.model';
 import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
 import { SessionService } from './services/session.service';
-import { UserService } from './services/user.service';
-import { User } from './models/user.model';
+import { Student, Teacher } from './models/user.model';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 import { MessageConfig } from './components/message-dialog/message-dialog.model';
 import { LoginRequest } from './models/login-request.model';
 import { S2SelectFormModel } from './form-component/models/s2-select-form.model';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { config } from 'rxjs';
+import { StudentService } from './services/student.service';
+import { TeacherService } from './services/teacher.service';
+import { SchoolService } from './services/school.service';
 
 @Component({
   selector: 'app-root',
@@ -43,12 +39,25 @@ export class AppComponent {
     },
   ]
 
+  schools : any = []
+
   constructor(
     private dialog: MatDialog,
-    private sessionService: SessionService,
-    private userService: UserService
+    public sessionService: SessionService,
+    public studentService: StudentService,
+    public teacherService: TeacherService,
+    public schoolService : SchoolService
   ) {
-    
+    this.getCatalogs()
+  }
+
+  getCatalogs() {
+    return Promise.all([
+      this.schoolService.getAll().toPromise()
+    ])
+    .then((catalogs : any) => {
+      this.schools = catalogs[0].item
+    })
   }
 
   fnOnSend(event) {
@@ -68,13 +77,13 @@ export class AppComponent {
       birthdate: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
-      password: new FormControl(null, []),
-      userType: new FormControl(null, []),
-      
+      password: new FormControl(null, [Validators.required]),
+      userType: new FormControl(1, [Validators.required]),
+
       //estudiante
       scholarship: new FormControl(null, []),
       grade: new FormControl(null),
-      school : new FormControl(null),
+      school: new FormControl(null),
 
       //maestro
       title: new FormControl(null),
@@ -152,6 +161,70 @@ export class AppComponent {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: "userType",
+                _config: {
+                  _id: "UserType",
+                  _type: "select",
+                  _select: {
+                    _options: this.userTypeOptions,
+                    _optionKey: 'name',
+                    _valueKey: 'idUserType',
+                    _label: 'Tipo de usuario',
+                    _columns: inputColumns
+                  } as S2SelectFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'scholarship',
+                _config: {
+                  _id: 'scholarship',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Escolaridad',
+                    _placeholder: 'Ingresa la escolaridad',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'grade',
+                _config: {
+                  _id: 'grade',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Grado',
+                    _placeholder: 'Ingresa el grado',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'title',
+                _config: {
+                  _id: 'title',
+                  _type: 'text',
+                  _hide: true,
+                  _input: {
+                    _label: 'Titulo academico',
+                    _placeholder: 'Ingresa su titulo academico',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'professional_number',
+                _config: {
+                  _id: 'professional_number',
+                  _type: 'text',
+                  _hide: true,
+                  _input: {
+                    _label: 'Cedula Profesional',
+                    _placeholder: 'Ingresa su cedula profesional',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
 
             ],
           } as S2FormGroupModel,
@@ -171,86 +244,18 @@ export class AppComponent {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
-              {
-                _control: "userType",
+              /* {
+                _control: 'phone_number',
                 _config: {
-                  _id: "UserType",
-                  _type: "select",
-                  _select: {
-                    _options: this.userTypeOptions,
-                    _optionKey: 'name',
-                    _valueKey: 'idUserType',
-                    _label: 'Tipo de usuario',
+                  _id: 'phone_number',
+                  _type: 'number',
+                  _input: {
+                    _label: 'Telefono(s)',
+                    _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
                     _columns: inputColumns
-
-
-                  } as S2SelectFormModel
+                  } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,
-               
-                      {
-                        _control: 'scholarship',
-                        _config: {
-                          _id: 'scholarship',
-                          _type: 'text',
-                          _input: {
-                            _label: 'Escolaridad',
-                            _placeholder: 'Ingresa la escolaridad',
-                            _columns: inputColumns
-                          } as S2InputForm
-                        } as S2FormField
-                      } as S2FormGroupItemModel,
-                      {
-                        _control: 'grade',
-                        _config: {
-                          _id: 'grade',
-                          _type: 'text',
-                          _input: {
-                            _label: 'Grado',
-                            _placeholder: 'Ingresa el grado',
-                            _columns: inputColumns
-                          } as S2InputForm
-                        } as S2FormField
-                      } as S2FormGroupItemModel,
-                      {
-                        _control: 'title',
-                        _config: {
-                          _id: 'title',
-                          _type: 'text',
-                          _hide:true,
-                          _input: {
-                            _label: 'Titulo academico',
-                            _placeholder: 'Ingresa su titulo academico',
-                            _columns: inputColumns
-                          } as S2InputForm
-                        } as S2FormField
-                      } as S2FormGroupItemModel,
-                      {
-                        _control: 'professional_number',
-                        _config: {
-                          _id: 'professional_number',
-                          _type: 'text',
-                          _hide:true,
-                          _input: {
-                            _label: 'Cedula Profesional',
-                            _placeholder: 'Ingresa su cedula profesional',
-                            _columns: inputColumns
-                          } as S2InputForm
-                        } as S2FormField
-                      } as S2FormGroupItemModel,
-        
-                      /* {
-                        _control: 'phone_number',
-                        _config: {
-                          _id: 'phone_number',
-                          _type: 'number',
-                          _input: {
-                            _label: 'Telefono(s)',
-                            _placeholder: 'Ingrese su(s) telefonos', //Podemos dejarlo como text o number, validar la entrada de puntos o letras, y que separe telefonos por comas
-                            _columns: inputColumns
-                          } as S2InputForm
-                        } as S2FormField
-                      } as S2FormGroupItemModel, */
+              } as S2FormGroupItemModel, */
             ],
           } as S2FormGroupModel,
         ],
@@ -262,7 +267,75 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = this.fnNewUser;
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => { //Los servicios no funcionan cuando se define la función y se asigna al objeto
+      var userType: number = event.data['user-credentials'].userType;
+      var newUser : any = {};
+   
+      if (userType == 1)//Usuario alumno
+      {
+        var auxUser : Student = new Student();
+        Object.keys(auxUser).map(k => {
+          var value =  event.data['user-credentials'][k] || null;
+          auxUser[k] = value;
+        })
+        
+        //Student
+        auxUser.student = 
+          {
+            scholarship : event.data['user-credentials']['scholarship'],
+            grade : event.data['user-credentials']['grade'],
+            school : event.data['user-credentials']['school'],
+          }
+
+        newUser = JSON.parse(JSON.stringify(auxUser));
+  
+      } else {
+        
+        //Usuario maestro
+        var auxTeacher : Teacher = new Teacher();
+        Object.keys(auxTeacher).map(k => {
+          var value =  event.data['user-credentials'][k] || null;
+          auxTeacher[k] = value;
+        })
+        
+        //Teacher
+        auxTeacher.teacher = 
+          {
+            title : event.data['user-credentials']['title'],
+            professional_number : event.data['user-credentials']['professional_number'],
+            role : event.data['user-credentials']['role'],
+          }
+
+
+        newUser = JSON.parse(JSON.stringify(auxTeacher));
+      }
+  
+      if (userType == 1)//Usuario alumno
+      {
+        this.studentService.create(newUser).toPromise()
+        .then((res) => {
+          console.log(res)
+          console.log('done');
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
+  
+      } else {//Usuario maestro
+        this.teacherService.create(newUser).toPromise()
+        .then((res) => {
+          console.log(res)
+          console.log('done');
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
+      }
+      
+    }
+
     config.fnOnChange = this.fnOnChange;
     config.title = "Crear cuenta"
     config.message = "Registrate en el mejor sistema academico!"
@@ -290,48 +363,26 @@ export class AppComponent {
 
 
   fnOnChange(event, settings) {
-    console.log("cambio", event)
+    //console.log("cambio", event)
     let SelectidUserType = event.event.target.value;
     if (event.id == "UserType") {
       if (SelectidUserType == 1) {
-        settings._groups[1]._items[2]._config._hide = false;
-        settings._groups[1]._items[3]._config._hide = false;
-        settings._groups[1]._items[4]._config._hide = true;
-        settings._groups[1]._items[5]._config._hide = true;
+        settings._groups[0]._items[6]._config._hide = false;
+        settings._groups[0]._items[7]._config._hide = false;
+        settings._groups[0]._items[8]._config._hide = true;
+        settings._groups[0]._items[9]._config._hide = true;
 
       } else if (SelectidUserType == 2) {
-        settings._groups[1]._items[2]._config._hide = true;
-        settings._groups[1]._items[3]._config._hide = true;
-        settings._groups[1]._items[4]._config._hide = false;
-        settings._groups[1]._items[5]._config._hide = false;
+        settings._groups[0]._items[6]._config._hide = true;
+        settings._groups[0]._items[7]._config._hide = true;
+        settings._groups[0]._items[8]._config._hide = false;
+        settings._groups[0]._items[9]._config._hide = false;
       }
     } else {
       return
     }
   }
-
-  fnNewUser(event, ref: MatDialogRef<any>) {
-    console.log("event")
-    var newUser: User = new User()
-
-    console.log(event.data)
-
-    Object.keys(event.data['user-credentials']).map(k => {
-      newUser[k] = event.data['user-credentials'][k]
-    })
-
-    newUser['contact'] = event.data['contact-credentials'];
-    console.log(newUser)
-    /*this.userService.create(newUser).toPromise()
-      .then((res) => {
-        console.log(res)
-        console.log('done');
-        ref.close(1)
-      })
-      .catch((err) => {
-        ref.close(-1)
-      })*/
-  }
+  
 
   async login() {
 
@@ -387,6 +438,7 @@ export class AppComponent {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
+
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
       var loginRequest: LoginRequest = new LoginRequest()
 
@@ -406,6 +458,7 @@ export class AppComponent {
           ref.close(-1)
         })
     }
+
     config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!"
 
