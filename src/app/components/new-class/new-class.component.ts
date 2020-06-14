@@ -23,7 +23,8 @@ export class NewClassComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUsers()
+    this.getUserStudents()
+    this.getUserTeachers();
   }
 
 
@@ -157,8 +158,8 @@ export class NewClassComponent implements OnInit {
   } as S2SettingsFormGeneratorModel
 
 
-  getUsers(): void {
-    this.userService.getAll().toPromise()
+  getUserStudents(): void {
+    this.userService.getStudents().toPromise()
       .then((res) => {
         console.log(res)
         console.log('done');
@@ -168,6 +169,20 @@ export class NewClassComponent implements OnInit {
         console.log(err)
       })
   }
+
+  
+  getUserTeachers(): void {
+    this.userService.getTeachers().toPromise()
+      .then((res) => {
+        console.log(res)
+        console.log('done');
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
 
 
   fnOnSend(event) {

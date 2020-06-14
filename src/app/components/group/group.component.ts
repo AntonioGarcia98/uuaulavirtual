@@ -12,6 +12,7 @@ import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.mo
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { Session } from 'protractor';
 import { SessionService } from 'src/app/services/session.service';
+import { GroupService } from 'src/app/services/group.service';
 
 @Component({
   selector: 'app-group',
@@ -54,13 +55,24 @@ export class GroupComponent implements OnInit {
 ]
   constructor(
     private router: Router,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private groupService:GroupService
   ) { 
-    console.log('group')
   }
 
   ngOnInit(): void {
     this.subscribeSession()
+    this.getGroups()
+  }
+
+  getGroups():void{
+    this.groupService.getAll().toPromise()
+    .then((res:any)=>{
+      this.group = res.item
+    })
+    .catch((rej)=>{
+
+    })
   }
 
   subscribeSession():void{
@@ -69,10 +81,12 @@ export class GroupComponent implements OnInit {
     })
   }
 
-  seleccionGrupo(grupo: any){
-    console.log(grupo)
-    console.log(this.router.navigate)
-    this.router.navigate([ '/class', grupo._id  ]);
+  selectGroup(group: any):void{
+    this.router.navigate([ '/class', group._id  ]);
+  }
+
+  editGroup(group: any):void{
+    this.router.navigate([ '/edit-group', group._id]);
   }
 
   /*formulario*/

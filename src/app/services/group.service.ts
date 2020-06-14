@@ -15,5 +15,6 @@ export class GroupService extends ServiceBase<GroupModel>  {
   constructor(
       protected http : HttpClient
   ) { 
-      super(GroupModel);
+      super(GroupModel)
   }
+}

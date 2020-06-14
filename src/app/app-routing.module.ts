@@ -28,12 +28,12 @@ const routes: Routes = [
     /* canActivate: [AuthGuard], */
     /* data: {sessionRequired  : true} */
   },
-   {
+   /*{
     path: 'activity/:id',
     loadChildren: () => import('./components/activity/activity.module').then(m =>{ 
       console.log(m)
       m.ActivityModule}),
-  }, 
+  }, */
 
   {
     path: 'new-class',
@@ -44,6 +44,12 @@ const routes: Routes = [
   {
     path: 'new-group',
     loadChildren: () => import('./components/new-group/new-group.module').then(m => m.NewGroupModule),
+    /* canActivate: [AuthGuard], */
+    /* data: {sessionRequired  : true} */
+   },
+   {
+    path: 'edit-group/:id',
+    loadChildren: () => import('./components/edit-group/edit-group.module').then(m => m.EditGroupModule),
     /* canActivate: [AuthGuard], */
     /* data: {sessionRequired  : true} */
    },
