@@ -38,12 +38,31 @@ const user = {
         app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, req, res)),
         app.get('/user/filter/teacher', (req, res) => find(User, { teacher:{ $exists: true} }, req, res)),
         app.get('/students/school/:id', (req, res) => {
+            let page = Number(req.query.page || 1)
+            let limit = Number(req.query.limit || 5)
             User.find({ student:{ $exists: true} })
-                .populate({ path: 'student', match: { school: req.params.id } } )
+                .skip((page-1) * limit)
+                .limit(limit)
                 .exec((err, items) => {
                     if(err) return errorHandler(err, res)
                     if(!items) return notFound(res)
-                    return ok(items.filter(item => item.student), res)
+                    items = items.filter(item => item.student.school == req.params.id)
+                    if(!items.length) return notFound(res)
+                    return ok(items, res)
+                })
+        }),
+        app.get('/teachers/school/:id', (req, res) => {
+            let page = Number(req.query.page || 1)
+            let limit = Number(req.query.limit || 5)
+            User.find({ teacher:{ $exists: true} })
+                .skip((page-1) * limit)
+                .limit(limit)
+                .exec((err, items) => {
+                    if(err) return errorHandler(err, res)
+                    if(!items) return notFound(res)
+                    items = items.filter(item => item.teacher.schools.includes(req.params.id) )
+                    if(!items.length) return notFound(res)
+                    return ok(items, res)
                 })
         })
     }

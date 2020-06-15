@@ -30,10 +30,7 @@ let student = {
         'school',
         'carrer'
     ],
-    crud: true,
-    extra: app => {
-        // app.get('/students/school/:id', (req, res) => find(Student, { school: req.params.id }, res))
-    }
+    crud: true
 }
 
 module.exports = student
