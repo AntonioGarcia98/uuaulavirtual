@@ -9,6 +9,7 @@
           <mat-card-title class="group-title" (click)="selectGroup(ItemGrup)">{{ItemGrup.name}} </mat-card-title>
           <mat-card-subtitle>Grupo</mat-card-subtitle>
           <mat-icon style="display: flex;flex-direction: row-reverse;" (click)="editGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">edit</mat-icon>
+          <mat-icon style="display: flex;flex-direction: row-reverse;margin-left: 5rem;" (click)="deleteGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">delete</mat-icon>
         </mat-card-header>
       
         <mat-card-content>

@@ -16,7 +16,6 @@ import { ActivatedRoute } from '@angular/router';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { SithecConfig } from '../form-dialog/sithec.config.model';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { LoginRequest } from 'src/app/models/login-request.model';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
@@ -37,6 +36,10 @@ export class EditGroupComponent implements OnInit {
 
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
   data: any
+  
+  displayedColumns: string[] = ['position', 'name','action'];
+  dataSource = new MatTableDataSource();
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
   formGroup_EditGroup: FormGroup = new FormGroup({
@@ -451,9 +454,6 @@ export class EditGroupComponent implements OnInit {
       })
   }
 
-  displayedColumns: string[] = ['position', 'name','symbol'];
-  dataSource = new MatTableDataSource();
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
   getClass():void{
     this.classService.getAll().toPromise()
     .then((res:any)=>{
@@ -467,6 +467,24 @@ export class EditGroupComponent implements OnInit {
 
   deleteClass(element):void{
     console.log(element)
+
+    this.classService.delete(element._id).toPromise()
+    .then((res) => {
+      if (res) {
+       
+        var message: MessageConfig = {
+          title: "Eliminar clase ",
+          message: "La clase se ha sido eliminado correctamente"
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        this.getClass()
+      }
+
+    })
+    .catch((rej) =>{
+      console.log(rej)
+    })
+
   }
 
 
