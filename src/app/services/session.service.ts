@@ -31,6 +31,7 @@ export class SessionService {
 
     logout() {
         this.session.next(null);
+        localStorage.removeItem(SessionService.SESSION_TAG);
     }
 
     login(loginRequest: LoginRequest) {

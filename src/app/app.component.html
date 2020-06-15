@@ -4,29 +4,34 @@
   <mat-sidenav #sidenav>
     <mat-nav-list>
 
-      <h1 mat-subheader>Opciones de Usuario</h1>
-
-      <a mat-list-item [routerLink]="'/accounts'"><mat-icon matListIcon> home </mat-icon> Inicio </a>
-      <a mat-list-item [routerLink]="'/create-account'"><mat-icon matListIcon> category </mat-icon> Categorias </a>
-      <a mat-list-item [routerLink]="'/contacts'"><mat-icon matListIcon> group </mat-icon> Mis grupos </a>
-      <a mat-list-item [routerLink]="'/create-contact'"><mat-icon matListIcon> work </mat-icon> Actividades </a>
+      <h1 mat-subheader *ngIf="( session | async )?.user.student">Opciones de Estudiante</h1>
+      <h1 mat-subheader *ngIf="( session | async )?.user.teacher">Opciones de Profesor</h1>
+      
+      <a mat-list-item [routerLink]="'/home'"><mat-icon matListIcon> home </mat-icon> Inicio </a>
+      <!-- <a mat-list-item [routerLink]="'/create-account'"><mat-icon matListIcon> category </mat-icon> Categorias </a> -->
+      <a mat-list-item [routerLink]="'/group'"><mat-icon matListIcon> group </mat-icon> Mis grupos </a>
+      <a mat-list-item [routerLink]="'/create-contact'"><mat-icon matListIcon> work </mat-icon> Actividades pendientes</a>
       <mat-divider></mat-divider>
 
-      <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item><mat-icon matListIcon> exit_to_app </mat-icon>Cerrar</a>
+      <a mat-list-item (click)="logout()" href="" mat-list-item><mat-icon matListIcon> exit_to_app </mat-icon>Cerrar</a>
 
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
       <mat-toolbar color="primary">
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="( session | async )">
           <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
         </button>
-        <h1 [routerLink]="'/accounts'" style="cursor: pointer;">UaaAulaVirtual </h1>
+        <h1 [routerLink]="'/home'" style="cursor: pointer;">UaaAulaVirtual <span *ngIf="( session | async )">- ¡Bienvenido {{( session | async )?.user.name}}!</span></h1>
         <!-- <span class="menu-spacer"></span> -->
         <div class="nav-buttons">
+          <ng-container *ngIf="!( session | async )">
           <button mat-button (click)="login()">Iniciar Sesión</button>
           <button mat-button (click)="createAccount()"> Crear cuenta </button>
-          <button mat-button [routerLink]="['/group']"> Grupos </button>
+          </ng-container>
+        
+          <!-- {{( session | async )?.user.name}} -->
+        <button mat-button [routerLink]="['/group']"> Grupos </button>
         </div>
     </mat-toolbar>
       <router-outlet></router-outlet>

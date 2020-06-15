@@ -21,6 +21,7 @@ import { TeacherService } from './services/teacher.service';
 import { SchoolService } from './services/school.service';
 import { SelectComponent } from './form-component/controls/form-generator/form-fields/select/select.component';
 import { SithecSuiteService } from './form-component/sithec-suite.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit{
 
   schools : any[] = []
 
+  session : Observable<any>
+
   constructor(
     private dialog: MatDialog,
     public sessionService: SessionService,
@@ -50,6 +53,10 @@ export class AppComponent implements OnInit{
     public teacherService: TeacherService,
     public schoolService: SchoolService,
   ) {
+    this.session = this.sessionService._session;
+
+    var x = this.sessionService.getSession()
+    console.log(x)
   }
 
   ngOnInit(){
@@ -485,8 +492,16 @@ export class AppComponent implements OnInit{
             message: "Usuario y/o contraseña incorrecto(s)."
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        }else if(res && res == 1)
+        {
+          location.reload()
         }
       })
+  }
+
+  logout()
+  {
+    this.sessionService.logout()
   }
 
 }

@@ -53,6 +53,6 @@ export class CourseComponent implements OnInit {
 
 
   showActivity(activity: any) {
-    this.dialog.open(ActivityComponent, {data : activity, panelClass: ""})
+    this.dialog.open(ActivityComponent, {data : activity, panelClass: "dialog-fuchi", width: "800px"})
   }
 }
