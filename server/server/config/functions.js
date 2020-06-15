@@ -20,18 +20,21 @@ const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
         return ok(edited, res)
     })
 
-const find = (model, condition, res, limit = 5, page = 1) => model.find(condition)
+const find = (model, condition, req, res) => {
+    let page = Number(req.query.page || 1)
+    let limit = Number(req.query.limit || 5)
+    model.find(condition)
     .skip((page-1) * limit)
     .limit(limit)
     .exec((err, items) => {
         if(res){
             if(err) return errorHandler(err, res)
-            if(!items) return notFound(res)
+            if(!items || !items.length) return notFound(res)
             return (limit > 1)? ok(items, res) : ok(items[0], res)
         }
-        
         return items
     })
+}
 
 const matched = x => ({
     on: () => matched(x),

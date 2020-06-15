@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
     { path: '', component: GroupComponent }
@@ -20,7 +21,8 @@ const routes: Routes = [
         MatCardModule,
         MatButtonModule,
         SithecSuiteModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule
     ],
     exports: [RouterModule],
     declarations: [GroupComponent],

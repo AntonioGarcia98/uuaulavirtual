@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -10,6 +10,10 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { UserService } from 'src/app/services/user.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ActivityModel } from '../activity/activity.model';
+import { ActivityComponent } from '../activity/activity.component';
+import { ClassModel } from '../class/class.model';
 
 @Component({
   selector: 'app-new-class',

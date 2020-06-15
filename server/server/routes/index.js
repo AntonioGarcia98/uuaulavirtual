@@ -22,14 +22,17 @@ routes
         route.middlewares = initMid(route.middlewares)
 
         app.get(route.name, route.middlewares.get, (req, res) => 
-            find(route.model, {}, res))
+            find(route.model, {}, req, res))
 
-        app.get(route.name+'/:id', route.middlewares.get, (req, res) => 
-            find(route.model, {_id: req.params.id}, res, 1))
-
+        app.get(route.name+'/:id', route.middlewares.get, (req, res) => {
+            req.query.limit = 1
+            req.query.page = 1
+            return find(route.model, {_id: req.params.id}, req, res)
+        })
+            
         app.post(route.name, route.middlewares.post, (req, res) => route.create(req.body)
-                .then((newItem) => ok(newItem, res))
-                .catch((err) => errorHandler(err, res)))
+            .then((newItem) => ok(newItem, res))
+            .catch((err) => errorHandler(err, res)))
 
         app.put(route.name+'/:id', route.middlewares.put, (req, res) => 
             update(req.params.id, req.body, route.model, route.updateParams, res))

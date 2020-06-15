@@ -14,6 +14,9 @@ import { Session } from 'protractor';
 import { SessionService } from 'src/app/services/session.service';
 import { GroupService } from 'src/app/services/group.service';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageConfig } from '../message-dialog/message-dialog.model';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-group',
@@ -22,36 +25,7 @@ import { Observable } from 'rxjs';
 })
 export class GroupComponent implements OnInit {
 
-  group =[{
-    _foto:"https://img.icons8.com/plasticine/2x/classroom.png",
-    _nombre:"Grupo A",
-    _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo A",
-    _id:1,
-  },
-  {
-    _foto:"../../../assets/students.png",
-    _nombre:"Grupo B",
-    _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo B",
-    _id:2,
-  },
-  {
-    _foto:"../../../assets/students.png",
-    _nombre:"Grupo C",
-    _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo C",
-    _id:3,
-  },
-  {
-    _foto:"../../../assets/students.png",
-    _nombre:"Grupo B",
-    _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo B",
-    _id:4,
-  },
-  {
-    _foto:"../../../assets/students.png",
-    _nombre:"Grupo C",
-    _cuerpo:" Ingeniera en Sistemas Octavo semestre grupo C",
-    _id:5,
-  },
+  group =[
   
 ]
 
@@ -60,7 +34,8 @@ export class GroupComponent implements OnInit {
   constructor(
     private router: Router,
     private sessionService: SessionService,
-    private groupService:GroupService
+    private groupService:GroupService,
+    private dialog: MatDialog,
   ) { 
     
     this.session = this.sessionService._session;
@@ -93,6 +68,32 @@ export class GroupComponent implements OnInit {
 
   editGroup(group: any):void{
     this.router.navigate([ '/edit-group', group._id]);
+  }
+
+  deleteGroup(group: any):void{
+    console.log(group)
+    var message: MessageConfig = {
+      title: "Eliminar grupo ",
+      message: "El grupo se ha sido eliminado correctamente"
+    }
+    this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+  
+
+    /*this.groupService.delete(group._id).toPromise()
+    .then((res) => {
+      if (res) {
+       
+        var message: MessageConfig = {
+          title: "Eliminar grupo ",
+          message: "El grupo se ha sido eliminado correctamente"
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+      }
+
+    })
+    .catch((rej) =>{
+      console.log(rej)
+    })*/
   }
 
   /*formulario*/

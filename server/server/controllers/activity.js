@@ -1,5 +1,5 @@
 const {verify, admin, userid, teacher} = require('../middlewares/auth')
-const {create} = require('../config/functions')
+const {create, find} = require('../config/functions')
 
 const Activity = require('../models/activity')
 
@@ -34,6 +34,9 @@ let activity = {
         post: [ verify, admin, userid],
         put: [ verify, teacher ],
         delete: [ verify, admin ]
+    },
+    extra: app => {
+        app.get('/room/:id/activities', (req, res) => find(Activity, { room: req.params.id }, req, res))
     }
 }
 
