@@ -1,5 +1,5 @@
 const user = require('./user')
-const { create } = require('../config/functions')
+const { create, find } = require('../config/functions')
 const Student = require('../models/student')
 
 let student = {
@@ -31,17 +31,9 @@ let student = {
         'carrer'
     ],
     crud: true,
-    /*extra: app => {
-        app.put('/student/user/:id', (req, res) => {
-            let body = req.body
-            user.model.findOne( { $or:[ {contact:{email: body.email}}, {user_name:body.user_name} ] }, (err, found) => {
-                if(err) return errorHandler(err, res, 500)
-                if(!logged(body.password, found)) return errorHandler(badlogin, res)
-                token = jwt.sign( {user: found} , process.env.JWT_SEED, {expiresIn: 60 * 60 * 24 * 30})
-                return ok({ user: found, token }, res)
-            })
-        })
-    }*/
+    extra: app => {
+        // app.get('/students/school/:id', (req, res) => find(Student, { school: req.params.id }, res))
+    }
 }
 
 module.exports = student

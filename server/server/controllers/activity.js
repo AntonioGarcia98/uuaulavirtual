@@ -36,7 +36,7 @@ let activity = {
         delete: [ verify, admin ]
     },
     extra: app => {
-        app.get('/room/:id/activities', (req, res) => find(Activity, { room: req.params.id }, res))
+        app.get('/room/:id/activities', (req, res) => find(Activity, { room: req.params.id }, req, res))
     }
 }
 

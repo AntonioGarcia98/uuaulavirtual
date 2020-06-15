@@ -32,7 +32,7 @@ let room = {
         delete: [ verify, admin ]
     },
     extra: app => {
-        app.get('/rooms/group/:id', (req, res) => find(Room, { group: req.params.id }, res))
+        app.get('/rooms/group/:id', (req, res) => find(Room, { group: req.params.id }, req, res))
     }
 }
 

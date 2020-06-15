@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const {create, notFound, ok, find} = require('../config/functions')
 const User = require('../models/user')
 const db = require('../models/db')
+const mongoose = require('mongoose')
 
 const user = {
     name: '/user',
@@ -34,8 +35,17 @@ const user = {
     ],
     crud: true,
     extra: app => {
-        app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, res)),
-        app.get('/user/filter/teacher', (req, res) => find(User, { teacher:{ $exists: true} }, res))
+        app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, req, res)),
+        app.get('/user/filter/teacher', (req, res) => find(User, { teacher:{ $exists: true} }, req, res)),
+        app.get('/students/school/:id', (req, res) => {
+            User.find({ student:{ $exists: true} })
+                .populate({ path: 'student', match: { school: req.params.id } } )
+                .exec((err, items) => {
+                    if(err) return errorHandler(err, res)
+                    if(!items) return notFound(res)
+                    return ok(items.filter(item => item.student), res)
+                })
+        })
     }
 }
 
