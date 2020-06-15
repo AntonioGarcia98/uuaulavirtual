@@ -21,6 +21,7 @@ const routes: Routes = [
         CommonModule, 
         RouterModule.forChild(routes),
         MatCardModule,
+        MatIconModule,
         MatButtonModule,
         SithecSuiteModule,
         MatExpansionModule,

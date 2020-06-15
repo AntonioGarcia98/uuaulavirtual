@@ -2,7 +2,6 @@
     display: flex;
     height: 100%;
     flex-flow: column;
-    max-width: 700px;
 
     .all-container{
         overflow: unset;
@@ -11,9 +10,39 @@
         flex-flow: column;
     }
 
-    /* .close-button{
+    .activity-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .activity-info{
+        background-color: blueviolet;
+        border-radius: 10px;
+        padding: 15px;
+
+        .desc{
+            color: whitesmoke
+        }
+        .desc-title
+        {
+            color: white;
+        }
+        .desc-date{
+            margin-top: 20px;
+            color: whitesmoke;
+        }
+    }
+
+    .activity-actions{
+        margin: 10px 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .close-button{
         position: absolute;
         top: -20px;
         right: -20px;
-    } */
+    }
 }

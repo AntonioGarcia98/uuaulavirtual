@@ -13,11 +13,10 @@ import { MatTableModule } from '@angular/material/table';
     imports: [
         CommonModule,
         MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatTableModule
-
+        MatButtonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatTableModule
     ],
     exports: [ActivityComponent],
     providers: [],

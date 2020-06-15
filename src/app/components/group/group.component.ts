@@ -13,6 +13,7 @@ import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.
 import { Session } from 'protractor';
 import { SessionService } from 'src/app/services/session.service';
 import { GroupService } from 'src/app/services/group.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-group',
@@ -53,11 +54,16 @@ export class GroupComponent implements OnInit {
   },
   
 ]
+
+  session : Observable<any>
+
   constructor(
     private router: Router,
     private sessionService: SessionService,
     private groupService:GroupService
   ) { 
+    
+    this.session = this.sessionService._session;
   }
 
   ngOnInit(): void {

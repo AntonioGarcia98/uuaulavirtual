@@ -1,23 +1,16 @@
 <button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> 
-  <mat-icon>close</mat-icon> 
+  <mat-icon>close</mat-icon>
 </button>
 <div class="all-container">
-  <div class="mt-5" style="background-color:  #3f51b5;width: 100%;height: 200px;color: white;">
-    <div>
-      <h1 class="">{{title}} fsdf</h1>
-      {{autor}}
-    </div>
-    <div>
-
-    </div>
-    Descripcion de la actividad:
-    {{description}}
+  <div class="activity-header">
+    <h1 class="">{{title}} ({{points}} puntos)</h1><span> Publicada por {{autor}} </span>
   </div>
-  {{delivery_date}} : Puntos = {{points}}
-</div><!--  -->
-<!--
-<div style="display: flex; margin:  31px;">
-  <button mat-raised-button color="primary"(click)="fnNewClass()">
-    <mat-icon>add</mat-icon>Agregar nueva clase
-  </button>
-</div>-->
+  <div class="activity-info">
+    <h2 class="desc-title">Descripcion de la actividad</h2>
+    <span class="desc">{{description}}</span>
+    <h4 class="desc-date"><b>Fecha limite de entrega : {{delivery_date}}</b></h4>
+  </div>
+  <div class="activity-actions">
+    <button mat-raised-button color="primary">Agregar entrega</button>
+  </div>
+</div>
