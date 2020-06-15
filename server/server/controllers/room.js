@@ -13,7 +13,7 @@ let room = {
             students: body.students,
             teachers: body.teachers,
             user: body.user,
-            description = body.description
+            description: body.description
         })
         let res = null
         await newObj.save()
