@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
-import { Session } from 'inspector';
-import { SessionService } from 'src/app/services/session.service';
 import { GroupService } from 'src/app/services/group.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
@@ -26,29 +24,7 @@ import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.
 import { UserService } from 'src/app/services/user.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { group } from 'console';
 import { ClassService } from 'src/app/services/class.service';
-
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 @Component({
   selector: 'app-edit-group',
@@ -174,7 +150,8 @@ export class EditGroupComponent implements OnInit {
     private activateRouter: ActivatedRoute,
     private dialog: MatDialog,
     private userService: UserService,
-    private classService: ClassService
+    private classService: ClassService,
+    
   ) { }
   num_idEdit: string
   ngOnInit(): void {
@@ -183,6 +160,7 @@ export class EditGroupComponent implements OnInit {
     this.getGroupById()
     this.getUserStudents()
     this.getUserTeachers();
+    this.getClass()
     this.dataSource.sort = this.sort;
   }
 
@@ -226,7 +204,6 @@ export class EditGroupComponent implements OnInit {
   getUserStudents(): void {
     this.userService.getStudents().toPromise()
       .then((res:any) => {
-        console.log(res)
         this.arrayAuxStudent = res.item
         console.log('done');
 
@@ -240,7 +217,6 @@ export class EditGroupComponent implements OnInit {
   getUserTeachers(): void {
     this.userService.getTeachers().toPromise()
       .then((res:any) => {
-        console.log(res)
         this.arrayAuxTeacher = res.item
         console.log('done');
 
@@ -266,7 +242,6 @@ export class EditGroupComponent implements OnInit {
 
     this.groupService.update(this.num_idEdit, grouptoSend).toPromise()
       .then((res) => {
-        console.log(res)
         event.fnOffSpinner(true);
 
       })
@@ -330,7 +305,6 @@ export class EditGroupComponent implements OnInit {
       _last_name: "Apellido"
     },
   ]
-
 
 
 
@@ -440,18 +414,15 @@ export class EditGroupComponent implements OnInit {
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
      
-      console.log(event.data)
 
      let classToSend: any = event.data['new-class'];
      classToSend.user = this.data.user,
      classToSend.group =this.num_idEdit
-     console.log(classToSend)
       ref.close(1)
        this.classService.create(classToSend).toPromise()
          .then((res) => {
-           console.log(res)
-           console.log('done');
            ref.close(1)
+           this.getClass()
          })
          .catch((err) => {
            ref.close(-1)
@@ -470,14 +441,33 @@ export class EditGroupComponent implements OnInit {
             message: "Usuario y/o contraseña incorrecto(s)."
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        }else if(res && res == 1){
+          var message: MessageConfig = {
+            title: "Crear clase",
+            message: "La clase se ha creado correctamente"
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         }
       })
   }
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-
+  displayedColumns: string[] = ['position', 'name','symbol'];
+  dataSource = new MatTableDataSource();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  getClass():void{
+    this.classService.getAll().toPromise()
+    .then((res:any)=>{
+      this.dataSource = new MatTableDataSource(res.item);
+
+    })
+    .catch((rej)=>{
+      console.log(rej)
+    })
+  }
+
+  deleteClass(element):void{
+    console.log(element)
+  }
 
 
 

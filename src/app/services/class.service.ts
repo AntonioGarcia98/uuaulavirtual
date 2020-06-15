@@ -11,7 +11,7 @@ import { ClassModel } from '../components/class/class.model';
 export class ClassService extends ServiceBase<ClassModel> {
 
  
-  url : string = environment.server + 'class';
+  url : string = environment.server + 'room';
 
   constructor(
       protected http : HttpClient
