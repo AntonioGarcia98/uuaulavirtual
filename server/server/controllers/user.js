@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt')
 const {create, notFound, ok, find} = require('../config/functions')
 const User = require('../models/user')
 const db = require('../models/db')
-const mongoose = require('mongoose')
 
 const user = {
     name: '/user',
