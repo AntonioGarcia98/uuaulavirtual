@@ -3,6 +3,7 @@ import { ServiceBase } from './base.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ClassModel } from '../components/class/class.model';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -17,5 +18,12 @@ export class ClassService extends ServiceBase<ClassModel> {
       protected http : HttpClient
   ) { 
       super(ClassModel)
+  }
+
+
+  getClassByGroup(id: any) : Observable<any>
+  {
+    console.log("llegue",id)
+      return this.http.get(this.url + "s/group/"+id)
   }
 }

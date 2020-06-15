@@ -22,6 +22,9 @@ import { LoginRequest } from 'src/app/models/login-request.model';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
+import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
+import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 
 @Component({
   selector: 'app-new-group',
@@ -30,6 +33,15 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 })
 export class NewGroupComponent implements OnInit {
 
+
+
+  headersTable = [
+    {
+      _title: "Nombre",
+      _columName: "_nombre",
+      _filter: false
+    } as HeadersFormModel,
+  ]
 
   schoolsArraySelect: any[]
 
@@ -40,6 +52,7 @@ export class NewGroupComponent implements OnInit {
     private groupService: GroupService,
     private schoolService: SchoolService,
     private formService: SithecSuiteService,
+    private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +71,9 @@ export class NewGroupComponent implements OnInit {
     name: new FormControl(null, Validators.required),
     scholarship: new FormControl(null, Validators.required),
     grade: new FormControl(null, Validators.required),
-    school: new FormControl(null, Validators.required)
+    school: new FormControl(null, Validators.required),
+    urlArchivo: new FormControl(null)
+
 
   });
 
@@ -121,6 +136,53 @@ export class NewGroupComponent implements OnInit {
               } as S2SelectFormModel
             } as S2FormField
           } as S2FormGroupItemModel,
+          {
+            _config: {
+              _id: "boton",
+              _type: "button",
+              _button: {
+                _text: "Cargar archivo",
+                _class: "btn btn-primary",
+                _columns: {
+                  _xl: 12,
+                  _lg: 12,
+                  _md: 12,
+                  _sm: 12
+                }
+
+              } as S2ButtonFormModel
+            } as S2FormField
+          } as S2FormGroupItemModel,
+          {
+            _control: 'urlArchivo',
+            _config: {
+
+              _id: "table",
+              _type: "table",
+              _table: {
+                _enableFilters: true,
+                _label: "Comprobante pago",
+                _checkbox: false,
+                _checkboxHeader: false,
+                _collapse: false,
+                _primaryKey: '_URL',
+                _options: [],
+                _tableHeaders: this.headersTable,
+                _columns: this.inputColumns,
+                _iconsButtons: [
+                  {
+                    _id: "iconDelete",
+                    _icon: "fa fa-trash-o"
+                  },
+                  {
+                    _id: "iconPrevisualizacion",
+                    _icon: "fa fa-eye"
+                  }
+                ]
+
+              } as S2TableFormModel
+            } as S2FormField
+          } as S2FormGroupItemModel,
 
 
         ],
@@ -178,6 +240,68 @@ export class NewGroupComponent implements OnInit {
       .catch((err) => {
         event.fnOffSpinner(false);
       })
+  }  /*archivo*/
+
+  fnClickButton(event): void {
+    console.log(event)
+    if (event.id == "boton") {
+      this.fnUploadFile(event)
+    }
+
+  }
+
+
+
+
+  file: File;
+  fileSend: any[] = [];
+  formData: FormData = new FormData();
+  filesArraytoSend: File[] = [];
+  formDataFiles = new FormData();
+
+  fnUploadFile(event): void {
+    let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
+    var input = document.createElement("input");
+    input.type = 'file';
+    input.accept = '.pdf,.jpg,.png,.jpeg',
+      input.multiple = true
+    input.onchange = (event: any) => {
+      this.formData = new FormData()
+      /*un archivo*/
+      /* let input = event.path[0];
+       this.file = input.files[0]
+       let selectedFiles = (event.target || event.srcElement).files;*/
+      /*multiples archivos*/
+
+
+      let selectedFiles = (event.target || event.srcElement).files;
+      Object.keys(selectedFiles).forEach(data => {
+       
+        let aux = {
+          _nombre: selectedFiles[data].name
+        }
+
+        this.fileSend.push(aux)
+        tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+        this.filesArraytoSend.push((selectedFiles)[data])
+
+      })
+    
+     
+    };
+    input.click()
+
+    event.fnOffSpinner(true);
+  }
+
+
+
+  fnCreateFormDataFiles(): void {
+    let i: number = 0;
+    this.filesArraytoSend.forEach(res => {
+      this.formDataFiles.append("file", res, res.name)
+      i++;
+    })
   }
 
 
