@@ -16,7 +16,6 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Authorization headers only for API urls.
-        console.log("hola")
         if (req.url.includes('/')) {
 
             // Set JSON headers.
@@ -41,7 +40,6 @@ export class HttpInterceptorService implements HttpInterceptor {
                         'Authorization': token,
                     },
                 });
-                console.log("se pouse")
             }
         }
 
