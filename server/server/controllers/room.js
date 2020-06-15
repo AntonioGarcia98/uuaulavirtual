@@ -12,7 +12,8 @@ let room = {
             group: body.group,
             students: body.students,
             teachers: body.teachers,
-            user: body.user
+            user: body.user,
+            description: body.description
         })
         let res = null
         await newObj.save()
@@ -23,7 +24,8 @@ let room = {
     updateParams:[
         'name',
         'students',
-        'teachers'
+        'teachers',
+        'description'
     ],
     crud: true,
     middlewares: {
@@ -32,7 +34,7 @@ let room = {
         delete: [ verify, admin ]
     },
     extra: app => {
-        app.get('/rooms/group/:id', (req, res) => find(Room, { group: req.params.id }, res))
+        app.get('/rooms/group/:id', (req, res) => find(Room, { group: req.params.id }, req, res))
     }
 }
 
