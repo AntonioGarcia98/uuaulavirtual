@@ -23,6 +23,7 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
 import { TeacherService } from './services/teacher.service';
 import { StudentService } from './services/student.service';
 import { SchoolService } from './services/school.service';
+import { ClassParticipantsComponent } from './components/class-participants/class-participants.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { SchoolService } from './services/school.service';
     AppComponent,/* Se declararán solo modulos compartidos de forma global*/
     NavbarComponent,
     FormDialogComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ClassParticipantsComponent
   ],
   imports: [
     BrowserModule,
