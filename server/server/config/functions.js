@@ -20,12 +20,13 @@ const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
         return ok(edited, res)
     })
 
-const find = (model, condition, req, res) => {
+const find = (model, condition, req, res, select = '') => {
     let page = Number(req.query.page || 1)
     let limit = Number(req.query.limit || 5)
     model.find(condition)
         .skip((page-1) * limit)
         .limit(limit)
+        .select(select)
         .exec((err, items) => {
             if(err) return errorHandler(err, res)
             if(!items || !items.length) return notFound(res)
