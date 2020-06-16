@@ -12,16 +12,10 @@ import { S2SelectFormModel } from 'src/app/form-component/models/s2-select-form.
 import { SessionService } from 'src/app/services/session.service';
 import { GroupService } from 'src/app/services/group.service';
 import { SchoolService } from 'src/app/services/school.service';
-import { School } from 'src/app/models/school.model';
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { SelectComponent } from 'src/app/form-component/controls/form-generator/form-fields/select/select.component';
 import { Session } from 'protractor';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SithecConfig } from '../form-dialog/sithec.config.model';
-import { LoginRequest } from 'src/app/models/login-request.model';
-import { FormDialogComponent } from '../form-dialog/form-dialog.component';
-import { MessageConfig } from '../message-dialog/message-dialog.model';
-import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+
 import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
 import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';

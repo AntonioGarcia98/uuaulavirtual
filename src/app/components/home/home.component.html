@@ -63,36 +63,26 @@
 
                     </div>
                     <!--/.Card-->
-
+                    <ng-container  *ngFor="let group of text">
                     <!--Card-->
-                    <div class="card mb-4 wow fadeIn">
+                    <div class="card mb-4 wow fadeIn"  >
 
                         <!--Contenido cartas post-->
                         <div class="card-body">
 
-                            <p class="h5 my-4">Titulo </p>
+                            <p class="h5 my-4">{{group.title}} </p>
 
 
                             <blockquote class="blockquote">
-                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                <p class="mb-0">{{group.description}}</p>
                                 <footer class="blockquote-footer">Someone famous in
-                                    <cite title="Source Title"> Subtitulo</cite>
+                                    
                                 </footer>
                             </blockquote>
 
-                            <p class="h5 my-4">Titulo </p>
+                            <p class="h5 my-4">{{group.title}} </p>
 
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                                ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                                consequuntur maiores sed eligendi.</p>
-
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                                ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                                consequuntur maiores sed eligendi.</p>
-
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis
-                                ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,
-                                consequuntur maiores sed eligendi.</p>
+                            <p>{{group.text}}</p>
 
                         </div>
 
@@ -102,19 +92,18 @@
           
                     <!--Commentarios-->
                     <div class="card card-comments mb-3 wow fadeIn">
-                        <div class="card-header font-weight-bold">2 comentarios</div>
+                        <div class="card-header font-weight-bold">2</div>
                         <div class="card-body">
 
-                            <div class="media d-block d-md-flex mt-4">
+                            <div class="media d-block d-md-flex mt-4"  *ngFor="let post of group.comments">
                                 <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg" alt="Generic placeholder image">
                                 <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                    <h5 class="mt-0 font-weight-bold">Mirna Perez
+                                    <h5 class="mt-0 font-weight-bold">{{post.person}}
                                         <a href="" class="pull-right">
                                             <i class="fas fa-reply"></i>
                                         </a>
                                     </h5>
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  {{post.comment}}
 
                                   
 
@@ -125,31 +114,19 @@
                                
                                 </div>
                             </div>
-                            <div class="media d-block d-md-flex mt-3">
-                                <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg" alt="Generic placeholder image">
-                                <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                    <h5 class="mt-0 font-weight-bold">Maria Ruiz
-                                        <a href="" class="pull-right">
-                                            <i class="fas fa-reply"></i>
-                                        </a>
-                                    </h5>
-                                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti
-                                    quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
-                                    similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
-                                    fuga.
-                                </div>
-                            </div>
+           
                             <div class="form-group mt-4">
                                 <label for="quickReplyFormComment">Comentario</label>
-                                <textarea class="form-control" id="quickReplyFormComment" rows="5"></textarea>
+                                <textarea class="form-control" id="quickReplyFormComment" rows="5"  #titleInput></textarea>
 
                                 <div class="text-center">
-                                    <button class="btn btn-info btn-sm" type="submit">Post</button>
+                                    <button class="btn btn-info btn-sm" (click)="addComment(titleInput.value)">Post</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
+                    </ng-container>
              
 
          
