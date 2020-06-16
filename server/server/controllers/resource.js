@@ -14,7 +14,7 @@ let resource = {
         }
         let body = req.body
         let newObj = create(Resource, {
-            file: body.file,
+            file: file.filename,
             description: body.description,
             user: body.user
         })
@@ -29,7 +29,7 @@ let resource = {
     ],
     crud: true,
     middlewares: {
-        post: [ verify, upload.single('myFile') ],
+        post: [ verify, /*userid,*/ upload.single('myFile') ],
         put: [ verify, owner ],
         delete: [ verify, owner ]
     }
