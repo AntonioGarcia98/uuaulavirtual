@@ -812,7 +812,7 @@ export class AppComponent implements OnInit {
 
       newUser.contact = event.data['contact-credentials']
 
-      if (userType == 1)//Usuario alumno
+      /* if (userType == 1)//Usuario alumno
       {
         this.studentService.create(newUser).toPromise()
           .then((res) => {
@@ -830,7 +830,7 @@ export class AppComponent implements OnInit {
           .catch((err) => {
             ref.close(-1)
           })
-      }
+      } */
 
     }
 
