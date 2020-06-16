@@ -5,7 +5,8 @@ const Teacher = require('../models/teacher')
 const teacher = {
     name: '/teacher', 
     model: Teacher,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newt = create(Teacher, {
             title: body.teacher.title,
             professional_number: body.teacher.professional_number,
@@ -15,7 +16,7 @@ const teacher = {
         let res = null
         await newt.save().then( async item => { 
             body.teacher = item._id; 
-            let newu = await user.create(body) 
+            let newu = await user.create(req) 
             await newu.save().then(u => {
                 res = u
             }).catch(async err => { await Teacher.findByIdAndRemove(item._id); throw err})

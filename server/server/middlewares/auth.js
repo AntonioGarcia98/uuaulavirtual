@@ -12,6 +12,10 @@ const noauth = (req, res, next) => {
     next()
 }
 
+const denied = (req, res, next) => {
+    return errorHandler(error, res, 401)
+}
+
 const verify = (req, res, next) => {
     let token = getToken(req)
     jwt.verify( token, process.env.JWT_SEED, (err, dec) => {
@@ -97,4 +101,4 @@ const personalTeacher = (req, res, next) => {
     })
 }
 
-module.exports = { userid, verify, noauth, admin, personalUser, personalStudent, personalTeacher, teacher, owner}
+module.exports = { userid, verify, noauth, admin, personalUser, personalStudent, personalTeacher, teacher, owner, denied}

@@ -6,7 +6,8 @@ const Group = require('../models/group')
 let group = { 
     name: '/group', 
     model: Group,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newObj = create(Group, {
             name: body.name,
             scholarship: body.scholarship,

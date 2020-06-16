@@ -6,7 +6,8 @@ const Room = require('../models/room')
 let room = { 
     name: '/room', 
     model: Room,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newObj = create(Room, {
             name: body.name,
             group: body.group,

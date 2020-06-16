@@ -5,7 +5,8 @@ const Student = require('../models/student')
 let student = {
     name: '/student',
     model: Student,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newst = create(Student, {
             scholarship: body.student.scholarship,
             grade: body.student.grade,
@@ -16,7 +17,7 @@ let student = {
         let res = null
         await newst.save().then( async item => { 
             body.student = item._id; 
-            let newu = await user.create(body) 
+            let newu = await user.create(req) 
             await newu.save().then(async u => {
                 res = u
             }).catch(async err => { await Student.findByIdAndRemove(item._id); throw err})
