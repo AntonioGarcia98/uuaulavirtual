@@ -163,7 +163,7 @@ export class EditGroupComponent implements OnInit {
     this.getGroupById()
     this.getUserStudents()
     this.getUserTeachers();
-    this.getClass()
+    this.getClassByGroup()
     this.dataSource.sort = this.sort;
   }
 
@@ -425,7 +425,7 @@ export class EditGroupComponent implements OnInit {
        this.classService.create(classToSend).toPromise()
          .then((res) => {
            ref.close(1)
-           this.getClass()
+           this.getClassByGroup()
          })
          .catch((err) => {
            ref.close(-1)
@@ -454,8 +454,8 @@ export class EditGroupComponent implements OnInit {
       })
   }
 
-  getClass():void{
-    this.classService.getAll().toPromise()
+  getClassByGroup():void{
+    this.classService.getClassByGroup(this.num_idEdit).toPromise()
     .then((res:any)=>{
       this.dataSource = new MatTableDataSource(res.item);
 
@@ -477,7 +477,7 @@ export class EditGroupComponent implements OnInit {
           message: "La clase se ha sido eliminado correctamente"
         }
         this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
-        this.getClass()
+        this.getClassByGroup()
       }
 
     })

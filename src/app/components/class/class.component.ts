@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ClassService } from 'src/app/services/class.service';
 
 @Component({
@@ -10,27 +10,16 @@ import { ClassService } from 'src/app/services/class.service';
 export class ClassComponent implements OnInit {
 
   
-  classArray =[{
-    _foto:"https://img.icons8.com/plasticine/2x/classroom.png",
-    name:"Matematicas",
-    _cuerpo:" Impartida por Juna en el semestre mayo-junio",
-    _id:1,
-  },
-  {
-    _foto:"../../../assets/students.png",
-    name:"Bases de Datos Distribuidas",
-    _cuerpo:" Impartida por Maria en el semestre mayo-junio",
-    _id:2,
-  },
-  
-]
+  classArray =[]
   constructor(
     private router: Router,
-    private classService:ClassService
+    private classService:ClassService,
+    private activateRouter: ActivatedRoute,
   ) { }
-
+  idGroup:string
   ngOnInit(): void {
-    this.getClass()
+    this.idGroup = this.activateRouter.snapshot.params.id;
+    this.getClassByGroup()
   }
 
   seleccionClase(clase: any){
@@ -38,8 +27,10 @@ export class ClassComponent implements OnInit {
    this.router.navigate([ '/course', clase._id  ]);
   }
 
-  getClass():void{
-    this.classService.getAll().toPromise()
+ 
+
+  getClassByGroup():void{
+    this.classService.getClassByGroup(this.idGroup).toPromise()
     .then((res:any)=>{
       console.log(res)
      this.classArray = res.item

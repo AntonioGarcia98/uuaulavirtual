@@ -15,8 +15,34 @@
         
       
              <p>
-          {{class.name}}
+               Impartida por:
+               {{
+                class?
+                class.teachers[0]?
+                class.teachers[0]?.name:''
+                    :''
+            }}
+            {{
+              class?
+              class.teachers[0]?
+              class.teachers[0]?.last_name:''
+                  :''
+          }}
+               
+      
+        
           </p>
+          
+          <p>
+            Numero de estudiantes inscritos:
+            {{
+            
+             class.students.length
+         }}
+            
+   
+     
+       </p>
         </mat-card-content>
         <mat-card-actions>
         </mat-card-actions>

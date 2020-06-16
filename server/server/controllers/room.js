@@ -12,7 +12,8 @@ let room = {
             group: body.group,
             students: body.students,
             teachers: body.teachers,
-            user: body.user
+            user: body.user,
+            description: body.description
         })
         let res = null
         await newObj.save()
@@ -23,7 +24,8 @@ let room = {
     updateParams:[
         'name',
         'students',
-        'teachers'
+        'teachers',
+        'description'
     ],
     crud: true,
     middlewares: {

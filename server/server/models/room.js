@@ -26,7 +26,8 @@ let roomSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'el creador es necesario']
-    }
+    },
+    description: String
 })
 
 let pre = ['find', 'findOne']
