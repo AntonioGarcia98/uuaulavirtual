@@ -11,7 +11,7 @@ import { S2SettingsFormGeneratorModel } from './form-component/models/s2-setting
 import { SithecConfig } from './components/form-dialog/sithec.config.model';
 import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
 import { SessionService } from './services/session.service';
-import { Student, Teacher } from './models/user.model';
+import { Student, Teacher, User } from './models/user.model';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 import { MessageConfig } from './components/message-dialog/message-dialog.model';
 import { LoginRequest } from './models/login-request.model';
@@ -57,8 +57,7 @@ export class AppComponent implements OnInit {
   ) {
     this.session = this.sessionService._session;
 
-    this.user = this.sessionService.getSession()
-    console.log(this.user)
+    this.user = this.sessionService.getSession()?.user
   }
 
   ngOnInit() {
@@ -502,6 +501,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.sessionService.logout()
+    location.reload()
   }
 
   edit() {
@@ -512,13 +512,13 @@ export class AppComponent implements OnInit {
     var userType = (this.user.student) ? 1 : 2;
 
     var formGroup_editUser: FormGroup = new FormGroup({
+      _id: new FormControl(null, Validators.required), 
       user_name: new FormControl(null, Validators.required),
       name: new FormControl(null, Validators.required),
       last_name: new FormControl(null, Validators.required),
       birthdate: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.email),
       /* phone_number : new FormControl(null, []), */
-      password: new FormControl(null, [Validators.required]),
       userType: new FormControl(null, []),
 
       //estudiante
@@ -534,13 +534,13 @@ export class AppComponent implements OnInit {
 
 
     formGroup_editUser.setValue({
+      _id: this.user._id,
       user_name: this.user.user_name,
       name: this.user.name,
       last_name: this.user.last_name,
-      birthdate: this.user.birthdate,
-      email: this.user.email,
+      birthdate: this.user.birthdate.split('T')[0],
+      email: this.user.contact.email,
       /* phone_number : new FormControl(null, []), */
-      password: this.user.password,
 
       userType: (this.user.student) ? 1 : 2,
 
@@ -550,7 +550,7 @@ export class AppComponent implements OnInit {
       school: (this.user.student) ? this.user.student.school : null,
 
       //maestro
-      title: (this.user.teacher) ? this.user.teacher.grade : null,
+      title: (this.user.teacher) ? this.user.teacher.title : null,
       professional_number: (this.user.teacher) ? this.user.teacher.professional_number : null
     })
 
@@ -564,6 +564,19 @@ export class AppComponent implements OnInit {
             _nameAs: 'user-credentials',
             _title: 'Información personal',
             _items: [
+              {
+                _control: '_id',
+                _config: {
+                  _id: '_id',
+                  _type: 'number',
+                  _hide : true,
+                  _input: {
+                    _label: '',
+                    _placeholder: '',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
               {
                 _control: 'user_name',
                 _config: {
@@ -612,7 +625,7 @@ export class AppComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
-              {
+              /* {
                 _control: 'password',
                 _config: {
                   _id: 'password',
@@ -623,7 +636,7 @@ export class AppComponent implements OnInit {
                     _columns: inputColumns
                   } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,
+              } as S2FormGroupItemModel, */
               {
                 _control: "userType",
                 _config: {
@@ -644,7 +657,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: "school",
                   _type: "select",
-                  _hide: (this.user.student) ? true : false,
+                  _hide: (this.user.student) ? false : true,
                   _select: {
                     _options: this.schools,
                     _optionKey: 'name',
@@ -659,7 +672,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: 'scholarship',
                   _type: 'text',
-                  _hide: (this.user.student) ? true : false,
+                  _hide: (this.user.student) ? false : true,
                   _input: {
                     _label: 'Escolaridad',
                     _placeholder: 'Ingresa la escolaridad',
@@ -672,7 +685,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: 'grade',
                   _type: 'text',
-                  _hide: (this.user.student) ? true : false,
+                  _hide: (this.user.student) ? false : true,
                   _input: {
                     _label: 'Grado',
                     _placeholder: 'Ingresa el grado',
@@ -684,7 +697,7 @@ export class AppComponent implements OnInit {
                 _control: 'title',
                 _config: {
                   _id: 'title',
-                  _hide: (this.user.teacher) ? true : false,
+                  _hide: (this.user.teacher) ? false : true,
                   _type: 'text',
                   _input: {
                     _label: 'Titulo academico',
@@ -698,7 +711,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: 'professional_number',
                   _type: 'text',
-                  _hide: (this.user.teacher) ? true : false,
+                  _hide: (this.user.teacher) ? false : true,
                   _input: {
                     _label: 'Cedula Profesional',
                     _placeholder: 'Ingresa su cedula profesional',
@@ -750,9 +763,14 @@ export class AppComponent implements OnInit {
     config.tool = 'form-generator';
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => { //Los servicios no funcionan cuando se define la función y se asigna al objeto
       var userType: number = event.data['user-credentials'].userType;
-      var newUser: any = {};
+      var newUser: User = new User();
 
-      if (userType == 1)//Usuario alumno
+      Object.keys(newUser).map(k => {
+        var value = event.data['user-credentials'][k] || null;
+        newUser[k] = value;
+      })
+
+      /* if (userType == 1)//Usuario alumno
       {
         var auxUser: Student = new Student();
         Object.keys(auxUser).map(k => {
@@ -790,7 +808,7 @@ export class AppComponent implements OnInit {
 
 
         newUser = JSON.parse(JSON.stringify(auxTeacher));
-      }
+      } */
 
       newUser.contact = event.data['contact-credentials']
 
@@ -817,8 +835,8 @@ export class AppComponent implements OnInit {
     }
 
     config.fnOnChange = this.fnOnChange;
-    config.title = "Crear cuenta"
-    config.message = "Registrate en el mejor sistema academico!"
+    config.title = "Editar cuenta"
+    config.message = ""
 
 
 

@@ -26,13 +26,15 @@
         <!-- <span class="menu-spacer"></span> -->
         <div class="nav-buttons">
           <ng-container *ngIf="!( session | async )">
-          <button mat-button (click)="login()">Iniciar Sesión</button>
-          <button mat-button (click)="createAccount()"> Crear cuenta </button>
+            <button mat-button (click)="login()">Iniciar Sesión</button>
+            <button mat-button (click)="createAccount()"> Crear cuenta </button>
           </ng-container>
-        
-          <!-- {{( session | async )?.user.name}} -->
-          <button mat-button (click)="edit()"> Editar perfil </button>
-        <button mat-button [routerLink]="['/group']"> Grupos </button>
+          <ng-container *ngIf="( session | async )">
+            <button mat-button (click)="logout()"> Cerrar sesión </button>
+            <button mat-button (click)="edit()"> Editar perfil </button>
+            <button mat-button [routerLink]="['/group']"> Grupos </button>
+          </ng-container>
+          
         </div>
     </mat-toolbar>
       <router-outlet></router-outlet>
