@@ -11,7 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivityComponent } from '../activity/activity.component';
-
+import {MatListModule} from '@angular/material/list';
 const routes: Routes = [
     { path: '', component: CourseComponent }
 ];
@@ -26,7 +26,8 @@ const routes: Routes = [
         SithecSuiteModule,
         MatExpansionModule,
         MatDialogModule,
-        MatIconModule
+        MatIconModule,
+        MatListModule
     ],
     exports: [RouterModule],
     declarations: [CourseComponent,ActivityComponent],

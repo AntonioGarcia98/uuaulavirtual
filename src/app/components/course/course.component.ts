@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivityComponent } from '../activity/activity.component';
+import { ClassService } from 'src/app/services/class.service';
+import { ClassParticipantsComponent } from '../class-participants/class-participants.component';
 
 @Component({
   selector: 'app-course',
@@ -42,17 +44,40 @@ export class CourseComponent implements OnInit {
   
   @ViewChild('activities') activities: MatAccordion;
 
-
+  string_idClass: string
+  clasObj:any
   constructor(
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private activateRouter: ActivatedRoute,
+    private classService:ClassService,
   ) { }
 
   ngOnInit(): void {
+    this.string_idClass = this.activateRouter.snapshot.params.id;
+    this.getClassById()
   }
 
 
+  
+  getClassById():void{
+    this.classService.get(this.string_idClass).toPromise()
+    .then((res:any)=>{
+      console.log(res)
+      this.clasObj = res.item
+
+    })
+    .catch((rej)=>{
+      console.log(rej)
+    })
+  }
+
   showActivity(activity: any) {
     this.dialog.open(ActivityComponent, {data : activity, panelClass: "dialog-fuchi", width: "800px"})
+  }
+
+  
+  showParticipants() {
+    this.dialog.open(ClassParticipantsComponent, {data : this.clasObj, panelClass: "dialog-fuchi", width: "800px"})
   }
 }

@@ -345,7 +345,7 @@ export class AppComponent implements OnInit {
             ref.close(1)
           })
           .catch((err) => {
-            ref.close(-1)
+            ref.close({info:-1,error:err})
           })
 
       } else {//Usuario maestro
@@ -354,7 +354,7 @@ export class AppComponent implements OnInit {
             ref.close(1)
           })
           .catch((err) => {
-            ref.close(-1)
+            ref.close({info:-1,error:err})
           })
       }
 
@@ -370,16 +370,17 @@ export class AppComponent implements OnInit {
       .toPromise()
       .then((res) => {
         if (res) {
-          if (res == 1) {
+          if (res.info == 1) {
+
             var message: MessageConfig = {
               title: "Crear usuario",
               message: "Usuario creado correctamente."
             }
             this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
-          } else if (res == -1) {
+          } else if (res.info == -1) {
             var message: MessageConfig = {
               title: "Crear usuario",
-              message: "Ocurrio un error al tratar de crear el usuario."
+              message: res.error.error.error.message
             }
             this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
           }
@@ -531,7 +532,7 @@ export class AppComponent implements OnInit {
       professional_number: new FormControl(null)
 
     });
-
+    console.log(this.user)
 
     formGroup_editUser.setValue({
       _id: this.user._id,
@@ -812,7 +813,7 @@ export class AppComponent implements OnInit {
 
       newUser.contact = event.data['contact-credentials']
 
-      if (userType == 1)//Usuario alumno
+      /* if (userType == 1)//Usuario alumno
       {
         this.studentService.create(newUser).toPromise()
           .then((res) => {
@@ -830,7 +831,7 @@ export class AppComponent implements OnInit {
           .catch((err) => {
             ref.close(-1)
           })
-      }
+      } */
 
     }
 

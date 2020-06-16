@@ -24,6 +24,7 @@ import { UserService } from 'src/app/services/user.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ClassService } from 'src/app/services/class.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-group',
@@ -33,7 +34,12 @@ import { ClassService } from 'src/app/services/class.service';
 export class EditGroupComponent implements OnInit {
 
   schoolsArraySelect: any[]
-
+  $notificaciones: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  _notificaciones: Observable<any[]> = this.$notificaciones.asObservable();
+  $teachersObs: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  _teacherObs: Observable<any[]> = this.$teachersObs.asObservable();
+  $studentsObs: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  _studentsObs: Observable<any[]> = this.$studentsObs.asObservable();
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
   data: any
   
@@ -119,7 +125,7 @@ export class EditGroupComponent implements OnInit {
               _id: "School",
               _type: "select",
               _select: {
-                _options: [],
+                _options: this.$notificaciones,
                 _optionKey: 'name',
                 _valueKey: '_id',
                 _label: 'Escuela',
@@ -164,7 +170,6 @@ export class EditGroupComponent implements OnInit {
     this.getUserStudents()
     this.getUserTeachers();
     this.getClassByGroup()
-    this.dataSource.sort = this.sort;
   }
 
 
@@ -193,21 +198,26 @@ export class EditGroupComponent implements OnInit {
     }
 
   }
+ 
   getSchools(): void {
     this.schoolService.getAll().toPromise()
       .then((res: any) => {
         this.schoolsArraySelect = res.item;
-        this.fnPutData()
+        this.$notificaciones.next(res.item);
+       // this.fnPutData()
       })
       .catch((rej) => {
         console.log(rej)
       })
   }
 
+
+
   getUserStudents(): void {
     this.userService.getStudents().toPromise()
       .then((res:any) => {
-        this.arrayAuxStudent = res.item
+        this.$studentsObs.next(res.item)
+       // this.arrayAuxStudent = res.item
         console.log('done');
 
       })
@@ -220,7 +230,8 @@ export class EditGroupComponent implements OnInit {
   getUserTeachers(): void {
     this.userService.getTeachers().toPromise()
       .then((res:any) => {
-        this.arrayAuxTeacher = res.item
+        this.$teachersObs.next(res.item)
+       // this.arrayAuxTeacher = res.item
         console.log('done');
 
       })
@@ -318,8 +329,10 @@ export class EditGroupComponent implements OnInit {
 
     var formGroup_newClass: FormGroup = new FormGroup({
       name: new FormControl(null, Validators.required),
+      description: new FormControl(null),
       teachers: new FormControl(null, Validators.required),
       students: new FormControl(null, Validators.required),
+      school: new FormControl(null, Validators.required),
       user: new FormControl(null),
       group: new FormControl(null)
     });
@@ -361,6 +374,33 @@ export class EditGroupComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: 'description',
+                _config: {
+                  _id: 'description',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Descripcion',
+                    _placeholder: 'Ingresa una descripcion',
+                    _columns: this.inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: "school",
+                _config: {
+                  _id: "School",
+                  _type: "select",
+                  _select: {
+                    _options: this.$notificaciones,
+                    _optionKey: 'name',
+                    _valueKey: '_id',
+                    _label: 'Filtro escuela',
+                    _columns: this.inputColumns
+    
+                  } as S2SelectFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
 
               {
                 _control: 'teachers',
@@ -370,11 +410,11 @@ export class EditGroupComponent implements OnInit {
                   _table: {
                     _enableFilters: true,
                     _checkbox: true,
-                    _checkboxHeader: false,
+                    _checkboxHeader: true,
                     _label: "Profesores",
                     _limit: 1,
                     _primaryKey: '_id',
-                    _options: this.arrayAuxTeacher,
+                    _options: this._teacherObs,
                     _tableHeaders: this.headersTable,
                     _columns: this.inputColumns,
 
@@ -394,7 +434,7 @@ export class EditGroupComponent implements OnInit {
                     _label: "Alumnos",
                     //_limit: 1,
                     _primaryKey: '_id',
-                    _options: this.arrayAuxStudent,
+                    _options: this._studentsObs,
                     _tableHeaders: this.headersTable,
                     _columns: this.inputColumns,
 
@@ -414,7 +454,14 @@ export class EditGroupComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
+    config.fnOnChange=(event) =>{
+      if(event.id =="School"){
+        let idSchool: string = event.event.target.value
 
+        this.getUserStudentsByIdSchool(idSchool)
+        this.getUserTeachersByIdSchool(idSchool)
+      }
+    }
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
      
 
@@ -485,6 +532,37 @@ export class EditGroupComponent implements OnInit {
       console.log(rej)
     })
 
+  }
+
+
+
+
+
+  getUserStudentsByIdSchool(id:any): void {
+    this.userService.getStudentsByIdSchool(id).toPromise()
+      .then((res:any) => {
+        this.$studentsObs.next(res.item)
+       // this.arrayAuxStudent = res.item
+        console.log('done');
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+   
+  getUserTeachersByIdSchool(id:any): void {
+    this.userService.getTeachersByIdSchool(id).toPromise()
+      .then((res:any) => {
+        this.$teachersObs.next(res.item)
+       // this.arrayAuxTeacher = res.item
+        console.log('done');
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
 
