@@ -5,15 +5,16 @@
       <mat-expansion-panel-header class="course-panel" [collapsedHeight]="'200px'" [expandedHeight]="'300px'">
         <mat-panel-title>
           <div class="course-title">
-            <span>Curso</span>
-            <span>Ingenieria en Sistemas Computacionales</span>
+            <span>Clase</span>
+            <span>{{ this.clasObj?this.clasObj.name?this.clasObj.name:"":""}}</span>
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
 
-      <p class="m-3">Descripcion del curso: loremlipsum </p>
+      <p class="m-3">Descripcion del clase: loremlipsum </p>
       <div class="extra-buttons">
+        <button mat-raised-button color="primary" (click)="showParticipants()">Ver participantes de la clase</button>
         <button mat-raised-button color="primary" (click)="activities.openAll()">Ver todas las actividades</button>
         <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar todas las actividades</button>
       </div>

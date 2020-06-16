@@ -25,5 +25,15 @@ export class UserService extends ServiceBase<User> {
     {
         return this.http.get(this.url + "/filter/teacher")
     }
+
+    getStudentsByIdSchool(id:any)
+    {
+        return this.http.get(environment.server + 'students/school/'+id)
+    }
+
+    getTeachersByIdSchool(id:any) : Observable<any>
+    {
+        return this.http.get(environment.server + 'teachers/school/'+id)
+    }
     
 }
