@@ -24,11 +24,8 @@ routes
         app.get(route.name, route.middlewares.get, (req, res) => 
             find(route.model, {}, req, res))
 
-        app.get(route.name+'/:id', route.middlewares.get, (req, res) => {
-            req.query.limit = 1
-            req.query.page = 1
-            return find(route.model, {_id: req.params.id}, req, res)
-        })
+        app.get(route.name+'/:id', route.middlewares.get, (req, res) => 
+            find(route.model, {_id: req.params.id}, req, res))
             
         app.post(route.name, route.middlewares.post, (req, res) => route.create(req)
             .then((newItem) => ok(newItem, res))

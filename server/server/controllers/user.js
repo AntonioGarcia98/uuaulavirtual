@@ -43,11 +43,7 @@ const user = {
         app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, req, res)),
         app.get('/user/filter/teacher', (req, res) => find(User, { teacher:{ $exists: true} }, req, res)),
         app.get('/students/school/:id', (req, res) => {
-            let page = Number(req.query.page || 1)
-            let limit = Number(req.query.limit || 5)
-            User.find({ student:{ $exists: true} })
-                .skip((page-1) * limit)
-                .limit(limit)
+            find(User, { student:{ $exists: true} }, req)
                 .exec((err, items) => {
                     if(err) return errorHandler(err, res)
                     if(!items) return notFound(res)
@@ -57,11 +53,7 @@ const user = {
                 })
         }),
         app.get('/teachers/school/:id', (req, res) => {
-            let page = Number(req.query.page || 1)
-            let limit = Number(req.query.limit || 5)
-            User.find({ teacher:{ $exists: true} })
-                .skip((page-1) * limit)
-                .limit(limit)
+            find(User, { teacher:{ $exists: true} }, req)
                 .exec((err, items) => {
                     if(err) return errorHandler(err, res)
                     if(!items) return notFound(res)

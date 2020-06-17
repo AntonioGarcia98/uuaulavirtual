@@ -11,27 +11,30 @@ const populate = (path, model) =>  { return { path, model } }
 const populatePost = (s, to, p) => s.post(to, (d, n) => d.populate(p).execPopulate().then(() => n()))
 const populatePre = (s, to, p) => s.pre(to, function() { this.populate(p) })
 
+const isArray = (a) => (!!a) && (a.constructor === Array)
+
+const defaultRes = (err, items, res) => {
+    if(err) return errorHandler(err, res)
+    if(!items) return notFound(res)
+    if(isArray(items)){
+        if(!items.length) return notFound(res)
+        items = (items.length > 1) ? items : items[0]
+    } 
+    return ok(items, res)
+}
+
 const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
     _.pick(body, params),
     { new : true, runValidators: true, context: 'query' }, 
-    (err, edited) => {
-        if(err) return errorHandler(err, res)
-        if(!edited) return notFound(res)
-        return ok(edited, res)
-    })
+    (err, edited) => defaultRes(err, edited, res))
 
-const find = (model, condition, req, res, select = '') => {
+const find = (model, condition, req, res = null) => {
     let page = Number(req.query.page || 1)
     let limit = Number(req.query.limit || 5)
-    model.find(condition)
+    let found = model.find(condition)
         .skip((page-1) * limit)
         .limit(limit)
-        .select(select)
-        .exec((err, items) => {
-            if(err) return errorHandler(err, res)
-            if(!items || !items.length) return notFound(res)
-            return (limit > 1)? ok(items, res) : ok(items[0], res)
-        })
+    return (res) ? found.exec((err, items) => defaultRes(err, items, res)) :found
 }
 
 const matched = x => ({
@@ -55,5 +58,6 @@ module.exports = {
     populatePre,
     update,
     find,
-    match
+    match,
+    defaultRes
 }
