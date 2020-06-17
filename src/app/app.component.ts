@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { S2BootstrapColumnsModel } from './form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -22,6 +22,9 @@ import { SchoolService } from './services/school.service';
 import { SelectComponent } from './form-component/controls/form-generator/form-fields/select/select.component';
 import { SithecSuiteService } from './form-component/sithec-suite.service';
 import { Observable } from 'rxjs';
+import { UserService } from './services/user.service';
+import { async } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -46,22 +49,42 @@ export class AppComponent implements OnInit {
 
   session: Observable<any>
 
-  user : any
+  user: any
 
   constructor(
     private dialog: MatDialog,
-    public sessionService: SessionService,
-    public studentService: StudentService,
-    public teacherService: TeacherService,
-    public schoolService: SchoolService,
+    private sessionService: SessionService,
+    private studentService: StudentService,
+    private teacherService: TeacherService,
+    private schoolService: SchoolService,
+    private userService: UserService,
+    private cdr : ChangeDetectorRef,
+    private router : Router
+
   ) {
     this.session = this.sessionService._session;
-
-    this.user = this.sessionService.getSession()?.user
+    
   }
 
   ngOnInit() {
     this.getCatalogs()
+
+    this.getUserInfo()
+  }
+  
+  getUserInfo()
+  {
+    var id = this.sessionService.getSession()?.user._id
+
+    this.userService.get(id)
+    .toPromise()
+    .then((res : any) => {
+      this.user = res.item
+    })
+    .finally(() => {
+      this.cdr.detectChanges()
+      this.cdr.markForCheck()
+    })
   }
 
   getCatalogs() {
@@ -345,7 +368,7 @@ export class AppComponent implements OnInit {
             ref.close(1)
           })
           .catch((err) => {
-            ref.close({info:-1,error:err})
+            ref.close({ info: -1, error: err })
           })
 
       } else {//Usuario maestro
@@ -354,7 +377,7 @@ export class AppComponent implements OnInit {
             ref.close(1)
           })
           .catch((err) => {
-            ref.close({info:-1,error:err})
+            ref.close({ info: -1, error: err })
           })
       }
 
@@ -502,7 +525,8 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.sessionService.logout()
-    location.reload()
+    //location.reload()
+    this.router.navigate(['/home'])
   }
 
   edit() {
@@ -513,7 +537,7 @@ export class AppComponent implements OnInit {
     var userType = (this.user.student) ? 1 : 2;
 
     var formGroup_editUser: FormGroup = new FormGroup({
-      _id: new FormControl(null, Validators.required), 
+      _id: new FormControl(null, Validators.required),
       user_name: new FormControl(null, Validators.required),
       name: new FormControl(null, Validators.required),
       last_name: new FormControl(null, Validators.required),
@@ -570,7 +594,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: '_id',
                   _type: 'number',
-                  _hide : true,
+                  _hide: true,
                   _input: {
                     _label: '',
                     _placeholder: '',
@@ -643,7 +667,7 @@ export class AppComponent implements OnInit {
                 _config: {
                   _id: "UserType",
                   _type: "select",
-                  _hide : true,
+                  _hide: true,
                   _select: {
                     _options: this.userTypeOptions,
                     _optionKey: 'name',
@@ -762,76 +786,52 @@ export class AppComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => { //Los servicios no funcionan cuando se define la función y se asigna al objeto
+    config.fnOnSubmit = async (event, ref: MatDialogRef<any>) => { //Los servicios no funcionan cuando se define la función y se asigna al objeto
       var userType: number = event.data['user-credentials'].userType;
-      var newUser: User = new User();
+      var newUser: any = new User();
+      delete newUser.password
 
       Object.keys(newUser).map(k => {
         var value = event.data['user-credentials'][k] || null;
         newUser[k] = value;
       })
 
-      /* if (userType == 1)//Usuario alumno
-      {
-        var auxUser: Student = new Student();
-        Object.keys(auxUser).map(k => {
-          var value = event.data['user-credentials'][k] || null;
-          auxUser[k] = value;
-        })
-
-        //Student
-        auxUser.student =
-        {
-          scholarship: event.data['user-credentials']['scholarship'],
-          grade: event.data['user-credentials']['grade'],
-          school: event.data['user-credentials']['school'],
-        }
-
-        newUser = JSON.parse(JSON.stringify(auxUser));
-
-      } else {
-
-        //Usuario maestro
-        var auxTeacher: Teacher = new Teacher();
-        Object.keys(auxTeacher).map(k => {
-          var value = event.data['user-credentials'][k] || null;
-          auxTeacher[k] = value;
-        })
-
-        //Teacher
-        auxTeacher.teacher =
-        {
-          title: event.data['user-credentials']['title'],
-          professional_number: event.data['user-credentials']['professional_number'],
-          //role: event.data['user-credentials']['role'],
-          role: "ADMIN_ROLE"
-        }
-
-
-        newUser = JSON.parse(JSON.stringify(auxTeacher));
-      } */
-
       newUser.contact = event.data['contact-credentials']
+      try {
+        await this.userService.update(this.user._id, newUser).toPromise()
 
-      /* if (userType == 1)//Usuario alumno
-      {
-        this.studentService.create(newUser).toPromise()
-          .then((res) => {
-            ref.close(1)
-          })
-          .catch((err) => {
-            ref.close(-1)
-          })
+        if (this.user.student)//Usuario alumno
+        {
+          //Student
+          var student: any = {
+            scholarship: event.data['user-credentials']['scholarship'],
+            grade: event.data['user-credentials']['grade'],
+            school: event.data['user-credentials']['school'],
+          }
+          student["_id"] = this.user.student._id
 
-      } else {//Usuario maestro
-        this.teacherService.create(newUser).toPromise()
-          .then((res) => {
-            ref.close(1)
-          })
-          .catch((err) => {
-            ref.close(-1)
-          })
-      } */
+          await this.studentService.update(student._id, student).toPromise()
+
+        } else {
+          //Teacher
+          var teacher: any = {
+            title: event.data['user-credentials']['title'],
+            professional_number: event.data['user-credentials']['professional_number'],
+            //role: event.data['user-credentials']['role'],
+            role: "ADMIN_ROLE"
+          }
+          teacher["_id"] = this.user.teacher._id
+
+          await this.teacherService.update(teacher._id, teacher).toPromise()
+        }
+        
+        ref.close(1)
+      } catch (error) {
+        ref.close(-1)
+      }
+      finally{
+        this.getUserInfo()
+      }
 
     }
 
@@ -847,13 +847,13 @@ export class AppComponent implements OnInit {
         if (res) {
           if (res == 1) {
             var message: MessageConfig = {
-              title: "Crear usuario",
-              message: "Usuario creado correctamente."
+              title: "Editar usuario",
+              message: "Usuario actualizado correctamente."
             }
             this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
           } else if (res == -1) {
             var message: MessageConfig = {
-              title: "Crear usuario",
+              title: "Editar usuario",
               message: "Ocurrio un error al tratar de crear el usuario."
             }
             this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
