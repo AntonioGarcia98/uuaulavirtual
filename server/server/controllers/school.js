@@ -6,7 +6,8 @@ const School = require('../models/school')
 let school = { 
     name: '/school', 
     model: School,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newsch = create(School, {
             name: body.name,
             direction: body.direction,

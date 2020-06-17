@@ -30,7 +30,7 @@ routes
             return find(route.model, {_id: req.params.id}, req, res)
         })
             
-        app.post(route.name, route.middlewares.post, (req, res) => route.create(req.body)
+        app.post(route.name, route.middlewares.post, (req, res) => route.create(req)
             .then((newItem) => ok(newItem, res))
             .catch((err) => errorHandler(err, res)))
 

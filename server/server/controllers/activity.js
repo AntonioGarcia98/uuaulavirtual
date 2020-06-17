@@ -6,7 +6,8 @@ const Activity = require('../models/activity')
 let activity = { 
     name: '/activity', 
     model: Activity,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newObj = create(Activity, {
             title: body.title,
             user: body.user,

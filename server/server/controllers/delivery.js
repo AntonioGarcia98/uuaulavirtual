@@ -6,7 +6,8 @@ const Delivery = require('../models/delivery')
 let delivery = { 
     name: '/delivery', 
     model: Delivery,
-    create: async body => {
+    create: async req => {
+        let body = req.body
         let newObj = create(Delivery, {
             title: body.title,
             message: body.message,
