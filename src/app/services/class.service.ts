@@ -26,4 +26,9 @@ export class ClassService extends ServiceBase<ClassModel> {
     console.log("llegue",id)
       return this.http.get(this.url + "s/group/"+id)
   }
+
+  getActivitiesByClass(id : any) : Observable<any>
+  {
+    return this.http.get(this.url + "/" + id + "/activities")
+  }
 }

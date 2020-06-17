@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActivityModel } from './activity.model';
+import { Activity } from './activity.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -21,13 +21,12 @@ export class ActivityComponent implements OnInit {
   points : number = 0;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA)  public data : ActivityModel,
+    @Inject(MAT_DIALOG_DATA)  public data : Activity,
     public dialogRef: MatDialogRef<ActivityComponent>
   ) { 
     Object.keys(this.data).map(k => {
       this[k] = this.data[k]; 
     })
-    console.log(this.data)
   }
 
   ngOnInit(): void {

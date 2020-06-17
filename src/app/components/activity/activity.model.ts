@@ -1,7 +1,11 @@
-export class ActivityModel {
+export class Activity {
+    _id?: string;
+    user: string;
     title: string;
-    autor: string;
     description: string;
-    delivery_date: string;
-    points: number;
+    room: string;
+    limit_date: string;
+    resources? : any[]
+
+    //points: number;
 }

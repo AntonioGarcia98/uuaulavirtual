@@ -14,6 +14,7 @@
 
       <p class="m-3">Descripcion del clase: loremlipsum </p>
       <div class="extra-buttons">
+        <button mat-raised-button color="primary" (click)="createActivity()">Crear actividad</button>
         <button mat-raised-button color="primary" (click)="showParticipants()">Ver participantes de la clase</button>
         <button mat-raised-button color="primary" (click)="activities.openAll()">Ver todas las actividades</button>
         <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar todas las actividades</button>
@@ -39,6 +40,7 @@
           {{mat.description}}
         </div>
         <div class="buttons">
+          <button mat-raised-button color="primary" (click)="editActivity(mat)">Editar actividad</button>
           <button mat-raised-button color="primary" (click)="showActivity(mat)">Ir a la actividad</button>
         </div>
       </div>

@@ -10,10 +10,6 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { UserService } from 'src/app/services/user.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ActivityModel } from '../activity/activity.model';
-import { ActivityComponent } from '../activity/activity.component';
-import { ClassModel } from '../class/class.model';
 
 @Component({
   selector: 'app-new-class',

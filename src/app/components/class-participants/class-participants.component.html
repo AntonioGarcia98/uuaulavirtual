@@ -1,25 +1,25 @@
-<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> 
-    <mat-icon>close</mat-icon>
-  </button>
-  <div class="all-container">
-    <div class="activity-header">
-      <h1 class=""> Participantes de la clase</h1>
-    </div>
-    <div class="activity-info">
-            <h2>Proferor(es)</h2>
-
-            <mat-selection-list  [multiple]="false">
-                <mat-list-option *ngFor="let teacher of this.data.teachers">
-                    {{teacher.name}}  {{teacher.last_name}}
-                </mat-list-option>
-              </mat-selection-list>
-
-              <h2>Alumnos</h2>
-
-              <mat-selection-list  [multiple]="false">
-                  <mat-list-option *ngFor="let student of this.data.students">
-                      {{student.name}}  {{student.last_name}}
-                  </mat-list-option>
-                </mat-selection-list>
-
+<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()">
+  <mat-icon>close</mat-icon>
+</button>
+<div class="all-container">
+  <div class="activity-header">
+    <h1 class=""> Participantes de la clase</h1>
   </div>
+  <div class="activity-info">
+    <h2>Proferor(es)</h2>
+
+    <mat-selection-list [multiple]="false">
+      <mat-list-option *ngFor="let teacher of this.data.teachers">
+        {{teacher.name}} {{teacher.last_name}}
+      </mat-list-option>
+    </mat-selection-list>
+
+    <h2>Alumnos</h2>
+
+    <mat-selection-list [multiple]="false">
+      <mat-list-option *ngFor="let student of this.data.students">
+        {{student.name}} {{student.last_name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+</div>

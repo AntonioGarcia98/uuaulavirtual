@@ -40,16 +40,21 @@
         }
         .buttons{
             display: flex;
-            flex-flow: column;
-            align-items: flex-end;
+            flex-flow: row;
+            justify-content: flex-end;
             width: 100%;
             margin: 10px 0;
+            button{
+                margin: 0 10px;
+            }
         }
     }
 
     .extra-buttons{
         display: flex;
+        flex-flow: row;
         justify-content: flex-end;
+        width: 100%;
         button{
             margin: 0 10px;
         }

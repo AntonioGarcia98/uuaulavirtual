@@ -22,7 +22,7 @@
         <button mat-icon-button *ngIf="( session | async )">
           <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
         </button>
-        <h1 [routerLink]="'/home'" style="cursor: pointer;">UaaAulaVirtual <span *ngIf="( session | async )">- ¡Bienvenido {{( session | async )?.user.name}}!</span></h1>
+        <h1 [routerLink]="'/home'" style="cursor: pointer;">UaaAulaVirtual <span *ngIf="( session | async )">- ¡Bienvenido {{user?.user_name}}!</span></h1>
         <!-- <span class="menu-spacer"></span> -->
         <div class="nav-buttons">
           <ng-container *ngIf="!( session | async )">
