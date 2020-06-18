@@ -30,8 +30,8 @@ let resource = {
     crud: true,
     middlewares: {
         post: [ verify, /*userid,*/ upload.single('myFile') ],
-        put: [ verify, owner ],
-        delete: [ verify, owner ]
+        put: [ verify, /*owner*/ ],
+        delete: [ verify, /*owner*/ ]
     }
 }
 
