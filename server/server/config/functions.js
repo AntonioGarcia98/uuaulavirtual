@@ -24,6 +24,11 @@ const update = (id, body, model, params, res) => model.findByIdAndUpdate(id,
     { new : true, runValidators: true, context: 'query' }, 
     (err, edited) => defaultRes(err, edited, res))
 
+const findFull = (model, condition, req, res = null) => {
+    let found = model.find(condition)
+    return (res) ? found.exec((err, items) => defaultRes(err, items, res)) :found
+}
+
 const find = (model, condition, req, res = null) => {
     let page = Number(req.query.page || 1)
     let limit = Number(req.query.limit || 5)
@@ -55,5 +60,6 @@ module.exports = {
     update,
     find,
     match,
-    defaultRes
+    defaultRes,
+    findFull
 }

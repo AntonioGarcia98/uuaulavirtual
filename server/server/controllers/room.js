@@ -1,6 +1,7 @@
 const {verify, admin, userid, teacher} = require('../middlewares/auth')
-const {create, find, defaultRes} = require('../config/functions')
+const {create, find, defaultRes, findFull} = require('../config/functions')
 const Room = require('../models/room')
+const Group = require('../models/group')
 
 const roomsGroupAndUser = (req) => {
     return {
@@ -57,9 +58,10 @@ let room = {
     extra: app => {
         app.get('/rooms/group/:id', (req, res) => find(Room, { group: req.params.id }, req, res)),
         app.get('/rooms/group/:group/user/:user', (req, res) => find(Room, roomsGroupAndUser(req), req, res)),
-        app.get('/groups/user/:id', (req, res) => find(Room, groupsUser(req), req)
-            .distinct('group')
-            .exec((err, items) => defaultRes(err, items, res)))
+        app.get('/groups/user/:id', (req, res) => findFull(Room, groupsUser(req), req)
+            .distinct('group', (err, items) => {
+                find(Group, {_id: {$in: items}}, req, res)
+            }))
     }
 }
 
