@@ -177,7 +177,7 @@ export class EditGroupComponent implements OnInit {
   getGroupById(): void {
     this.groupService.get(this.num_idEdit).toPromise()
       .then((res: any) => {
-        this.data = res.item
+        this.data = res.item[0]
         this.subscribeForm()
       })
       .catch((rej) => {

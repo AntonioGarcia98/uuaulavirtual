@@ -17,4 +17,12 @@ export class GroupService extends ServiceBase<GroupModel>  {
   ) { 
       super(GroupModel)
   }
+
+
+  getGroupsByIdUser(id:any)
+  {
+    console.log(id)
+      return this.http.get(environment.server + 'groups/user/'+id)
+  }
+
 }

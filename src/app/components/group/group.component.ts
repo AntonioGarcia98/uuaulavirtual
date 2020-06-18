@@ -49,6 +49,7 @@ export class GroupComponent implements OnInit {
   getGroups():void{
     this.groupService.getAll().toPromise()
     .then((res:any)=>{
+      console.log(res)
       this.group = res.item
     })
     .catch((rej)=>{
@@ -56,9 +57,28 @@ export class GroupComponent implements OnInit {
     })
   }
 
+  
+  getGroupsByUser(id:any):void{
+    this.groupService.getGroupsByIdUser(id).toPromise()
+    .then((res:any)=>{
+      console.log(res)
+      this.group = res.item
+     // res.item
+    })
+    .catch((rej)=>{
+
+    })
+  }
+  string_idUser:any
   subscribeSession():void{
     this.sessionService._session.subscribe(data =>{
-      console.log(data)
+      if(data){
+        this.string_idUser =data.user
+        console.log(data.user)
+        data.user.teacher?data.user.teacher.role=="ADMIN_ROLE"?this.getGroups(): this.getGroupsByUser(this.string_idUser._id):this.getGroupsByUser(this.string_idUser._id)
+        console.log("id user", this.string_idUser)
+      }
+      
     })
   }
 

@@ -79,7 +79,8 @@ export class AppComponent implements OnInit {
     this.userService.get(id)
     .toPromise()
     .then((res : any) => {
-      this.user = res.item
+      console.log(res)
+      this.user = res.item[0]
     })
     .finally(() => {
       this.cdr.detectChanges()
@@ -854,7 +855,7 @@ export class AppComponent implements OnInit {
           } else if (res == -1) {
             var message: MessageConfig = {
               title: "Editar usuario",
-              message: "Ocurrio un error al tratar de crear el usuario."
+              message: "Ocurrio un error al tratar de editar el usuario."
             }
             this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
           }

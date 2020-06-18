@@ -221,7 +221,6 @@ export class NewGroupComponent implements OnInit {
   fnOnSend(event): void {
     console.log(event)
     let grouptoSend = event.data['new-group']
-    console.log(this.sessionData)
     grouptoSend.user = this.sessionData['user']._id
     console.log(grouptoSend)
     this.groupService.create(grouptoSend).toPromise()

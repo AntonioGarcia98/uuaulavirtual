@@ -12,7 +12,7 @@
       </mat-expansion-panel-header>
 
 
-      <p class="m-3">Descripcion del clase: loremlipsum </p>
+      <p class="m-3">Descripcion del clase:{{ this.clasObj?this.clasObj.description?this.clasObj.description:"":""}} </p>
       <div class="extra-buttons">
         <button mat-raised-button color="primary" (click)="createActivity()">Crear actividad</button>
         <button mat-raised-button color="primary" (click)="showParticipants()">Ver participantes de la clase</button>

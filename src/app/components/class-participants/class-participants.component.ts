@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-class-participants',
   templateUrl: './class-participants.component.html',
-  styleUrls: ['./class-participants.component.css']
+  styleUrls: ['./class-participants.component.scss']
 })
 export class ClassParticipantsComponent implements OnInit {
 
@@ -21,9 +21,8 @@ export class ClassParticipantsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA)  public data : any,
     public dialogRef: MatDialogRef<ClassParticipantsComponent>
-  ) { 
-
-
+  ) 
+  { 
     console.log(this.data.teachers)
   }
 

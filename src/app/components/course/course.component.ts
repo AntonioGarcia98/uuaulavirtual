@@ -92,7 +92,7 @@ export class CourseComponent implements OnInit {
     this.classService.get(this.string_idClass).toPromise()
     .then((res:any)=>{
       console.log(res)
-      this.clasObj = res.item
+      this.clasObj = res.item[0]
       
     })
     .catch((rej)=>{
