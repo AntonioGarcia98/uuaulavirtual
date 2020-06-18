@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const {create, notFound, ok, find} = require('../config/functions')
-const {denied, verify, owner} = require('../middlewares/auth')
+const {denied, verify, userid} = require('../middlewares/auth')
 const User = require('../models/user')
 const db = require('../models/db')
 
@@ -36,8 +36,8 @@ const user = {
     crud: true,
     middlewares: {
         post: [ denied ],
-        put: [ verify, owner ],
-        delete: [ verify, owner ]
+        put: [ verify ],
+        delete: [ verify ]
     },
     extra: app => {
         app.get('/user/filter/student', (req, res) => find(User, { student:{ $exists: true} }, req, res)),

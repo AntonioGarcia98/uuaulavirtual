@@ -15,7 +15,7 @@ const isArray = (a) => (!!a) && (a.constructor === Array)
 
 const defaultRes = (err, items, res) => {
     if(err) return errorHandler(err, res)
-    if(!items || !items.length) return notFound(res)
+    if(!items) return notFound(res)
     return ok(items, res)
 }
 
