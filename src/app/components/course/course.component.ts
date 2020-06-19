@@ -25,6 +25,8 @@ import { SessionService } from 'src/app/services/session.service';
 import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
 import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
+import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
+import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 
 @Component({
   selector: 'app-course',
@@ -134,6 +136,7 @@ export class CourseComponent implements OnInit {
       room: new FormControl(null, Validators.required),
       limit_date: new FormControl(null, Validators.required),
       descriptionCourse: new FormControl(null, Validators.required),
+      urlArchivo: new FormControl(null)
     });
 
     form_newActivity.patchValue({
@@ -250,6 +253,38 @@ export class CourseComponent implements OnInit {
                   } as S2ButtonFormModel
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: 'urlArchivo',
+                _config: {
+
+                  _id: "table",
+                  _type: "table",
+                  _table: {
+                    _enableFilters: true,
+                    _label: "Comprobante pago",
+                    _checkbox: false,
+                    _checkboxHeader: false,
+                    _collapse: false,
+                    _primaryKey: '_URL',
+                    _options: [],
+                    _tableHeaders: [
+                      {
+                        _title: "Nombre",
+                        _columName: "_nombre",
+                        _filter: false
+                      } as HeadersFormModel,
+                    ],
+                    _columns: inputColumns,
+                    _iconsButtons: [
+                      {
+                        _id: "iconPrevisualizacion",
+                        _icon: "fa fa-eye"
+                      }
+                    ]
+
+                  } as S2TableFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
             ]
           } as S2FormGroupModel,
         ],
@@ -263,16 +298,14 @@ export class CourseComponent implements OnInit {
     config.tool = 'form-generator';
 
     config.fnOnClickFormButton = (event, files) => {
+      this.fileSend = [];//reinicia el array
       console.log(event)
-      // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
+      let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-activity', 'table');
       var input = document.createElement("input");
       console.log(input)
       input.type = 'file';
       input.accept = '.pdf,.jpg,.png,.jpeg';
       input.multiple = false;
-
-
-
       input.onchange = (event: any) => {
         console.log(event)
 
@@ -285,6 +318,12 @@ export class CourseComponent implements OnInit {
         console.log(selectedFiles)
 
         /*multiples archivos*/
+        let aux = {
+          _nombre: this.file.name
+        }
+        tableComponent.fnSetOptions(this.fileSend);//reemplaza el archivo que estaba por el nuevo
+        this.fileSend.push(aux)
+        tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
 
       }
       input.click()
@@ -295,27 +334,29 @@ export class CourseComponent implements OnInit {
     }
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
-      console.log(this.file,event)
+      console.log(this.file, event)
       let formData: FormData = new FormData();
 
       if (this.file) {
         formData.append('myfile', this.file, this.file.name)
 
-       
+
       }
-      
+
       Object.keys(event.data['resource']).map(k => {
-        formData.append('description',  event.data['resource'][k])
-      
-      
+        formData.append('description', event.data['resource'][k])
       })
-      
+      formData.append('user', this.user_id)
+
+
+
+
       var newActivity: Activity = new Activity()
 
-    
+
       Object.keys(event.data['activity-properties']).map(k => {
         newActivity[k] = event.data['activity-properties'][k]
-      
+
       })
       /*
             this.activityService.create(newActivity).toPromise()
@@ -500,7 +541,7 @@ export class CourseComponent implements OnInit {
             title: "Editar actividad",
             message: "Actividad actualizar correctamente."
           }
-          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi", width: "200px",height: '350px' });
         }
       })
   }
