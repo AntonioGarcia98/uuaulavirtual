@@ -22,6 +22,9 @@ import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { SessionService } from 'src/app/services/session.service';
+import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
+import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
+import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 
 @Component({
   selector: 'app-course',
@@ -72,7 +75,8 @@ export class CourseComponent implements OnInit {
     private classService:ClassService,
     private userService : UserService,
     private activityService : ActivityService,
-    private sessionService : SessionService
+    private sessionService : SessionService,
+    private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
   ngOnInit(): void {
@@ -91,7 +95,6 @@ export class CourseComponent implements OnInit {
   getClassById():void{
     this.classService.get(this.string_idClass).toPromise()
     .then((res:any)=>{
-      console.log(res)
       this.clasObj = res.item[0]
       
     })
@@ -104,7 +107,6 @@ export class CourseComponent implements OnInit {
   {
     this.classService.getActivitiesByClass(this.string_idClass).toPromise()
     .then((res) => {
-      console.log(res)
       this.material = res.item
       this.material.map(a => {
         var autorID = a.user
@@ -119,7 +121,11 @@ export class CourseComponent implements OnInit {
       ///console.error(rej)
     })
   }
-
+  file: File;
+  fileSend: any[] = [];
+  formData: FormData = new FormData();
+  filesArraytoSend: File[] = [];
+  formDataFiles = new FormData();
   createActivity()
   {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
@@ -208,6 +214,23 @@ export class CourseComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _config: {
+                  _id: "boton",
+                  _type: "button",
+                  _button: {
+                    _text: "Cargar cosa de fuantos",
+                    _class: "btn btn-primary",
+                    _columns: {
+                      _xl: 12,
+                      _lg: 12,
+                      _md: 12,
+                      _sm: 12
+                    }
+    
+                  } as S2ButtonFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
 
             ],
           } as S2FormGroupModel,
@@ -220,6 +243,38 @@ export class CourseComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
+    config.fnOnClickFormButton=(event)=>{
+      console.log(event)
+     // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
+      var input = document.createElement("input");
+      input.type = 'file';
+      input.accept = '.pdf,.jpg,.png,.jpeg',
+      input.multiple = true
+     
+      input.onchange = (event: any) => {
+        console.log(event)
+        this.formData = new FormData()
+        /*un archivo*/
+        /* let input = event.path[0];
+         this.file = input.files[0]
+         let selectedFiles = (event.target || event.srcElement).files;*/
+        /*multiples archivos*/
+  
+  
+        let selectedFiles = (event.target || event.srcElement).files;
+        Object.keys(selectedFiles).forEach(data => {
+         
+          let aux = {
+            _nombre: selectedFiles[data].name
+          }
+  
+         /* this.fileSend.push(aux)
+          tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+          this.filesArraytoSend.push((selectedFiles)[data])*/
+  
+        })
+    }
+  }
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
       var newActivity: Activity = new Activity()
@@ -236,6 +291,7 @@ export class CourseComponent implements OnInit {
           ref.close(-1)
         })
     }
+    
 
     /* config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!" */

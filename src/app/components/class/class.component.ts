@@ -27,7 +27,7 @@ export class ClassComponent implements OnInit {
   }
 
   seleccionClase(clase: any){
-    console.log(clase)
+  
    this.router.navigate([ '/course', clase._id  ]);
   }
 
@@ -36,9 +36,7 @@ export class ClassComponent implements OnInit {
     this.sessionService._session.subscribe(data =>{
       if(data){
         this.string_idUser =data.user
-        console.log(data.user)
         data.user.teacher?data.user.teacher.role=="ADMIN_ROLE"?this.getClassByGroup(): this.getClassByGroupByIdUser(data.user._id):this.getClassByGroupByIdUser(data.user._id)
-        console.log("id user", this.string_idUser)
       }
       
     })
@@ -48,7 +46,7 @@ export class ClassComponent implements OnInit {
   getClassByGroupByIdUser(idUser:any):void{
     this.classService.getActivitiesByClassByUser(this.idGroup, idUser).toPromise()
     .then((res:any)=>{
-      console.log(res)
+   
      this.classArray = res.item
 
     })
@@ -60,7 +58,6 @@ export class ClassComponent implements OnInit {
   getClassByGroup():void{
     this.classService.getClassByGroup(this.idGroup).toPromise()
     .then((res:any)=>{
-      console.log(res)
      this.classArray = res.item
 
     })

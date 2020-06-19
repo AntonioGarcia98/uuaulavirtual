@@ -23,7 +23,6 @@ export class ClassService extends ServiceBase<ClassModel> {
 
   getClassByGroup(id: any) : Observable<any>
   {
-    console.log("llegue",id)
       return this.http.get(this.url + "s/group/"+id)
   }
 

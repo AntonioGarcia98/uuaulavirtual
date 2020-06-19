@@ -56,7 +56,6 @@ export class NewGroupComponent implements OnInit {
 
   subscribeSession(): void {
     this.sessionService._session.subscribe(data => {
-      console.log(data)
       this.sessionData = data
     })
   }
@@ -198,10 +197,8 @@ export class NewGroupComponent implements OnInit {
   getSchools(): void {
     this.schoolService.getAll().toPromise()
       .then((res: any) => {
-        console.log(res)
         this.schoolsArraySelect = res.item;
         this.fnPutData()
-        console.log(this.schoolsArraySelect);
       })
       .catch((rej) => {
         console.log(rej)

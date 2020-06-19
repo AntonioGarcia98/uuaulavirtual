@@ -161,7 +161,6 @@ export class NewClassComponent implements OnInit {
   getUserStudents(): void {
     this.userService.getStudents().toPromise()
       .then((res) => {
-        console.log(res)
         console.log('done');
 
       })
@@ -174,7 +173,6 @@ export class NewClassComponent implements OnInit {
   getUserTeachers(): void {
     this.userService.getTeachers().toPromise()
       .then((res) => {
-        console.log(res)
         console.log('done');
 
       })

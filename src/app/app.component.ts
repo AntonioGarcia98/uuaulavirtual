@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     this.userService.get(id)
     .toPromise()
     .then((res : any) => {
-      console.log(res)
+
       this.user = res.item[0]
     })
     .finally(() => {
@@ -557,7 +557,7 @@ export class AppComponent implements OnInit {
       professional_number: new FormControl(null)
 
     });
-    console.log(this.user)
+  
 
     formGroup_editUser.setValue({
       _id: this.user._id,

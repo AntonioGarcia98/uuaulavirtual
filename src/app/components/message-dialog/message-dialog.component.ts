@@ -15,8 +15,6 @@ export class MessageDialogComponent implements OnInit {
   ) { 
       //Disable close on click outside of the dialog
       this.dialogRef.disableClose = true;
-
-      console.log(data);
   }
 
   ngOnInit(): void {}
