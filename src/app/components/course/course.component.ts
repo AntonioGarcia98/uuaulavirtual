@@ -128,6 +128,7 @@ export class CourseComponent implements OnInit {
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
   createActivity() {
+    console.log("hola")
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({
@@ -308,17 +309,6 @@ export class CourseComponent implements OnInit {
       input.accept = '.pdf,.jpg,.png,.jpeg';
       input.multiple = false;
       input.onchange = (event: any) => {
-<<<<<<< HEAD
-        files = "string";
-        /*un archivo*/
-        /* let input = event.path[0];
-         this.file = input.files[0]
-         let selectedFiles = (event.target || event.srcElement).files;*/
-        /*multiples archivos*/
-  
-        console.log(files)
-  
-=======
         console.log(event)
 
         /*un archivo*/
@@ -326,7 +316,6 @@ export class CourseComponent implements OnInit {
         this.file = input.files[0]
 
         //files = "cosa fea"
->>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
         let selectedFiles = (event.target || event.srcElement).files;
         console.log(selectedFiles)
 
@@ -362,27 +351,16 @@ export class CourseComponent implements OnInit {
       formData.append('user', this.user_id)
 
 
-<<<<<<< HEAD
       console.log(files)
-=======
->>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
 
 
-<<<<<<< HEAD
     config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
       console.log(files)
       var newActivity: Activity = new Activity()
 
       /* Object.keys(event.data['activity-properties']).map(k => {
-=======
-      var newActivity: Activity = new Activity()
-
-
-      Object.keys(event.data['activity-properties']).map(k => {
->>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
         newActivity[k] = event.data['activity-properties'][k]
 
-<<<<<<< HEAD
       this.activityService.create(newActivity).toPromise()
         .then((res) => {
           ref.close(1)
@@ -390,17 +368,7 @@ export class CourseComponent implements OnInit {
         .catch((err) => {
           ref.close(-1)
         }) */
-=======
-      })
-      /*
-            this.activityService.create(newActivity).toPromise()
-              .then((res) => {
-                ref.close(1)
-              })
-              .catch((err) => {
-                ref.close(-1)
-              })*/
->>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
+    }
     }
 
 
@@ -425,7 +393,8 @@ export class CourseComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         }
       })
-  }
+  
+}
 
   editActivity(act: Activity) {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
