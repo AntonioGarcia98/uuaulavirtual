@@ -3,7 +3,7 @@ const Double = require('@mongoosejs/double')
 
 let Schema = mongoose.Schema
 
-let schoolSchema = new Schema({
+let obj = {
     name: {
         type: String,
         required: [true, 'el nombre es necesario']
@@ -16,6 +16,9 @@ let schoolSchema = new Schema({
         latitude: Double,
         longitude: Double
     }
-})
+}
+
+let schoolSchema = process.env.BERIS ? new Schema(obj, { shardKey: { _id: 1 } }) : new Schema(obj)
+
 
 module.exports = mongoose.model('School', schoolSchema)

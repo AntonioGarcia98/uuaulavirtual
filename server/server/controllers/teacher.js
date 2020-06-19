@@ -19,7 +19,7 @@ const teacher = {
             let newu = await user.create(req) 
             await newu.save().then(u => {
                 res = u
-            }).catch(async err => { await Teacher.findByIdAndRemove(item._id); throw err})
+            }).catch(async err => { await Teacher.findOneAndRemove({_id: item._id}); throw err})
         }).catch(err => { throw err })
         return res
     },

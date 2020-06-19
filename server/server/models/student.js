@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 let Schema = mongoose.Schema
 
-let studentSchema = new Schema({
+let obj = {
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -25,6 +25,9 @@ let studentSchema = new Schema({
         required: [true, 'la escuela es necesaria']
     }, 
     carrer: String
-})
+}
+
+let studentSchema = process.env.BERIS ? new Schema(obj, { shardKey: { _id: 1 } }) : new Schema(obj)
+
 
 module.exports = mongoose.model('Student', studentSchema)

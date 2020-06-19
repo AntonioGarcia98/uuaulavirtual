@@ -25,6 +25,6 @@ let groupSchema = new Schema({
         ref: 'School',
         required: [true, 'la escuela es necesaria']
     }
-})
+}, { shardKey: { _id: 1 } })
 
 module.exports = mongoose.model('Group', groupSchema)

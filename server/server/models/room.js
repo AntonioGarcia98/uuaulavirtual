@@ -4,7 +4,7 @@ const User = require('./user')
 
 let Schema = mongoose.Schema
 
-let roomSchema = new Schema({
+let obj = {
     name: {
         type: String,
         required: [true, 'el nombre es necesario']
@@ -28,7 +28,10 @@ let roomSchema = new Schema({
         required: [true, 'el creador es necesario']
     },
     description: String
-})
+}
+
+let roomSchema = process.env.BERIS ? new Schema(obj, { shardKey: { _id: 1 } }) : new Schema(obj)
+
 
 let pre = ['find', 'findOne']
 pre.map(path => populatePre(roomSchema, path, populate('teachers', User)))

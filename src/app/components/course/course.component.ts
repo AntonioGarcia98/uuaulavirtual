@@ -25,6 +25,8 @@ import { SessionService } from 'src/app/services/session.service';
 import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
 import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
+import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
+import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 
 @Component({
   selector: 'app-course',
@@ -59,12 +61,12 @@ export class CourseComponent implements OnInit {
     _id: 3,
   } */
   ]
-  
+
   @ViewChild('activities') activities: MatAccordion;
 
   string_idClass: string
-  
-  clasObj:any
+
+  clasObj: any
 
   user_id = null;
 
@@ -72,10 +74,10 @@ export class CourseComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private activateRouter: ActivatedRoute,
-    private classService:ClassService,
-    private userService : UserService,
-    private activityService : ActivityService,
-    private sessionService : SessionService,
+    private classService: ClassService,
+    private userService: UserService,
+    private activityService: ActivityService,
+    private sessionService: SessionService,
     private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
@@ -85,58 +87,57 @@ export class CourseComponent implements OnInit {
     this.getActivities()
 
     this.sessionService._session.subscribe(s => {
-      if(s && s.user.teacher)
-      {
+      if (s && s.user.teacher) {
         this.user_id = s.user._id;
       }
     })
   }
-  
-  getClassById():void{
+
+  getClassById(): void {
     this.classService.get(this.string_idClass).toPromise()
-    .then((res:any)=>{
-      this.clasObj = res.item[0]
-      
-    })
-    .catch((rej)=>{
-      console.error(rej)
-    })
+      .then((res: any) => {
+        this.clasObj = res.item[0]
+
+      })
+      .catch((rej) => {
+        console.error(rej)
+      })
   }
 
-  getActivities()
-  {
+  getActivities() {
     this.classService.getActivitiesByClass(this.string_idClass).toPromise()
-    .then((res) => {
-      this.material = res.item
-      this.material.map(a => {
-        var autorID = a.user
-        this.userService.get(autorID)
-        .toPromise()
-        .then((autor : any) => {
-          a['autor'] = autor.item.user_name;
-        })  
+      .then((res) => {
+        console.log(res.item)
+        this.material = res.item
+        this.material.map(a => {
+          var autorID = a.user
+          this.userService.get(autorID)
+            .toPromise()
+            .then((autor: any) => {
+              a['autor'] = autor.item.user_name;
+            })
+        })
       })
-    })
-    .catch((rej)=>{
-      ///console.error(rej)
-    })
+      .catch((rej) => {
+        ///console.error(rej)
+      })
   }
   file: File;
   fileSend: any[] = [];
   formData: FormData = new FormData();
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
-
-  createActivity()
-  {
+  createActivity() {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({
-      user : new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
-      room : new FormControl(null, Validators.required),
-      limit_date : new FormControl(null, Validators.required),
+      room: new FormControl(null, Validators.required),
+      limit_date: new FormControl(null, Validators.required),
+      descriptionCourse: new FormControl(null, Validators.required),
+      urlArchivo: new FormControl(null)
     });
 
     form_newActivity.patchValue({
@@ -177,7 +178,7 @@ export class CourseComponent implements OnInit {
                     _columns: inputColumns
                   } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,  
+              } as S2FormGroupItemModel,
               {
                 _control: 'description',
                 _config: {
@@ -215,6 +216,27 @@ export class CourseComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+
+
+            ],
+          } as S2FormGroupModel,
+          {
+            _title: 'Recursos',
+            _nameAs: 'resource',
+            _items: [
+              {
+                _control: 'descriptionCourse',
+                _config: {
+                  _id: 'descriptionC',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Descripción del recurso',
+                    _placeholder: 'Ingrese una descripción del recurso',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
               {
                 _config: {
                   _id: "boton",
@@ -228,12 +250,43 @@ export class CourseComponent implements OnInit {
                       _md: 12,
                       _sm: 12
                     }
-    
+
                   } as S2ButtonFormModel
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: 'urlArchivo',
+                _config: {
 
-            ],
+                  _id: "table",
+                  _type: "table",
+                  _table: {
+                    _enableFilters: true,
+                    _label: "Comprobante pago",
+                    _checkbox: false,
+                    _checkboxHeader: false,
+                    _collapse: false,
+                    _primaryKey: '_URL',
+                    _options: [],
+                    _tableHeaders: [
+                      {
+                        _title: "Nombre",
+                        _columName: "_nombre",
+                        _filter: false
+                      } as HeadersFormModel,
+                    ],
+                    _columns: inputColumns,
+                    _iconsButtons: [
+                      {
+                        _id: "iconPrevisualizacion",
+                        _icon: "fa fa-eye"
+                      }
+                    ]
+
+                  } as S2TableFormModel
+                } as S2FormField
+              } as S2FormGroupItemModel,
+            ]
           } as S2FormGroupModel,
         ],
 
@@ -244,18 +297,18 @@ export class CourseComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    
-    config.fnOnClickFormButton = (event, files)=>{
+
+    config.fnOnClickFormButton = (event, files) => {
+      this.fileSend = [];//reinicia el array
       console.log(event)
-     // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
+      let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-activity', 'table');
       var input = document.createElement("input");
+      console.log(input)
       input.type = 'file';
       input.accept = '.pdf,.jpg,.png,.jpeg';
-      input.multiple = true;
-
-      input.click()
-     
+      input.multiple = false;
       input.onchange = (event: any) => {
+<<<<<<< HEAD
         files = "string";
         /*un archivo*/
         /* let input = event.path[0];
@@ -265,32 +318,71 @@ export class CourseComponent implements OnInit {
   
         console.log(files)
   
+=======
+        console.log(event)
+
+        /*un archivo*/
+        let input = event.path[0];
+        this.file = input.files[0]
+
+        //files = "cosa fea"
+>>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
         let selectedFiles = (event.target || event.srcElement).files;
-        Object.keys(selectedFiles).forEach(data => {
-         
-          let aux = {
-            _nombre: selectedFiles[data].name
-          }
-  
-         /* this.fileSend.push(aux)
-          tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
-          this.filesArraytoSend.push((selectedFiles)[data])*/
-  
-        })
+        console.log(selectedFiles)
+
+        /*multiples archivos*/
+        let aux = {
+          _nombre: this.file.name
+        }
+        tableComponent.fnSetOptions(this.fileSend);//reemplaza el archivo que estaba por el nuevo
+        this.fileSend.push(aux)
+        tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+
+      }
+      input.click()
+      event.fnOffSpinner(true)
+
+
+
+    }
+
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
+      console.log(this.file, event)
+      let formData: FormData = new FormData();
+
+      if (this.file) {
+        formData.append('myfile', this.file, this.file.name)
+
+
       }
 
+      Object.keys(event.data['resource']).map(k => {
+        formData.append('description', event.data['resource'][k])
+      })
+      formData.append('user', this.user_id)
+
+
+<<<<<<< HEAD
       console.log(files)
+=======
+>>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
 
-  }
 
+<<<<<<< HEAD
     config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
       console.log(files)
       var newActivity: Activity = new Activity()
 
       /* Object.keys(event.data['activity-properties']).map(k => {
-        newActivity[k] = event.data['activity-properties'][k]
-      })
+=======
+      var newActivity: Activity = new Activity()
 
+
+      Object.keys(event.data['activity-properties']).map(k => {
+>>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
+        newActivity[k] = event.data['activity-properties'][k]
+
+<<<<<<< HEAD
       this.activityService.create(newActivity).toPromise()
         .then((res) => {
           ref.close(1)
@@ -298,8 +390,19 @@ export class CourseComponent implements OnInit {
         .catch((err) => {
           ref.close(-1)
         }) */
+=======
+      })
+      /*
+            this.activityService.create(newActivity).toPromise()
+              .then((res) => {
+                ref.close(1)
+              })
+              .catch((err) => {
+                ref.close(-1)
+              })*/
+>>>>>>> 00e1bb8a897784b237a23f8e5f4495baa3c667d4
     }
-    
+
 
     /* config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!" */
@@ -324,26 +427,25 @@ export class CourseComponent implements OnInit {
       })
   }
 
-  editActivity(act : Activity)
-  {
+  editActivity(act: Activity) {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_editActivity: FormGroup = new FormGroup({
-      _id : new FormControl(null, Validators.required),
-      user : new FormControl(null, Validators.required),
+      _id: new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
-      room : new FormControl(null, Validators.required),
-      limit_date : new FormControl(null, Validators.required),
+      room: new FormControl(null, Validators.required),
+      limit_date: new FormControl(null, Validators.required),
     });
 
     form_editActivity.patchValue({
-      _id : act._id,
+      _id: act._id,
       user: act.user,
       title: act.title,
       room: act.room,
-      description : act.description,
-      limit_date : act.limit_date.split('T')[0]
+      description: act.description,
+      limit_date: act.limit_date.split('T')[0]
     })
 
     var config: SithecConfig = new SithecConfig()
@@ -392,7 +494,7 @@ export class CourseComponent implements OnInit {
                     _columns: inputColumns
                   } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,  
+              } as S2FormGroupItemModel,
               {
                 _control: 'description',
                 _config: {
@@ -474,17 +576,39 @@ export class CourseComponent implements OnInit {
             title: "Editar actividad",
             message: "Actividad actualizar correctamente."
           }
-          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi", width: "200px",height: '350px' });
         }
       })
   }
 
   showActivity(activity: any) {
-    this.dialog.open(ActivityComponent, {data : activity, panelClass: "dialog-fuchi", width: "800px"})
+    this.dialog.open(ActivityComponent, { data: activity, panelClass: "dialog-fuchi", width: "800px" })
   }
 
-  
+
   showParticipants() {
-    this.dialog.open(ClassParticipantsComponent, {data : this.clasObj, panelClass: "dialog-fuchi", width: "800px"})
+    this.dialog.open(ClassParticipantsComponent, { data: this.clasObj, panelClass: "dialog-fuchi", width: "800px" })
+  }
+
+  deleteActivity(mat:any):void{
+    console.log(mat)
+    
+    this.activityService.delete(mat._id).toPromise()
+    .then((res) => {
+      if (res) {
+       
+        var message: MessageConfig = {
+          title: "Eliminar actividad ",
+          message: "La actividad se ha sido eliminado correctamente"
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        //this.getClassByGroup()
+      }
+
+    })
+    .catch((rej) =>{
+      console.log(rej)
+    })
+
   }
 }
