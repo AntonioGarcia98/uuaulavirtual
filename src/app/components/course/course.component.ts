@@ -261,54 +261,70 @@ export class CourseComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnClickFormButton = (event) => {
+
+    config.fnOnClickFormButton = (event, files) => {
       console.log(event)
       // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
       var input = document.createElement("input");
       console.log(input)
       input.type = 'file';
-      input.accept = '.pdf,.jpg,.png,.jpeg',
-      input.multiple = true
+      input.accept = '.pdf,.jpg,.png,.jpeg';
+      input.multiple = false;
 
-      input.onclick = (event: any) => {
+
+
+      input.onchange = (event: any) => {
         console.log(event)
-        // this.formData = new FormData()
+
         /*un archivo*/
-        /* let input = event.path[0];
-         this.file = input.files[0]
-         let selectedFiles = (event.target || event.srcElement).files;*/
+        let input = event.path[0];
+        this.file = input.files[0]
+
+        //files = "cosa fea"
+        let selectedFiles = (event.target || event.srcElement).files;
+        console.log(selectedFiles)
+
         /*multiples archivos*/
 
-/*
-        let selectedFiles = (event.target || event.srcElement).files;
-        Object.keys(selectedFiles).forEach(data => {
-
-          let aux = {
-            _nombre: selectedFiles[data].name
-          }*/
-
-          /* this.fileSend.push(aux)
-           tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
-           this.filesArraytoSend.push((selectedFiles)[data])
-
-        })*/
       }
+      input.click()
+      event.fnOffSpinner(true)
+
+
+
     }
 
-    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
+      console.log(this.file,event)
+      let formData: FormData = new FormData();
+
+      if (this.file) {
+        formData.append('myfile', this.file, this.file.name)
+
+       
+      }
+      
+      Object.keys(event.data['resource']).map(k => {
+        formData.append('description',  event.data['resource'][k])
+      
+      
+      })
+      
       var newActivity: Activity = new Activity()
 
+    
       Object.keys(event.data['activity-properties']).map(k => {
         newActivity[k] = event.data['activity-properties'][k]
+      
       })
-
-      this.activityService.create(newActivity).toPromise()
-        .then((res) => {
-          ref.close(1)
-        })
-        .catch((err) => {
-          ref.close(-1)
-        })
+      /*
+            this.activityService.create(newActivity).toPromise()
+              .then((res) => {
+                ref.close(1)
+              })
+              .catch((err) => {
+                ref.close(-1)
+              })*/
     }
 
 
