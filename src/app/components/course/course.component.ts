@@ -351,25 +351,6 @@ export class CourseComponent implements OnInit {
       formData.append('user', this.user_id)
 
 
-<<<<<<< HEAD
-
-
-      var newActivity: Activity = new Activity()
-
-
-      Object.keys(event.data['activity-properties']).map(k => {
-        newActivity[k] = event.data['activity-properties'][k]
-
-      })
-      /*
-            this.activityService.create(newActivity).toPromise()
-              .then((res) => {
-                ref.close(1)
-              })
-              .catch((err) => {
-                ref.close(-1)
-              })*/
-=======
       console.log(files)
 
 
@@ -388,7 +369,6 @@ export class CourseComponent implements OnInit {
           ref.close(-1)
         }) */
     }
->>>>>>> aeef04ea881e39e325fc99dcb9a41fe7f52e730b
     }
 
 
