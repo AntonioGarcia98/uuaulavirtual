@@ -128,6 +128,7 @@ export class CourseComponent implements OnInit {
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
   createActivity() {
+    console.log("hola")
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({
@@ -350,6 +351,7 @@ export class CourseComponent implements OnInit {
       formData.append('user', this.user_id)
 
 
+<<<<<<< HEAD
 
 
       var newActivity: Activity = new Activity()
@@ -367,6 +369,26 @@ export class CourseComponent implements OnInit {
               .catch((err) => {
                 ref.close(-1)
               })*/
+=======
+      console.log(files)
+
+
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
+      console.log(files)
+      var newActivity: Activity = new Activity()
+
+      /* Object.keys(event.data['activity-properties']).map(k => {
+        newActivity[k] = event.data['activity-properties'][k]
+
+      this.activityService.create(newActivity).toPromise()
+        .then((res) => {
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        }) */
+    }
+>>>>>>> aeef04ea881e39e325fc99dcb9a41fe7f52e730b
     }
 
 
@@ -391,7 +413,8 @@ export class CourseComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         }
       })
-  }
+  
+}
 
   editActivity(act: Activity) {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
