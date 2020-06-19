@@ -57,6 +57,7 @@ const owner = (req, res, next) => {
     let id = req.params.id
     match(req.route.path)
         .on(x => x.includes('delivery'), () => property(db.Delivery, id, item.user._id, res, next))
+        .on(x => x.includes('resource'), () => property(db.Resource, id, item.user, res, next))
         .otherwise(x => errorHandler({message: 'error al encontrar ruta'}, res, 400))
 }
 
