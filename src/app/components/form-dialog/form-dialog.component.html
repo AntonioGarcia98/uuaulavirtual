@@ -15,7 +15,7 @@
         <form-suite [settings]="settings" [tool]="'form-generator'" (onClickButton)="fnOnClickButton($event)"
             (onOpenTableChange)="fnOnOpenTableChange($event)" (onClickInitFilter)="fnOnClickInitFilter($event)"
             (onClickFormButton)="fnOnClickFormButton($event, files)" (onKeyup)="fnOnKeyup($event)"
-            (onSubmit)="fnOnSubmit($event, dialogRef)" (onChange)="fnOnChange($event, settings)"
+            (onSubmit)="fnOnSubmit($event, dialogRef, files)" (onChange)="fnOnChange($event, settings)"
             (clickSavebutton)="fnOnClickSavebutton($event)">
         </form-suite>
     </div>

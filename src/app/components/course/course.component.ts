@@ -256,14 +256,14 @@ export class CourseComponent implements OnInit {
       input.click()
      
       input.onchange = (event: any) => {
-        console.log(event)
-        files = new FormData()
+        files = "string";
         /*un archivo*/
         /* let input = event.path[0];
          this.file = input.files[0]
          let selectedFiles = (event.target || event.srcElement).files;*/
         /*multiples archivos*/
   
+        console.log(files)
   
         let selectedFiles = (event.target || event.srcElement).files;
         Object.keys(selectedFiles).forEach(data => {
@@ -279,14 +279,15 @@ export class CourseComponent implements OnInit {
         })
       }
 
-      
+      console.log(files)
 
   }
 
-    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
+      console.log(files)
       var newActivity: Activity = new Activity()
 
-      Object.keys(event.data['activity-properties']).map(k => {
+      /* Object.keys(event.data['activity-properties']).map(k => {
         newActivity[k] = event.data['activity-properties'][k]
       })
 
@@ -296,7 +297,7 @@ export class CourseComponent implements OnInit {
         })
         .catch((err) => {
           ref.close(-1)
-        })
+        }) */
     }
     
 
