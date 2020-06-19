@@ -107,6 +107,7 @@ export class CourseComponent implements OnInit {
   getActivities() {
     this.classService.getActivitiesByClass(this.string_idClass).toPromise()
       .then((res) => {
+        console.log(res.item)
         this.material = res.item
         this.material.map(a => {
           var autorID = a.user
@@ -553,5 +554,27 @@ export class CourseComponent implements OnInit {
 
   showParticipants() {
     this.dialog.open(ClassParticipantsComponent, { data: this.clasObj, panelClass: "dialog-fuchi", width: "800px" })
+  }
+
+  deleteActivity(mat:any):void{
+    console.log(mat)
+    
+    this.activityService.delete(mat._id).toPromise()
+    .then((res) => {
+      if (res) {
+       
+        var message: MessageConfig = {
+          title: "Eliminar actividad ",
+          message: "La actividad se ha sido eliminado correctamente"
+        }
+        this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        //this.getClassByGroup()
+      }
+
+    })
+    .catch((rej) =>{
+      console.log(rej)
+    })
+
   }
 }
