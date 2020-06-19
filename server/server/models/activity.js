@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 let Schema = mongoose.Schema
 
-let activitySchema = new Schema({
+const obj = {
     title: {
         type: String,
         required: [true, 'el titulo es necesario']
@@ -24,6 +24,8 @@ let activitySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Resource',
     }]
-})
+}
+
+let activitySchema = process.env.BERIS ? new Schema(obj, { shardKey: { _id: 1 } }) : new Schema(obj)
 
 module.exports = mongoose.model('Activity', activitySchema)

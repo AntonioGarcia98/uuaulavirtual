@@ -6,7 +6,7 @@ const Student = require('../models/student')
 
 let Schema = mongoose.Schema
 
-let userSchema = new Schema({
+let obj = {
     user_name: {
         type: String,
         required: [true, 'nombre de usuario es necesario'],
@@ -64,7 +64,9 @@ let userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Student'
     }
-})
+}
+
+let userSchema = process.env.BERIS ? new Schema(obj, { shardKey: { _id: 1 } }) : new Schema(obj)
 
 userSchema.methods.toJSON = function() {
     let userObject = this.toObject()
