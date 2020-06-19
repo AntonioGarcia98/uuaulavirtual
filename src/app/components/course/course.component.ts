@@ -395,11 +395,6 @@ export class CourseComponent implements OnInit {
         })
     }
 
-    config.fnOnClickFormButton = (event) => {}
-    {
-      
-    }
-
     this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" }).afterClosed()
       .toPromise()
       .then((res) => {
