@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ServiceBase } from '../../services/base.service';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Activity } from './activity.model';
 
@@ -10,7 +10,6 @@ import { Activity } from './activity.model';
   providedIn: 'root'
 })
 export class ActivityService extends ServiceBase<Activity> {
-
  
   url : string = environment.server + 'activity';
 
@@ -18,5 +17,12 @@ export class ActivityService extends ServiceBase<Activity> {
       protected http : HttpClient
   ) { 
       super(Activity)
+  }
+
+  setFiles(fileData : FormData) : Observable<any>
+  {
+    return this.http.post(this.url, fileData, {headers : {
+      "Content-Type": "multipart/form-data"
+    }});
   }
 }

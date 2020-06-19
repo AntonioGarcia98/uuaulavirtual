@@ -268,17 +268,20 @@ export class NewGroupComponent implements OnInit {
 
 
       let selectedFiles = (event.target || event.srcElement).files;
-      Object.keys(selectedFiles).forEach(data => {
+
+      this.formData.append("myfile", selectedFiles[0], selectedFiles[0].name);
+      
+
+      /* Object.keys(selectedFiles).forEach(data => {
        
         let aux = {
           _nombre: selectedFiles[data].name
         }
 
         this.fileSend.push(aux)
-        tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+        tableComponent.fnSetOptions(this.fileSend);
         this.filesArraytoSend.push((selectedFiles)[data])
-
-      })
+      }) */
     
      
     };
