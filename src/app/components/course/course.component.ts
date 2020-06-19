@@ -59,12 +59,12 @@ export class CourseComponent implements OnInit {
     _id: 3,
   } */
   ]
-  
+
   @ViewChild('activities') activities: MatAccordion;
 
   string_idClass: string
-  
-  clasObj:any
+
+  clasObj: any
 
   user_id = null;
 
@@ -72,10 +72,10 @@ export class CourseComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private activateRouter: ActivatedRoute,
-    private classService:ClassService,
-    private userService : UserService,
-    private activityService : ActivityService,
-    private sessionService : SessionService,
+    private classService: ClassService,
+    private userService: UserService,
+    private activityService: ActivityService,
+    private sessionService: SessionService,
     private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
@@ -85,57 +85,55 @@ export class CourseComponent implements OnInit {
     this.getActivities()
 
     this.sessionService._session.subscribe(s => {
-      if(s && s.user.teacher)
-      {
+      if (s && s.user.teacher) {
         this.user_id = s.user._id;
       }
     })
   }
-  
-  getClassById():void{
+
+  getClassById(): void {
     this.classService.get(this.string_idClass).toPromise()
-    .then((res:any)=>{
-      this.clasObj = res.item[0]
-      
-    })
-    .catch((rej)=>{
-      console.error(rej)
-    })
+      .then((res: any) => {
+        this.clasObj = res.item[0]
+
+      })
+      .catch((rej) => {
+        console.error(rej)
+      })
   }
 
-  getActivities()
-  {
+  getActivities() {
     this.classService.getActivitiesByClass(this.string_idClass).toPromise()
-    .then((res) => {
-      this.material = res.item
-      this.material.map(a => {
-        var autorID = a.user
-        this.userService.get(autorID)
-        .toPromise()
-        .then((autor : any) => {
-          a['autor'] = autor.item.user_name;
-        })  
+      .then((res) => {
+        this.material = res.item
+        this.material.map(a => {
+          var autorID = a.user
+          this.userService.get(autorID)
+            .toPromise()
+            .then((autor: any) => {
+              a['autor'] = autor.item.user_name;
+            })
+        })
       })
-    })
-    .catch((rej)=>{
-      ///console.error(rej)
-    })
+      .catch((rej) => {
+        ///console.error(rej)
+      })
   }
   file: File;
   fileSend: any[] = [];
   formData: FormData = new FormData();
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
-  createActivity()
-  {
+  createActivity() {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({
-      user : new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
-      room : new FormControl(null, Validators.required),
-      limit_date : new FormControl(null, Validators.required),
+      room: new FormControl(null, Validators.required),
+      limit_date: new FormControl(null, Validators.required),
+      descriptionCourse: new FormControl(null, Validators.required),
     });
 
     form_newActivity.patchValue({
@@ -176,7 +174,7 @@ export class CourseComponent implements OnInit {
                     _columns: inputColumns
                   } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,  
+              } as S2FormGroupItemModel,
               {
                 _control: 'description',
                 _config: {
@@ -214,6 +212,27 @@ export class CourseComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+
+
+            ],
+          } as S2FormGroupModel,
+          {
+            _title: 'Recursos',
+            _nameAs: 'resource',
+            _items: [
+              {
+                _control: 'descriptionCourse',
+                _config: {
+                  _id: 'descriptionC',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Descripción del recurso',
+                    _placeholder: 'Ingrese una descripción del recurso',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
               {
                 _config: {
                   _id: "boton",
@@ -227,12 +246,11 @@ export class CourseComponent implements OnInit {
                       _md: 12,
                       _sm: 12
                     }
-    
+
                   } as S2ButtonFormModel
                 } as S2FormField
               } as S2FormGroupItemModel,
-
-            ],
+            ]
           } as S2FormGroupModel,
         ],
 
@@ -243,38 +261,39 @@ export class CourseComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnClickFormButton=(event)=>{
+    config.fnOnClickFormButton = (event) => {
       console.log(event)
-     // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
+      // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
       var input = document.createElement("input");
+      console.log(input)
       input.type = 'file';
       input.accept = '.pdf,.jpg,.png,.jpeg',
       input.multiple = true
-     
-      input.onchange = (event: any) => {
+
+      input.onclick = (event: any) => {
         console.log(event)
-        this.formData = new FormData()
+        // this.formData = new FormData()
         /*un archivo*/
         /* let input = event.path[0];
          this.file = input.files[0]
          let selectedFiles = (event.target || event.srcElement).files;*/
         /*multiples archivos*/
-  
-  
+
+/*
         let selectedFiles = (event.target || event.srcElement).files;
         Object.keys(selectedFiles).forEach(data => {
-         
+
           let aux = {
             _nombre: selectedFiles[data].name
-          }
-  
-         /* this.fileSend.push(aux)
-          tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
-          this.filesArraytoSend.push((selectedFiles)[data])*/
-  
-        })
+          }*/
+
+          /* this.fileSend.push(aux)
+           tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+           this.filesArraytoSend.push((selectedFiles)[data])
+
+        })*/
+      }
     }
-  }
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
       var newActivity: Activity = new Activity()
@@ -291,7 +310,7 @@ export class CourseComponent implements OnInit {
           ref.close(-1)
         })
     }
-    
+
 
     /* config.title = "Iniciar Sesión"
     config.message = "Accede ya al mejor sistema academico!" */
@@ -316,26 +335,25 @@ export class CourseComponent implements OnInit {
       })
   }
 
-  editActivity(act : Activity)
-  {
+  editActivity(act: Activity) {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_editActivity: FormGroup = new FormGroup({
-      _id : new FormControl(null, Validators.required),
-      user : new FormControl(null, Validators.required),
+      _id: new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
-      room : new FormControl(null, Validators.required),
-      limit_date : new FormControl(null, Validators.required),
+      room: new FormControl(null, Validators.required),
+      limit_date: new FormControl(null, Validators.required),
     });
 
     form_editActivity.patchValue({
-      _id : act._id,
+      _id: act._id,
       user: act.user,
       title: act.title,
       room: act.room,
-      description : act.description,
-      limit_date : act.limit_date.split('T')[0]
+      description: act.description,
+      limit_date: act.limit_date.split('T')[0]
     })
 
     var config: SithecConfig = new SithecConfig()
@@ -384,7 +402,7 @@ export class CourseComponent implements OnInit {
                     _columns: inputColumns
                   } as S2InputForm
                 } as S2FormField
-              } as S2FormGroupItemModel,  
+              } as S2FormGroupItemModel,
               {
                 _control: 'description',
                 _config: {
@@ -472,11 +490,11 @@ export class CourseComponent implements OnInit {
   }
 
   showActivity(activity: any) {
-    this.dialog.open(ActivityComponent, {data : activity, panelClass: "dialog-fuchi", width: "800px"})
+    this.dialog.open(ActivityComponent, { data: activity, panelClass: "dialog-fuchi", width: "800px" })
   }
 
-  
+
   showParticipants() {
-    this.dialog.open(ClassParticipantsComponent, {data : this.clasObj, panelClass: "dialog-fuchi", width: "800px"})
+    this.dialog.open(ClassParticipantsComponent, { data: this.clasObj, panelClass: "dialog-fuchi", width: "800px" })
   }
 }

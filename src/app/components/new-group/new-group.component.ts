@@ -250,8 +250,10 @@ export class NewGroupComponent implements OnInit {
   formDataFiles = new FormData();
 
   fnUploadFile(event): void {
+    console.log(event)
     let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
     var input = document.createElement("input");
+   
     input.type = 'file';
     input.accept = '.pdf,.jpg,.png,.jpeg',
       input.multiple = true
