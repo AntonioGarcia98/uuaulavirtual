@@ -126,6 +126,7 @@ export class CourseComponent implements OnInit {
   formData: FormData = new FormData();
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
+
   createActivity()
   {
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
@@ -243,17 +244,20 @@ export class CourseComponent implements OnInit {
         } as S2ButtonModel
       } as S2SettingsFormGeneratorModel;
     config.tool = 'form-generator';
-    config.fnOnClickFormButton=(event)=>{
+    
+    config.fnOnClickFormButton = (event, files)=>{
       console.log(event)
      // let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Group', 'table');
       var input = document.createElement("input");
       input.type = 'file';
-      input.accept = '.pdf,.jpg,.png,.jpeg',
-      input.multiple = true
+      input.accept = '.pdf,.jpg,.png,.jpeg';
+      input.multiple = true;
+
+      input.click()
      
       input.onchange = (event: any) => {
         console.log(event)
-        this.formData = new FormData()
+        files = new FormData()
         /*un archivo*/
         /* let input = event.path[0];
          this.file = input.files[0]
@@ -273,7 +277,10 @@ export class CourseComponent implements OnInit {
           this.filesArraytoSend.push((selectedFiles)[data])*/
   
         })
-    }
+      }
+
+      
+
   }
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {

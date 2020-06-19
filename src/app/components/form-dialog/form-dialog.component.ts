@@ -16,7 +16,7 @@ export class FormDialogComponent implements OnInit {
     fnOnClickButton = (event) => {};
     fnOnOpenTableChange = (event) => {};
     fnOnClickInitFilter = (event) => {};
-    fnOnClickFormButton = (event) => {};
+    fnOnClickFormButton = (event, files) => {};
 
     fnOnKeyup = (event) => {};
     fnOnSubmit = (event, ref) => {};
@@ -26,6 +26,8 @@ export class FormDialogComponent implements OnInit {
 
     title : string = null;
     message : string = null;
+
+    files : any = null
 
     constructor(
         @Inject(MAT_DIALOG_DATA)  public data : SithecConfig,
