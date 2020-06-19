@@ -12,7 +12,7 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { SelectComponent } from 'src/app/form-component/controls/form-generator/form-fields/select/select.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { SithecConfig } from '../form-dialog/sithec.config.model';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -160,6 +160,7 @@ export class EditGroupComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private classService: ClassService,
+    private router:Router
     
   ) { }
   num_idEdit: string
@@ -257,6 +258,7 @@ export class EditGroupComponent implements OnInit {
     this.groupService.update(this.num_idEdit, grouptoSend).toPromise()
       .then((res) => {
         event.fnOffSpinner(true);
+        this.router.navigate(["/group"])
 
       })
       .catch((err) => {

@@ -1,4 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SithecConfig } from '../form-dialog/sithec.config.model';
+import { S2InputForm } from 'src/app/form-component/models/s2-input-form.model';
+import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
+import { S2FormGroupItemModel } from 'src/app/form-component/models/s2-form-group-item.model';
+import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.model';
+import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
+import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { LoginRequest } from 'src/app/models/login-request.model';
+import { FormDialogComponent } from '../form-dialog/form-dialog.component';
+import { MessageConfig } from '../message-dialog/message-dialog.model';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +51,9 @@ export class HomeComponent implements OnInit {
   }
   
   ]
-  constructor() { }
+  constructor(
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -49,6 +65,89 @@ export class HomeComponent implements OnInit {
         comment:title
       
     })
+  }
+
+  fnNewPost():void{
+    
+    var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
+
+    var formGroup_newUser: FormGroup = new FormGroup({
+      title: new FormControl(null, Validators.required),
+      message: new FormControl(null, Validators.required),
+    });
+
+    var config: SithecConfig = new SithecConfig()
+    config.settings =
+      {
+        _formGroup: formGroup_newUser,
+        _id: 'form-new-user',
+        _groups: [
+          {
+            _nameAs: 'user-credentials',
+            _items: [
+              {
+                _control: 'title',
+                _config: {
+                  _id: 'title',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Titulo',
+                    _placeholder: 'Ingresa titulo',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+              {
+                _control: 'message',
+                _config: {
+                  _id: 'message',
+                  _type: 'text',
+                  _input: {
+                    _label: 'Texto',
+                    _placeholder: 'Ingrese mensaje',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
+
+            ],
+          } as S2FormGroupModel,
+        ],
+
+        _saveButton: {
+          _text: 'Crear post',
+          _resetOnSuccess: true,
+          _validToSend: true
+        } as S2ButtonModel
+      } as S2SettingsFormGeneratorModel;
+    config.tool = 'form-generator';
+
+    config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
+      var loginRequest: LoginRequest = new LoginRequest()
+
+      Object.keys(event.data['user-credentials']).map(k => {
+        loginRequest[k] = event.data['user-credentials'][k]
+      })
+
+    
+    }
+
+    config.title = "Publicar un post"
+    config.message = "Comparte tus conocimientos!"
+
+    this.dialog.open(FormDialogComponent, { data: config, panelClass: "dialog-fuchi" }).afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (res && res == -1) {
+          var message: MessageConfig = {
+            title: "Post creado",
+            message: "Post creado incorrectamente."
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+        } else if (res && res == 1) {
+          location.reload()
+        }
+      })
   }
 
 }

@@ -1,175 +1,183 @@
 <!--<app-navbar></app-navbar>-->
 
- <!--Main layout-->
- <main class="mt-2 pt-5">
-    <div class="container">
+<!--Main layout-->
+<main class="mt-2 pt-5">
+  <div class="container">
 
-        <!--Section: Post-->
-        <section class="mt-4">
+    <!--Section: Post-->
+    <section class="mt-4">
 
-            <!--Grid row-->
-            <div class="row">
+      <!--Grid row-->
+      <div class="row">
 
-                <!--Grid column-->
-                <div class="col-md-12 mb-4">
+        <!--Grid column-->
+        <div class="col-md-12 mb-4">
 
-                    <!--Featured Image-->
-                    <div class="card mb-4 wow fadeIn">
+          <!--Featured Image-->
+          <div class="card mb-4 wow fadeIn">
 
-                        <img src="../../../assets/study.jpg"  alt="">
+            <img src="../../../assets/study.jpg" alt="">
 
-                    </div>
-                    <!--/.Featured Image-->
+          </div>
+          <!--/.Featured Image-->
 
-                    <!--Card-->
-                    <div class="card mb-4 wow fadeIn">
+          <!--Card-->
+          <div class="card mb-4 wow fadeIn">
 
-                        <!--Card content-->
-                        <div class="card-body text-center">
+            <!--Card content-->
+            <div class="card-body text-center">
 
-                            <p class="h5 my-4">Que es UaaulaVirtual?</p>
+              <p class="h5 my-4">Que es UaaulaVirtual?</p>
 
-                            <p>UaaulaVirtual es un sistema de control de tareas y trabajos para alumnos y profesores</p>
+              <p>UaaulaVirtual es un sistema de control de tareas y trabajos para alumnos y profesores</p>
 
-                            <h5 class="my-4">
-                                <strong>UaaulaVirtual</strong>
-                            </h5>
-                            <div class="pb-4">
-                                <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-                                    <i class="fab fa-facebook-f mr-3"></i>
-                                </a>
-                        
-                                <a href="https://twitter.com/MDBootstrap" target="_blank">
-                                    <i class="fab fa-twitter mr-3"></i>
-                                </a>
-                        
-                                <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-                                    <i class="fab fa-youtube mr-3"></i>
-                                </a>
-                        
-                        
-                                <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-                                    <i class="fab fa-github mr-3"></i>
-                                </a>
-                        
-                             
-                            </div>
-  
+              <h5 class="my-4">
+                <strong>UaaulaVirtual</strong>
+              </h5>
+              <div class="pb-4">
+                <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+                  <i class="fab fa-facebook-f mr-3"></i>
+                </a>
 
-                            <hr>
+                <a href="https://twitter.com/MDBootstrap" target="_blank">
+                  <i class="fab fa-twitter mr-3"></i>
+                </a>
 
-                         
-                        </div>
-
-                    </div>
-                    <!--/.Card-->
-                    <ng-container  *ngFor="let group of text">
-                    <!--Card-->
-                    <div class="card mb-4 wow fadeIn"  >
-
-                        <!--Contenido cartas post-->
-                        <div class="card-body">
-
-                            <p class="h5 my-4">{{group.title}} </p>
+                <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+                  <i class="fab fa-youtube mr-3"></i>
+                </a>
 
 
-                            <blockquote class="blockquote">
-                                <p class="mb-0">{{group.description}}</p>
-                                <footer class="blockquote-footer">Someone famous in
-                                    
-                                </footer>
-                            </blockquote>
-
-                            <p class="h5 my-4">{{group.title}} </p>
-
-                            <p>{{group.text}}</p>
-
-                        </div>
-
-                    </div>
-                    <!--/.Card-->
-
-          
-                    <!--Commentarios-->
-                    <div class="card card-comments mb-3 wow fadeIn">
-                        <div class="card-header font-weight-bold">2</div>
-                        <div class="card-body">
-
-                            <div class="media d-block d-md-flex mt-4"  *ngFor="let post of group.comments">
-                                <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg" alt="Generic placeholder image">
-                                <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                    <h5 class="mt-0 font-weight-bold">{{post.person}}
-                                        <a href="" class="pull-right">
-                                            <i class="fas fa-reply"></i>
-                                        </a>
-                                    </h5>
-                                  {{post.comment}}
-
-                                  
-
-                                  
-                                   
+                <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+                  <i class="fab fa-github mr-3"></i>
+                </a>
 
 
-                               
-                                </div>
-                            </div>
-           
-                            <div class="form-group mt-4">
-                                <label for="quickReplyFormComment">Comentario</label>
-                                <textarea class="form-control" id="quickReplyFormComment" rows="5"  #titleInput></textarea>
+              </div>
 
-                                <div class="text-center">
-                                    <button class="btn btn-info btn-sm" (click)="addComment(titleInput.value)">Post</button>
-                                </div>
-                            </div>
 
-                        </div>
-                    </div>
-                    </ng-container>
-             
+              <hr>
 
-         
-           
-                </div>
-        
 
             </div>
-   
 
-        </section>
-    </div>
+          </div>
+          <!--/.Card-->
+
+<!--*ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'"-->
+          <div style="display: flex; margin:  31px;" >
+            <button mat-raised-button color="primary" (click)="fnNewPost()">
+              <mat-icon>add</mat-icon>Agregar publicacion
+            </button>
+          </div>
+          <ng-container *ngFor="let group of text">
+            <!--Card-->
+            <div class="card mb-4 wow fadeIn">
+
+              <!--Contenido cartas post-->
+              <div class="card-body">
+
+                <p class="h5 my-4">{{group.title}} </p>
+
+
+                <blockquote class="blockquote">
+                  <p class="mb-0">{{group.description}}</p>
+                  <footer class="blockquote-footer">Someone famous in
+
+                  </footer>
+                </blockquote>
+
+                <p class="h5 my-4">{{group.title}} </p>
+
+                <p>{{group.text}}</p>
+
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+
+            <!--Commentarios-->
+            <div class="card card-comments mb-3 wow fadeIn">
+              <div class="card-header font-weight-bold">2</div>
+              <div class="card-body">
+
+                <div class="media d-block d-md-flex mt-4" *ngFor="let post of group.comments">
+                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
+                    alt="Generic placeholder image">
+                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                    <h5 class="mt-0 font-weight-bold">{{post.person}}
+                      <a href="" class="pull-right">
+                        <i class="fas fa-reply"></i>
+                      </a>
+                    </h5>
+                    {{post.comment}}
+
+
+
+
+
+
+
+
+                  </div>
+                </div>
+
+                <div class="form-group mt-4">
+                  <label for="quickReplyFormComment">Comentario</label>
+                  <textarea class="form-control" id="quickReplyFormComment" rows="5" #titleInput></textarea>
+
+                  <div class="text-center">
+                    <button class="btn btn-info btn-sm" (click)="addComment(titleInput.value)">Post</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </ng-container>
+
+
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+  </div>
 </main>
 
 
 <!--Footer-->
 <footer class="page-footer text-center font-small mdb-color darken-2 mt-4 wow fadeIn">
 
-   
-    <hr class="my-4">
 
-    <!--  iconos -->
-    <div class="pb-4">
-        <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-            <i class="fab fa-facebook-f mr-3"></i>
-        </a>
+  <hr class="my-4">
 
-        <a href="https://twitter.com/MDBootstrap" target="_blank">
-            <i class="fab fa-twitter mr-3"></i>
-        </a>
+  <!--  iconos -->
+  <div class="pb-4">
+    <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+      <i class="fab fa-facebook-f mr-3"></i>
+    </a>
 
-        <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-            <i class="fab fa-youtube mr-3"></i>
-        </a>
-+
+    <a href="https://twitter.com/MDBootstrap" target="_blank">
+      <i class="fab fa-twitter mr-3"></i>
+    </a>
 
-        <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-            <i class="fab fa-github mr-3"></i>
-        </a>
+    <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+      <i class="fab fa-youtube mr-3"></i>
+    </a>
+    +
 
-     
-    </div>
+    <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+      <i class="fab fa-github mr-3"></i>
+    </a>
 
 
-  
+  </div>
+
+
+
 </footer>
