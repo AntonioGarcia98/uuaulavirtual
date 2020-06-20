@@ -15,9 +15,9 @@
               (click)="deleteGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">delete
             </mat-icon>
           </mat-card-header>
-
+          <img mat-card-image src="../../../assets/grupo.JPG" alt="Photo of a Shiba Inu">
           <mat-card-content>
-            <img mat-card-image src="https://img.icons8.com/plasticine/2x/classroom.png" alt="Photo of a Shiba Inu">
+         
             <p>
               Escolaridad: {{ItemGrup.scholarship}}
             </p>

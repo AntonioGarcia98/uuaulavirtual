@@ -584,7 +584,7 @@ export class CourseComponent implements OnInit {
             message: "La actividad se ha sido eliminado correctamente"
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
-          //this.getClassByGroup()
+          this.getActivities()
         }
 
       })

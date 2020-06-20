@@ -70,26 +70,26 @@
               <mat-icon>add</mat-icon>Agregar publicacion
             </button>
           </div>
-          <ng-container *ngFor="let group of text">
+          <ng-container *ngFor="let post of text">
             <!--Card-->
             <div class="card mb-4 wow fadeIn">
 
               <!--Contenido cartas post-->
               <div class="card-body">
 
-                <p class="h5 my-4">{{group.title}} </p>
+                <p class="h5 my-4">{{post.title}} </p>
 
 
                 <blockquote class="blockquote">
-                  <p class="mb-0">{{group.description}}</p>
+                  <p class="mb-0">{{post.comments}}</p>
                   <footer class="blockquote-footer">Someone famous in
 
                   </footer>
                 </blockquote>
 
-                <p class="h5 my-4">{{group.title}} </p>
+                <p class="h5 my-4">{{post.title}} </p>
 
-                <p>{{group.message}}</p>
+                <p>{{post.message}}</p>
 
               </div>
 
@@ -97,14 +97,12 @@
             <!--/.Card-->
 
 
-            <!--Commentarios-->
+            <!--Commentarios
             <div class="card card-comments mb-3 wow fadeIn">
               <div class="card-header font-weight-bold"></div>
               <div class="card-body">
 
                 <div class="media d-block d-md-flex mt-4" *ngFor="let post of group.comments">
-                 <!-- <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                    alt="Generic placeholder image">-->
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                     <h5 class="mt-0 font-weight-bold">{{post.person}}
                       <a href="" class="pull-right">
@@ -125,7 +123,7 @@
                 </div>
 
               </div>
-            </div>
+            </div>-->
           </ng-container>
 
 
