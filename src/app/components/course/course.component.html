@@ -16,9 +16,9 @@
       <p class="m-3">Descripcion del clase:{{ this.clasObj?this.clasObj.description?this.clasObj.description:"":""}}
       </p>
       <div class="extra-buttons">
-        <button mat-raised-button color="primary" (click)="createActivity()">Crear actividad</button>
-        <button mat-raised-button color="primary" (click)="showParticipants()">Ver participantes de la clase</button>
-        <button mat-raised-button color="primary" (click)="activities.openAll()">Ver todas las actividades</button>
+        <button mat-raised-button color="primary" (click)="createActivity()" *ngIf="( session | async )?.user.teacher">Crear actividad</button>
+        <button mat-raised-button color="primary" (click)="showParticipants()" *ngIf="( session | async )?.user.teacher">Ver participantes de la clase</button>
+        <button mat-raised-button color="primary" (click)="activities.openAll()" >Ver todas las actividades</button>
         <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar todas las actividades</button>
       </div>
     </mat-expansion-panel>
@@ -52,7 +52,7 @@
           <button mat-icon-button color="primary"  (click)="deleteActivity(mat)" style="justify-content: flex-end;">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-raised-button color="primary" (click)="editActivity(mat)">Editar actividad</button>
+          <button mat-raised-button color="primary" (click)="editActivity(mat)" *ngIf="( session | async )?.user.teacher">Editar actividad</button>
           <button mat-raised-button color="primary" (click)="showActivity(mat)">Ir a la actividad</button>
         </div>
       </div>

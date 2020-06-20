@@ -29,6 +29,7 @@ import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course',
@@ -72,6 +73,8 @@ export class CourseComponent implements OnInit {
 
   user_id = null;
 
+  session : Observable<any>
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -81,12 +84,12 @@ export class CourseComponent implements OnInit {
     private activityService: ActivityService,
     private sessionService: SessionService,
     private resourcesService : ResourcesService,
-   // private loader: LoaderService,
+    private loader: LoaderService,
     private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
   ngOnInit(): void {
-  
+    this.loader.show()
     this.string_idClass = this.activateRouter.snapshot.params.id;
     this.getClassById()
     this.getActivities()
@@ -96,10 +99,12 @@ export class CourseComponent implements OnInit {
         this.user_id = s.user._id;
       }
     })
+
+    this.session = this.sessionService._session;
   }
 
-  getClassById(): void {
-    this.classService.get(this.string_idClass).toPromise()
+  getClassById() {
+    return this.classService.get(this.string_idClass).toPromise()
       .then((res: any) => {
         this.clasObj = res.item[0]
         
@@ -110,23 +115,23 @@ export class CourseComponent implements OnInit {
       })
   }
 
-  getActivities() {
-    this.classService.getActivitiesByClass(this.string_idClass).toPromise()
-      .then((res) => {
-        console.log(res.item)
-        this.material = res.item
-        this.material.map(a => {
-          var autorID = a.user
-          this.userService.get(autorID)
-            .toPromise()
-            .then((autor: any) => {
-              a['autor'] = autor.item[0].user_name;
-            })
-        })
-      })
-      .catch((rej) => {
-        ///console.error(rej)
-      })
+  async getActivities() {
+    try{
+      var res = await this.classService.getActivitiesByClass(this.string_idClass).toPromise()
+      console.log(res.item)
+
+      this.material = res.item;
+      
+      for (let i = 0; i < this.material.length; i++) {
+        var autorID = this.material[i].user
+        var autor : any = await this.userService.get(autorID).toPromise()
+        this.material[i]['autor'] = autor.item[0].user_name;
+      }
+    } catch(err){
+      console.error(err);
+    }finally{
+      this.loader.hide()
+    }
   }
 
   file: File;
