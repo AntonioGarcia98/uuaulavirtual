@@ -50,11 +50,11 @@ export class ActivityComponent implements OnInit {
     title: new FormControl(null, Validators.required),
     message: new FormControl(null, []),
     comments: new FormControl(null, Validators.required),
-    activity: new FormControl(null, Validators.required),
-    user: new FormControl(null, Validators.required),
+    activity: new FormControl(null,Validators.required),
+    user: new FormControl(null,Validators.required),
 
 
-    resources: new FormControl(null, Validators.required),
+    resources: new FormControl(null),
    
     descriptionResource : new FormControl(null, []),
     urlArchivo:new FormControl(null)
@@ -219,7 +219,7 @@ export class ActivityComponent implements OnInit {
     }
 
     this.sessionService._session.subscribe(s => {
-      if (s && s.user.teacher) {
+      if (s) {
         this.formGroup_newDelivery.patchValue({
           activity : this.data._id,
           user :  s.user._id
