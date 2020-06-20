@@ -38,7 +38,7 @@ let resource = {
             .exec((err, found) => {
                 if(err) return errorHandler(err, res)
                 if(!found) return notFound(err, res)
-                const file = `public/uploads/${found[0].file}`;
+                const file = `${__dirname}/../../public/uploads/${found[0].file}`;
                 res.download(file)
             }))
     }
