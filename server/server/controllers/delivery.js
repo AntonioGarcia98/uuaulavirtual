@@ -35,7 +35,7 @@ let delivery = {
     crud: true,
     middlewares: {
         post: [ verify, userid ],
-        put: [ verify, owner ],
+        put: [ verify ],
         delete: [ verify, owner ]
     }
 }
