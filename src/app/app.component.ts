@@ -25,6 +25,7 @@ import { Observable } from 'rxjs';
 import { UserService } from './services/user.service';
 import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { LoaderService } from './services/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -59,11 +60,12 @@ export class AppComponent implements OnInit {
     private schoolService: SchoolService,
     private userService: UserService,
     private cdr : ChangeDetectorRef,
-    private router : Router
+    private router : Router,
+    private loader : LoaderService
 
   ) {
     this.session = this.sessionService._session;
-    
+    this.loader.show()
   }
 
   ngOnInit() {
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit {
     .finally(() => {
       this.cdr.detectChanges()
       this.cdr.markForCheck()
+      this.loader.hide()
     })
   }
 
