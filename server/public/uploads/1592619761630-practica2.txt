@@ -1,0 +1,99 @@
+use practica2
+var data = 
+[
+    {
+        "codigo" : 1,
+        "nombre_prod" : "Jitomates",
+        "unidad_medida" : ["kilogramo"],
+        "cantidad" : 32,
+        "precio" : 10,
+        "costo" : 7,
+        "categorias" : ["abarrotes"]
+    },
+    {
+        "codigo" : 2,
+        "nombre_prod" : "Paracetamol premium",
+        "unidad_medida" : ["piezas"],
+        "cantidad" : 56,
+        "precio" : 236,
+        "costo" : 180,
+        "categorias" : ["farmacia"]
+    },
+    {
+        "codigo" : 3,
+        "nombre_prod" : "Adhesivo liquido",
+        "unidad_medida" : ["litros"],
+        "cantidad" : 200,
+        "precio" : 25,
+        "costo" : 15,
+        "categorias" : ["papeleria"]
+    },
+    {
+        "codigo" : 4,
+        "nombre_prod" : "Alcohol",
+        "unidad_medida" : ["galones", "litros"],
+        "cantidad" : 2362,
+        "precio" : 56,
+        "costo" : 25,
+        "categorias" : ["farmacia"]
+    },
+    {
+        "codigo" : 5,
+        "nombre_prod" : "Tierra comun",
+        "unidad_medida" : ["kilogramo", "tonelada"],
+        "cantidad" : 123531,
+        "precio" : 10,
+        "costo" : 5,
+        "categorias" : ["jardineria"]
+    },
+    {
+        "codigo" : 6,
+        "nombre_prod" : "Tijeras multiuso",
+        "unidad_medida" : ["piezas"],
+        "cantidad" : 10,
+        "precio" : 250,
+        "costo" : 125,
+        "categorias" : ["papeleria", "jardinería"]
+    },
+    {
+        "codigo" : 7,
+        "nombre_prod" : "Kit de ventaje",
+        "unidad_medida" : ["piezas"],
+        "cantidad" : 10,
+        "precio" : 120,
+        "costo" : 80,
+        "categorias" : ["farmacia"]
+    },
+    {
+        "codigo" : 8,
+        "nombre_prod" : "Martillo",
+        "unidad_medida" : ["piezas"],
+        "cantidad" : 3,
+        "precio" : 99,
+        "costo" : 60,
+        "categorias" : ["jardinería"]
+    },
+    {
+        "codigo" : 9,
+        "nombre_prod" : "Papas fritas",
+        "unidad_medida" : ["kilogramo"],
+        "cantidad" : 1000,
+        "precio" : 20,
+        "costo" : 10,
+        "categorias" : ["abarrotes"]
+    },
+    {
+        "codigo" : 10,
+        "nombre_prod" : "Balon de futbol",
+        "unidad_medida" : ["piezas"],
+        "cantidad" : 10,
+        "precio" : 266,
+        "costo" : 180,
+        "categorias" : ["deportes"]
+    }
+];
+
+
+
+
+db.almacen.insert(data)

@@ -116,7 +116,7 @@ export class CourseComponent implements OnInit {
           this.userService.get(autorID)
             .toPromise()
             .then((autor: any) => {
-              a['autor'] = autor.item.user_name;
+              a['autor'] = autor.item[0].user_name;
             })
         })
       })
@@ -124,11 +124,13 @@ export class CourseComponent implements OnInit {
         ///console.error(rej)
       })
   }
+
   file: File;
   fileSend: any[] = [];
   formData: FormData = new FormData();
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
+
   createActivity() {
     console.log("hola")
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
@@ -357,7 +359,7 @@ export class CourseComponent implements OnInit {
       this.resourcesService.createResource(formData).toPromise()
       .then((res) => {
         newActivity.resources = [];
-        newActivity.resources.push(res._id)
+        newActivity.resources.push(res.item._id)
         this.activityService.create(newActivity).toPromise()
         .then((res) => {
           ref.close(1)
