@@ -19,6 +19,7 @@ import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service'
 import { Observable } from 'rxjs';
 import { SessionService } from 'src/app/services/session.service';
 import { DeliveryModel } from './delivery.model';
+import { DeliveryService } from 'src/app/services/delivery.service';
 
 @Component({
   selector: 'app-activity',
@@ -205,12 +206,15 @@ export class ActivityComponent implements OnInit {
 
   user_id
 
+  deliveries
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Activity,
     public dialogRef: MatDialogRef<ActivityComponent>,
     private resourcesService: ResourcesService,
     private sithecSuiteService_tools: SithecSuiteService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private deliveryService : DeliveryService,
   ) {
     console.log(this.data)
     Object.keys(this.data).map(k => {
@@ -232,7 +236,14 @@ export class ActivityComponent implements OnInit {
       console.log(this.formGroup_newDelivery)
     })
 
+    this.deliveryService.getDeliveriesByActivity(this.data._id).toPromise()
+    .then((res) => {
+      console.log(res)
+    })
+  }
 
+  checkDeliveryActivity()
+  {
   }
 
   fnOnSubmit(event) {
@@ -244,7 +255,7 @@ export class ActivityComponent implements OnInit {
       formData.append('myFile', this.file, this.file.name)
     }
 
-    formData.append('description', event.data['resource']['descriptionCourse'])
+    formData.append('description', event.data['resources-properties']['descriptionResource'])
     formData.append('user', this.user_id)
 
     Object.keys(event.data['new-delivery']).map(k => {
@@ -255,11 +266,13 @@ export class ActivityComponent implements OnInit {
     .then((res) => {
       newDelivery.resources = [];
       newDelivery.resources.push(res.item._id)
-      /* this.activityService.create(newDelivery).toPromise()
+      this.deliveryService.create(newDelivery).toPromise()
       .then((res) => {
+        console.log('done')
       })
       .catch((err) => {
-      }) */
+        console.error(err)
+      })
     })
   }
 
