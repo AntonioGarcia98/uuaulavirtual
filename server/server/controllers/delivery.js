@@ -1,5 +1,5 @@
 const {verify,owner, admin, userid, teacher} = require('../middlewares/auth')
-const {create} = require('../config/functions')
+const {create, find} = require('../config/functions')
 
 const Delivery = require('../models/delivery')
 
@@ -35,8 +35,12 @@ let delivery = {
     crud: true,
     middlewares: {
         post: [ verify, userid ],
-        put: [ verify, owner ],
+        put: [ verify ],
         delete: [ verify, owner ]
+    }, 
+    extra: app => {
+        app.get( "/deliveries/activity/:id", (req, res) => find(Delivery, {activity: req.params.id}, req, res)),
+        app.get("/delivery/post", (req, res) => find(Delivery, {activity: {$exists: false}}, req, res ))
     }
 }
 

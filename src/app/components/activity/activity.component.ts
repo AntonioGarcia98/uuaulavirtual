@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Activity } from './activity.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ResourcesService } from 'src/app/services/resources.service';
 
 @Component({
   selector: 'app-activity',
@@ -20,13 +21,25 @@ export class ActivityComponent implements OnInit {
 
   points : number = 0;
 
+  resource : any = null
+
   constructor(
     @Inject(MAT_DIALOG_DATA)  public data : Activity,
-    public dialogRef: MatDialogRef<ActivityComponent>
+    public dialogRef: MatDialogRef<ActivityComponent>,
+    private resourcesService : ResourcesService
   ) { 
+    console.log(this.data)
     Object.keys(this.data).map(k => {
       this[k] = this.data[k]; 
     })
+
+    if(this.data.resources && this.data.resources.length > 0)
+    {
+      this.resourcesService.downloadResource(this.data.resources[0]).toPromise()
+      .then((res) => {
+        console.log(res)
+      })
+    }
   }
 
   ngOnInit(): void {

@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
-    var formGroup_newUser: FormGroup = new FormGroup({
+    var formGroup_newPost: FormGroup = new FormGroup({
       title: new FormControl(null, Validators.required),
       message: new FormControl(null, Validators.required),
     });
@@ -79,11 +79,11 @@ export class HomeComponent implements OnInit {
     var config: SithecConfig = new SithecConfig()
     config.settings =
       {
-        _formGroup: formGroup_newUser,
-        _id: 'form-new-user',
+        _formGroup: formGroup_newPost,
+        _id: 'form-new-post',
         _groups: [
           {
-            _nameAs: 'user-credentials',
+            _nameAs: 'post-new',
             _items: [
               {
                 _control: 'title',
@@ -123,11 +123,13 @@ export class HomeComponent implements OnInit {
     config.tool = 'form-generator';
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
-      var loginRequest: LoginRequest = new LoginRequest()
+      console.log(event.data['post-new'])
+      var postNew: LoginRequest = new LoginRequest()
 
-      Object.keys(event.data['user-credentials']).map(k => {
-        loginRequest[k] = event.data['user-credentials'][k]
+      Object.keys(event.data['post-new']).map(k => {
+        postNew[k] = event.data['post-new'][k]
       })
+
 
     
     }

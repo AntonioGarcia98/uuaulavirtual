@@ -33,7 +33,7 @@
           {{mat.title}}
         </mat-panel-title>
         <mat-panel-description style="justify-content: flex-end;">
-         <!-- {{mat.autor}}-->
+         {{mat.autor}}
           
         </mat-panel-description>
        
@@ -43,6 +43,9 @@
        
         <div class="description">
           {{mat.description}}
+        </div>
+        <div class="description">
+          <button mat-raised-button color="accent"></button>
         </div>
         <div class="buttons">
           <button mat-icon-button color="primary"  (click)="deleteActivity(mat)" style="justify-content: flex-end;">

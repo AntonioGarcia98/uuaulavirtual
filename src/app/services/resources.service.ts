@@ -19,8 +19,9 @@ export class ResourcesService  {
     return this.http.post(this.url, formData);
   }
 
-
-
-
+  downloadResource(id : string) : Observable<any>
+  {
+    return this.http.get(environment.server + "download/" + id)
+  }
 
 }

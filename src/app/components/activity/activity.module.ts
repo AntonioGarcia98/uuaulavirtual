@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { ResourcesService } from 'src/app/services/resources.service';
 
 @NgModule({
     declarations: [ActivityComponent],
@@ -19,6 +20,8 @@ import { MatTableModule } from '@angular/material/table';
         MatTableModule
     ],
     exports: [ActivityComponent],
-    providers: [],
+    providers: [
+        ResourcesService
+    ],
 })
 export class ActivityModule { }

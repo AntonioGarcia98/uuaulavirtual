@@ -1,0 +1,5 @@
+user: edwir147
+pass: 26DjOVjBpD0DDcmn
+
+connect: 
+mongo "mongodb+srv://cluster0-h8wwc.mongodb.net/uaaulavirtual" --username edwir147
