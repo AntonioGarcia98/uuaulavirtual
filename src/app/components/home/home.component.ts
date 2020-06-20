@@ -15,6 +15,8 @@ import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { DeliveryModel } from '../activity/delivery.model';
 import { DeliveryService } from 'src/app/services/delivery.service';
+import { Session } from 'inspector';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +30,7 @@ export class HomeComponent implements OnInit {
   text =[{
     title:"Titlulo",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.",
-    text:" Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporisducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis" +
+    message:" Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporisducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis" +
     "ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi"
     +"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi",
     comments:[
@@ -40,26 +42,48 @@ export class HomeComponent implements OnInit {
         person:"Mirna Pere",
         comment:"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
       },
-      {
-        person:"Mirna Pere",
-        comment:"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        person:"Mirna Pere",
-        comment:"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
-      }
     ]
 
   }
   
+  
   ]
+  sessionData: Session
   constructor(
     private dialog: MatDialog,
-    private deliveryService:DeliveryService
+    private deliveryService:DeliveryService,
+    private sessionService: SessionService,
   ) { }
 
   ngOnInit(): void {
+    this.getPost()
+    this.subscribeSession()
   }
+  subscribeSession(): void {
+    this.sessionService._session.subscribe(data => {
+      this.sessionData = data
+      console.log(this.sessionData)
+    })
+  }
+
+  getPost():void{
+    this.deliveryService.getAll().toPromise()
+    .then((res:any)=>{
+      console.log(res)
+      this.addPostArray(res.item)
+    })
+    .catch((rej)=>{
+
+    })
+
+  }
+
+  addPostArray(info:any):void{
+    info.forEach(element => {
+      this.text.push(element)
+    });
+  }
+
 
   addComment(title:string):void{
     this.text[0].comments.push({
@@ -132,15 +156,16 @@ export class HomeComponent implements OnInit {
       Object.keys(event.data['post-new']).map(k => {
         postNew[k] = event.data['post-new'][k]
       })
+      postNew.user= this.sessionData['user']._id
       console.log(postNew)
 
-      /*this.deliveryService.create()
+      this.deliveryService.create(postNew).toPromise()
       .then((res) => {
         ref.close(1)
       })
       .catch((err) => {
         ref.close(-1)
-      })*/
+      })
 
 
     

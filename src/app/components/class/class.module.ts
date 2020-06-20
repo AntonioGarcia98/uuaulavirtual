@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 
 const routes: Routes = [
     { path: '', component: ClassComponent }
@@ -18,7 +19,8 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         MatCardModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatProgressSpinnerModule
     ],
     exports: [RouterModule],
     declarations: [ClassComponent],

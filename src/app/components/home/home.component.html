@@ -64,8 +64,8 @@
           </div>
           <!--/.Card-->
 
-<!--*ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'"-->
-          <div style="display: flex; margin:  31px;" >
+
+          <div style="display: flex; margin:  31px;" *ngIf="sessionData" >
             <button mat-raised-button color="primary" (click)="fnNewPost()">
               <mat-icon>add</mat-icon>Agregar publicacion
             </button>
@@ -89,7 +89,7 @@
 
                 <p class="h5 my-4">{{group.title}} </p>
 
-                <p>{{group.text}}</p>
+                <p>{{group.message}}</p>
 
               </div>
 
@@ -99,12 +99,12 @@
 
             <!--Commentarios-->
             <div class="card card-comments mb-3 wow fadeIn">
-              <div class="card-header font-weight-bold">2</div>
+              <div class="card-header font-weight-bold"></div>
               <div class="card-body">
 
                 <div class="media d-block d-md-flex mt-4" *ngFor="let post of group.comments">
-                  <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                    alt="Generic placeholder image">
+                 <!-- <img class="d-flex mb-3 mx-auto " src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
+                    alt="Generic placeholder image">-->
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                     <h5 class="mt-0 font-weight-bold">{{post.person}}
                       <a href="" class="pull-right">
@@ -112,14 +112,6 @@
                       </a>
                     </h5>
                     {{post.comment}}
-
-
-
-
-
-
-
-
                   </div>
                 </div>
 

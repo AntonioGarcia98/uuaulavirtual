@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 
 const routes: Routes = [
   { path: '', component: EditGroupComponent }
@@ -23,7 +24,8 @@ const routes: Routes = [
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
 
   ]
 })

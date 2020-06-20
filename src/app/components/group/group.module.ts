@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 
 const routes: Routes = [
     { path: '', component: GroupComponent }
@@ -22,7 +23,8 @@ const routes: Routes = [
         MatButtonModule,
         SithecSuiteModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        MatProgressSpinnerModule
     ],
     exports: [RouterModule],
     declarations: [GroupComponent],
