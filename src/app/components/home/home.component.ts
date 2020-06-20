@@ -9,7 +9,6 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { LoginRequest } from 'src/app/models/login-request.model';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
@@ -17,6 +16,8 @@ import { DeliveryModel } from '../activity/delivery.model';
 import { DeliveryService } from 'src/app/services/delivery.service';
 import { Session } from 'inspector';
 import { SessionService } from 'src/app/services/session.service';
+import { UserService } from 'src/app/services/user.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -27,35 +28,18 @@ export class HomeComponent implements OnInit {
 
 
 
-  text =[{
-    title:"Titlulo",
-    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.",
-    message:" Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporisducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis" +
-    "ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi"
-    +"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi",
-    comments:[
-      {
-        person:"Mirna Pere",
-        comment:"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        person:"Mirna Pere",
-        comment:"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
-      },
-    ]
-
-  }
-  
-  
-  ]
+  text:any = []
   sessionData: Session
   constructor(
     private dialog: MatDialog,
-    private deliveryService:DeliveryService,
+    private deliveryService: DeliveryService,
     private sessionService: SessionService,
+    private userService: UserService,
+    private loader: LoaderService,
   ) { }
 
   ngOnInit(): void {
+    this.loader.show()
     this.getPost()
     this.subscribeSession()
   }
@@ -66,41 +50,48 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getPost():void{
-    this.deliveryService.getAll().toPromise()
-    .then((res:any)=>{
-      console.log(res)
-      this.addPostArray(res.item)
-    })
-    .catch((rej)=>{
+  async getPost() {
+    try{
+      var res:any = await this.deliveryService.getAll().toPromise()
+      console.log(res.item)
 
-    })
+      this.text=res.item
+      
+      for (let i = 0; i < this.text.length; i++) {
+        console.log(this.text[i].user)
+        var autorID = this.text[i].user
+        var autor : any = await this.userService.get(autorID).toPromise()
+        this.text[i]['autor'] = autor.item[0].user_name;
+      }
+      console.log(this.text)
+    } catch(err){
+      console.error(err);
+    }finally{
+      this.loader.hide()
+    }
+
 
   }
 
-  addPostArray(info:any):void{
-    info.forEach(element => {
-      this.text.push(element)
-    });
-  }
 
 
-  addComment(title:string):void{
+  addComment(title: string): void {
     this.text[0].comments.push({
-      
-        person:"Antonio Garcia",
-        comment:title
-      
+
+      person: "Antonio Garcia",
+      comment: title
+
     })
   }
 
-  fnNewPost():void{
-    
+  fnNewPost(): void {
+
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var formGroup_newPost: FormGroup = new FormGroup({
       title: new FormControl(null, Validators.required),
       message: new FormControl(null, Validators.required),
+      comments: new FormControl(null),
     });
 
     var config: SithecConfig = new SithecConfig()
@@ -136,9 +127,22 @@ export class HomeComponent implements OnInit {
                   } as S2InputForm
                 } as S2FormField
               } as S2FormGroupItemModel,
+              {
+                _control: "comments",
+                _config: {
+                  _id: "comments",
+                  _type: "text",
+                  _input: {
+                    _label: 'Comentarios (opcional)',
+                    _placeholder: 'Ingresa un comentario',
+                    _columns: inputColumns
+                  } as S2InputForm
+                } as S2FormField
+              } as S2FormGroupItemModel,
 
             ],
           } as S2FormGroupModel,
+          
         ],
 
         _saveButton: {
@@ -156,19 +160,19 @@ export class HomeComponent implements OnInit {
       Object.keys(event.data['post-new']).map(k => {
         postNew[k] = event.data['post-new'][k]
       })
-      postNew.user= this.sessionData['user']._id
+      postNew.user = this.sessionData['user']._id
       console.log(postNew)
 
       this.deliveryService.create(postNew).toPromise()
-      .then((res) => {
-        ref.close(1)
-      })
-      .catch((err) => {
-        ref.close(-1)
-      })
+        .then((res) => {
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
 
 
-    
+
     }
 
     config.title = "Publicar un post"
@@ -184,7 +188,12 @@ export class HomeComponent implements OnInit {
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         } else if (res && res == 1) {
-          location.reload()
+          var message: MessageConfig = {
+            title: "Post creado",
+            message: "Post creado correctamente."
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          this.getPost()
         }
       })
   }

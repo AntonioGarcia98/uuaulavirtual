@@ -51,8 +51,8 @@ export class ActivityComponent implements OnInit {
     title: new FormControl(null, Validators.required),
     message: new FormControl(null, []),
     comments: new FormControl(null, Validators.required),
-    activity: new FormControl(null, Validators.required),
-    user: new FormControl(null, Validators.required),
+    activity: new FormControl(null,Validators.required),
+    user: new FormControl(null,Validators.required),
 
 
     resources: new FormControl(null, Validators.required),
