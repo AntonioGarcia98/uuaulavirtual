@@ -8,6 +8,8 @@ import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.mod
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 const routes: Routes = [
     { path: '', component: HomeComponent }
 ];
@@ -18,7 +20,9 @@ const routes: Routes = [
         SithecSuiteModule,
         MatIconModule,
         MatDialogModule,
-        MatProgressSpinnerModule
+        MatExpansionModule,
+      
+        MatListModule,
     
     ],
     exports: [RouterModule],
