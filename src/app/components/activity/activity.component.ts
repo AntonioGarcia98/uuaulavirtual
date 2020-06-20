@@ -14,6 +14,10 @@ import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { environment } from 'src/environments/environment';
+import { TableFormComponent } from 'src/app/form-component/controls/form-generator/form-fields/table/table.component';
+import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
+import { Observable } from 'rxjs';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-activity',
@@ -35,6 +39,12 @@ export class ActivityComponent implements OnInit {
   resource: any = null
 
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
+
+  fileSend = null
+
+  file = null
+  
+  session : Observable<any>
 
   formGroup_newDelivery: FormGroup = new FormGroup({
     title: new FormControl(null, Validators.required),
@@ -195,7 +205,9 @@ export class ActivityComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Activity,
     public dialogRef: MatDialogRef<ActivityComponent>,
-    private resourcesService: ResourcesService
+    private resourcesService: ResourcesService,
+    private sithecSuiteService_tools: SithecSuiteService,
+    private sessionService : SessionService
   ) {
     console.log(this.data)
     Object.keys(this.data).map(k => {
@@ -205,11 +217,57 @@ export class ActivityComponent implements OnInit {
     if (this.data.resources && this.data.resources.length > 0) {
       this.resource = environment.server + "download/" + this.data.resources[0]
     }
+
+    this.sessionService._session.subscribe(s => {
+      if (s && s.user.teacher) {
+        this.formGroup_newDelivery.patchValue({
+          activity : this.data._id,
+          user :  s.user._id
+        })
+      }
+    })
+
+    
   }
 
-  fnOnSend(event)
+  fnOnSubmit(event)
   {
-    console.log
+    console.log(event)
+  }
+
+  fnOnClickFormButton(event){
+    this.fileSend = []
+    this.file = null
+    let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Delivery', 'table');
+    var input = document.createElement("input");
+    console.log(input)
+    input.type = 'file';
+    input.accept = '.pdf,.jpg,.png,.jpeg';
+    input.multiple = false;
+
+    input.onchange = (event: any) => {
+      console.log(event)
+
+      /*un archivo*/
+      let input = event.path[0];
+      this.file = input.files[0]
+
+      //files = "cosa fea"
+      let selectedFiles = (event.target || event.srcElement).files;
+      console.log(selectedFiles)
+
+      /*multiples archivos*/
+      let aux = {
+        _nombre: this.file.name
+      }
+      tableComponent.fnSetOptions(this.fileSend);//reemplaza el archivo que estaba por el nuevo
+      this.fileSend.push(aux)
+      tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
+
+    }
+    input.click()
+    event.fnOffSpinner(true)
+
   }
 
 

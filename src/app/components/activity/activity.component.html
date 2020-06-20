@@ -13,7 +13,8 @@
     <h4 class="desc-date"><b>Fecha limite de entrega : {{delivery_date}}</b></h4>
   </div>
   <div class="activity-actions" style="overflow: auto;">
-    <form-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSend($event)">
+    <form-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSubmit($event)"
+    (onClickFormButton)="fnOnClickFormButton($event)">
     </form-suite>
     <!-- <button mat-raised-button color="primary">Agregar entrega</button> -->
   </div>
