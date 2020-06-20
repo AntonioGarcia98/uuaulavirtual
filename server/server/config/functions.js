@@ -30,11 +30,11 @@ const findFull = (model, condition, req, res = null) => {
 }
 
 const find = (model, condition, req, res = null) => {
-    let page = Number(req.query.page || 1)
-    let limit = Number(req.query.limit || 5)
+    // let page = Number(req.query.page || 1)
+    // let limit = Number(req.query.limit || 5)
     let found = model.find(condition)
-        .skip((page-1) * limit)
-        .limit(limit)
+        //.skip((page-1) * limit)
+        // .limit(limit)
     return (res) ? found.exec((err, items) => defaultRes(err, items, res)) :found
 }
 
