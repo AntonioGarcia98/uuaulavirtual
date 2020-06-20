@@ -13,6 +13,8 @@ import { LoginRequest } from 'src/app/models/login-request.model';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { DeliveryModel } from '../activity/delivery.model';
+import { DeliveryService } from 'src/app/services/delivery.service';
 
 @Component({
   selector: 'app-home',
@@ -53,6 +55,7 @@ export class HomeComponent implements OnInit {
   ]
   constructor(
     private dialog: MatDialog,
+    private deliveryService:DeliveryService
   ) { }
 
   ngOnInit(): void {
@@ -124,11 +127,20 @@ export class HomeComponent implements OnInit {
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>) => {
       console.log(event.data['post-new'])
-      var postNew: LoginRequest = new LoginRequest()
+      var postNew: DeliveryModel = new DeliveryModel()
 
       Object.keys(event.data['post-new']).map(k => {
         postNew[k] = event.data['post-new'][k]
       })
+      console.log(postNew)
+
+      /*this.deliveryService.create()
+      .then((res) => {
+        ref.close(1)
+      })
+      .catch((err) => {
+        ref.close(-1)
+      })*/
 
 
     
