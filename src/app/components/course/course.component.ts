@@ -28,6 +28,7 @@ import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service'
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
 import { ResourcesService } from 'src/app/services/resources.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-course',
@@ -36,7 +37,7 @@ import { ResourcesService } from 'src/app/services/resources.service';
 })
 export class CourseComponent implements OnInit {
 
-  IsWait:boolean= true
+ 
   material = [/* {
     delivery_date: "20/06/2020",
     points : 10,
@@ -80,10 +81,12 @@ export class CourseComponent implements OnInit {
     private activityService: ActivityService,
     private sessionService: SessionService,
     private resourcesService : ResourcesService,
+   // private loader: LoaderService,
     private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
   ngOnInit(): void {
+  
     this.string_idClass = this.activateRouter.snapshot.params.id;
     this.getClassById()
     this.getActivities()
@@ -99,7 +102,7 @@ export class CourseComponent implements OnInit {
     this.classService.get(this.string_idClass).toPromise()
       .then((res: any) => {
         this.clasObj = res.item[0]
-        this.IsWait=false
+        
 
       })
       .catch((rej) => {

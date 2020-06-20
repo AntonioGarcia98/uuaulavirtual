@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageConfig } from '../message-dialog/message-dialog.model';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-group',
@@ -26,7 +27,7 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 export class GroupComponent implements OnInit {
 
   group =[]
-  IsWait:boolean= true
+ 
 
   session : Observable<any>
 
@@ -35,6 +36,7 @@ export class GroupComponent implements OnInit {
     private sessionService: SessionService,
     private groupService:GroupService,
     private dialog: MatDialog,
+    private loader : LoaderService
   ) { 
     
     this.session = this.sessionService._session;
@@ -42,6 +44,7 @@ export class GroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeSession()
+    this.loader.show()
    
   }
 
@@ -49,7 +52,7 @@ export class GroupComponent implements OnInit {
     this.groupService.getAll().toPromise()
     .then((res:any)=>{
       this.group = res.item
-      this.IsWait=false
+      this.loader.hide()
     })
     .catch((rej)=>{
 
@@ -61,7 +64,7 @@ export class GroupComponent implements OnInit {
     this.groupService.getGroupsByIdUser(id).toPromise()
     .then((res:any)=>{
       this.group = res.item
-      this.IsWait=false
+     this.loader.hide()
     })
     .catch((rej)=>{
 

@@ -25,6 +25,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ClassService } from 'src/app/services/class.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-edit-group',
@@ -42,7 +43,7 @@ export class EditGroupComponent implements OnInit {
   _studentsObs: Observable<any[]> = this.$studentsObs.asObservable();
   inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
   data: any
-  IsWait:boolean= true
+ 
   displayedColumns: string[] = ['position', 'name','action'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -160,11 +161,14 @@ export class EditGroupComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private classService: ClassService,
-    private router:Router
+    private router:Router,
+    private loader : LoaderService
+
     
   ) { }
   num_idEdit: string
   ngOnInit(): void {
+    this.loader.show()
     this.getSchools()
     this.num_idEdit = this.activateRouter.snapshot.params.id;
     this.getGroupById()
@@ -206,7 +210,7 @@ export class EditGroupComponent implements OnInit {
         this.schoolsArraySelect = res.item;
         this.$notificaciones.next(res.item);
        // this.fnPutData()
-       this.IsWait=false
+  
       })
       .catch((rej) => {
         console.log(rej)
@@ -508,7 +512,7 @@ export class EditGroupComponent implements OnInit {
     this.classService.getClassByGroup(this.num_idEdit).toPromise()
     .then((res:any)=>{
       this.dataSource = new MatTableDataSource(res.item);
-
+      this.loader.hide()
     })
     .catch((rej)=>{
       console.log(rej)

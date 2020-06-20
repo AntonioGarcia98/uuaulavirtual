@@ -1,7 +1,4 @@
 <div class="container mt-5 d-flex flex-column">
-  <mat-progress-spinner mode="indeterminate" *ngIf="IsWait">
-  </mat-progress-spinner>
-  <ng-container *ngIf="!IsWait">
 
     <h2 class="mat-h2">Grupos</h2>
     <div class="cards-container">
@@ -34,7 +31,6 @@
       </ng-container>
     </div>
 
-  </ng-container>
 
 
   <div style="display: flex; margin:  31px;" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">

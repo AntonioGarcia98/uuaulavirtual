@@ -1,9 +1,7 @@
 <div class="container mt-5 d-flex flex-column">
-  <mat-progress-spinner mode="indeterminate" *ngIf="IsWait">
-  </mat-progress-spinner>
 
   <h2 class="mat-h2">Clases</h2>
-    <div class="cards-container"  *ngIf="!IsWait">
+    <div class="cards-container" >
     <ng-container *ngFor = "let class of classArray">
     <mat-card  class="group-card"> 
         <mat-card-header (click)="seleccionClase(class)">
