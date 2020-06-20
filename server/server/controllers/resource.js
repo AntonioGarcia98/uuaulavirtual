@@ -1,5 +1,5 @@
 const {verify, admin, userid, teacher, owner} = require('../middlewares/auth')
-const {create} = require('../config/functions')
+const {create, find, errorHandler, notFound} = require('../config/functions')
 const upload = require('../middlewares/storage')
 
 const Resource = require('../models/resource')
@@ -30,8 +30,17 @@ let resource = {
     crud: true,
     middlewares: {
         post: [ verify, /*userid,*/ upload.single('myFile') ],
-        put: [ verify, /*owner*/ ],
-        delete: [ verify, /*owner*/ ]
+        put: [ verify, owner ],
+        delete: [ verify, owner ]
+    },
+    extra: app => {
+        app.get( "/download/:id", (req, res) => find(Resource, {_id: req.params.id}, req)
+            .exec((err, found) => {
+                if(err) return errorHandler(err, res)
+                if(!found) return notFound(err, res)
+                const file = `${__dirname}/../../public/uploads/${found[0].file}`;
+                res.download(file)
+            }))
     }
 }
 
