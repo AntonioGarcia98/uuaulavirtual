@@ -219,12 +219,13 @@ export class ActivityComponent implements OnInit {
     }
 
     this.sessionService._session.subscribe(s => {
-      if (s && s.user.teacher) {
+      if (s && s.user.student) {
         this.formGroup_newDelivery.patchValue({
           activity : this.data._id,
           user :  s.user._id
         })
       }
+      console.log(this.formGroup_newDelivery)
     })
 
     
@@ -264,6 +265,9 @@ export class ActivityComponent implements OnInit {
       this.fileSend.push(aux)
       tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
 
+      this.formGroup_newDelivery.patchValue({
+        resources : this.file.name
+      })
     }
     input.click()
     event.fnOffSpinner(true)
