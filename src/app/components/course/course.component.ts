@@ -27,6 +27,7 @@ import { TableFormComponent } from 'src/app/form-component/controls/form-generat
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
+import { ResourcesService } from 'src/app/services/resources.service';
 
 @Component({
   selector: 'app-course',
@@ -78,6 +79,7 @@ export class CourseComponent implements OnInit {
     private userService: UserService,
     private activityService: ActivityService,
     private sessionService: SessionService,
+    private resourcesService : ResourcesService,
     private sithecSuiteService_tools: SithecSuiteService,
   ) { }
 
@@ -107,6 +109,7 @@ export class CourseComponent implements OnInit {
   getActivities() {
     this.classService.getActivitiesByClass(this.string_idClass).toPromise()
       .then((res) => {
+        console.log(res.item)
         this.material = res.item
         this.material.map(a => {
           var autorID = a.user
@@ -127,6 +130,7 @@ export class CourseComponent implements OnInit {
   filesArraytoSend: File[] = [];
   formDataFiles = new FormData();
   createActivity() {
+    console.log("hola")
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({
@@ -334,38 +338,40 @@ export class CourseComponent implements OnInit {
     }
 
     config.fnOnSubmit = (event, ref: MatDialogRef<any>, files) => {
-      console.log(this.file, event)
+      //console.log(this.file, event)
       let formData: FormData = new FormData();
+      let newActivity : Activity = new Activity();
 
       if (this.file) {
-        formData.append('myfile', this.file, this.file.name)
-
-
+        formData.append('myFile', this.file, this.file.name)
       }
 
-      Object.keys(event.data['resource']).map(k => {
-        formData.append('description', event.data['resource'][k])
-      })
+      //solo descripcion y usuario
+      formData.append('description', event.data['resource']['descriptionCourse'])
       formData.append('user', this.user_id)
-
-
-
-
-      var newActivity: Activity = new Activity()
-
 
       Object.keys(event.data['activity-properties']).map(k => {
         newActivity[k] = event.data['activity-properties'][k]
-
       })
-      /*
-            this.activityService.create(newActivity).toPromise()
-              .then((res) => {
-                ref.close(1)
-              })
-              .catch((err) => {
-                ref.close(-1)
-              })*/
+
+      this.resourcesService.createResource(formData).toPromise()
+      .then((res) => {
+        newActivity.resources = [];
+        newActivity.resources.push(res._id)
+        this.activityService.create(newActivity).toPromise()
+        .then((res) => {
+          ref.close(1)
+        })
+        .catch((err) => {
+          ref.close(-1)
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+        ref.close(-1)
+      })
+
+      
     }
 
 
@@ -390,6 +396,7 @@ export class CourseComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         }
       })
+
   }
 
   editActivity(act: Activity) {
@@ -541,7 +548,7 @@ export class CourseComponent implements OnInit {
             title: "Editar actividad",
             message: "Actividad actualizar correctamente."
           }
-          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi", width: "200px",height: '350px' });
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi", width: "200px", height: '350px' });
         }
       })
   }
@@ -553,5 +560,27 @@ export class CourseComponent implements OnInit {
 
   showParticipants() {
     this.dialog.open(ClassParticipantsComponent, { data: this.clasObj, panelClass: "dialog-fuchi", width: "800px" })
+  }
+
+  deleteActivity(mat: any): void {
+    console.log(mat)
+
+    this.activityService.delete(mat._id).toPromise()
+      .then((res) => {
+        if (res) {
+
+          var message: MessageConfig = {
+            title: "Eliminar actividad ",
+            message: "La actividad se ha sido eliminado correctamente"
+          }
+          this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          //this.getClassByGroup()
+        }
+
+      })
+      .catch((rej) => {
+        console.log(rej)
+      })
+
   }
 }

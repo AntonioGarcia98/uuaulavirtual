@@ -28,7 +28,7 @@ export class FormDialogComponent implements OnInit {
 
     fnOnClickSavebutton = (event) => {};
 
- 
+  
 
     constructor(
         @Inject(MAT_DIALOG_DATA)  public data : SithecConfig,

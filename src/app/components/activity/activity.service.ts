@@ -19,10 +19,4 @@ export class ActivityService extends ServiceBase<Activity> {
       super(Activity)
   }
 
-  setFiles(fileData : FormData) : Observable<any>
-  {
-    return this.http.post(this.url, fileData, {headers : {
-      "Content-Type": "multipart/form-data"
-    }});
-  }
 }
