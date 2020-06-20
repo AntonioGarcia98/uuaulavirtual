@@ -500,11 +500,13 @@ export class AppComponent implements OnInit {
         loginRequest[k] = event.data['user-credentials'][k]
       })
 
+      this.loader.show()
       this.sessionService.login(loginRequest)
         .then((res) => {
           ref.close(1)
         })
         .catch((err) => {
+          this.loader.hide()
           ref.close(-1)
         })
     }
@@ -522,7 +524,10 @@ export class AppComponent implements OnInit {
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         } else if (res && res == 1) {
-          location.reload()
+          //location.reload()
+          this.cdr.detectChanges()
+          this.cdr.markForCheck()
+          this.loader.hide()
         }
       })
   }
@@ -825,9 +830,9 @@ export class AppComponent implements OnInit {
             role: "ADMIN_ROLE"
           }
           teacher["_id"] = this.user.teacher._id
-
-          await this.teacherService.update(teacher._id, teacher).toPromise()
+()
         }
+          await this.teacherService.update(teacher._id, teacher).toPromise
         
         ref.close(1)
       } catch (error) {

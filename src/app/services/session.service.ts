@@ -45,7 +45,7 @@ export class SessionService {
                 localStorage.setItem(SessionService.SESSION_TAG, session.token);
             })
             .catch(err => {
-                return err;
+                throw err;
             });
 
     }
