@@ -16,6 +16,8 @@ import { DeliveryModel } from '../activity/delivery.model';
 import { DeliveryService } from 'src/app/services/delivery.service';
 import { Session } from 'inspector';
 import { SessionService } from 'src/app/services/session.service';
+import { UserService } from 'src/app/services/user.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -26,35 +28,18 @@ export class HomeComponent implements OnInit {
 
 
 
-  text = [{
-    title: "Titlulo",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.",
-    message: " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporisducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis" +
-      "ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi"
-      + "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ut rerum deserunt corporis ducimus at, deleniti ea alias dolor reprehenderit sit vel. Incidunt id illum doloribus,consequuntur maiores sed eligendi",
-    comments: [
-      {
-        person: "Mirna Pere",
-        comment: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        person: "Mirna Pere",
-        comment: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
-      },
-    ]
-
-  }
-
-
-  ]
+  text:any = []
   sessionData: Session
   constructor(
     private dialog: MatDialog,
     private deliveryService: DeliveryService,
     private sessionService: SessionService,
+    private userService: UserService,
+    private loader: LoaderService,
   ) { }
 
   ngOnInit(): void {
+    this.loader.show()
     this.getPost()
     this.subscribeSession()
   }
@@ -65,16 +50,26 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getPost(): void {
-    this.deliveryService.getAll().toPromise()
-      .then((res: any) => {
-        console.log(res)
-        this.text=res.item
-       
-      })
-      .catch((rej) => {
+  async getPost() {
+    try{
+      var res:any = await this.deliveryService.getAll().toPromise()
+      console.log(res.item)
 
-      })
+      this.text=res.item
+      
+      for (let i = 0; i < this.text.length; i++) {
+        console.log(this.text[i].user)
+        var autorID = this.text[i].user
+        var autor : any = await this.userService.get(autorID).toPromise()
+        this.text[i]['autor'] = autor.item[0].user_name;
+      }
+      console.log(this.text)
+    } catch(err){
+      console.error(err);
+    }finally{
+      this.loader.hide()
+    }
+
 
   }
 

@@ -76,7 +76,6 @@ export class CourseComponent implements OnInit {
   session : Observable<any>
 
   constructor(
-    private router: Router,
     private dialog: MatDialog,
     private activateRouter: ActivatedRoute,
     private classService: ClassService,
