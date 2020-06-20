@@ -7,10 +7,12 @@
   </div>
   <div class="activity-info">
     <h2 class="desc-title">Descripcion de la actividad</h2>
-    <span class="desc">{{description}}</span>
+    <span class="desc">{{description}}</span><br><br>
+
+    <a [href]="resource" mat-raised-button color="primary">Recurso</a>
     <h4 class="desc-date"><b>Fecha limite de entrega : {{delivery_date}}</b></h4>
   </div>
-  <div class="activity-actions">
+  <div class="activity-actions" style="overflow: auto;">
     <form-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSend($event)">
     </form-suite>
     <!-- <button mat-raised-button color="primary">Agregar entrega</button> -->

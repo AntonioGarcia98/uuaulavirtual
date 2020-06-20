@@ -13,6 +13,7 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonFormModel } from 'src/app/form-component/models/s2-button-form.model';
 import { HeadersFormModel } from 'src/app/form-component/models/s2-headers-form.model';
 import { S2TableFormModel } from 'src/app/form-component/models/s2-table-form.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-activity',
@@ -42,6 +43,7 @@ export class ActivityComponent implements OnInit {
     user: new FormControl(null, Validators.required),
     resources: new FormControl(null, Validators.required),
     comments: new FormControl(null, Validators.required),
+    descriptionResource : new FormControl(null, []),
   });
 
   settings_form = {
@@ -50,6 +52,7 @@ export class ActivityComponent implements OnInit {
     _id: 'form-new-Delivery',
     _groups: [
       {
+        _title: 'Entrega',
         _nameAs: 'new-delivery',
         _items: [
           {
@@ -77,6 +80,18 @@ export class ActivityComponent implements OnInit {
             } as S2FormField
           } as S2FormGroupItemModel,
           {
+            _control: "comments",
+            _config: {
+              _id: "comments",
+              _type: "string",
+              _input: {
+                _label: 'Comentarios (opcional)',
+                _placeholder: 'Ingresa un comentario',
+                _columns: this.inputColumns
+              } as S2InputForm
+            } as S2FormField
+          } as S2FormGroupItemModel,
+          {
             _control: "activity",
             _config: {
               _id: "activity",
@@ -92,18 +107,16 @@ export class ActivityComponent implements OnInit {
               _hide: true,
             } as S2FormField
           } as S2FormGroupItemModel,
-
-
         ],
       } as S2FormGroupModel,
       {
         _title: 'Recursos',
-        _nameAs: 'resource',
+        _nameAs: 'resources-properties',
         _items: [
           {
-            _control: 'descriptionCourse',
+            _control: 'descriptionResource',
             _config: {
-              _id: 'descriptionC',
+              _id: 'descriptionResource',
               _type: 'text',
               _input: {
                 _label: 'Descripción del recurso',
@@ -186,20 +199,13 @@ export class ActivityComponent implements OnInit {
     })
 
     if (this.data.resources && this.data.resources.length > 0) {
-      this.resourcesService.downloadResource(this.data.resources[0]).toPromise()
-        .then((res) => {
-          console.log(res)
-          window.open(res, "_blank");
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      this.resource = environment.server + "download/" + this.data.resources[0]
     }
   }
 
   fnOnSend(event)
   {
-    console.log(event)
+    console.log
   }
 
 
