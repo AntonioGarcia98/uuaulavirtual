@@ -29,7 +29,6 @@ const routes: Routes = [
         MatDialogModule,
         MatIconModule,
         MatListModule,
-        MatProgressSpinnerModule
     ],
     exports: [RouterModule],
     declarations: [CourseComponent,ActivityComponent],

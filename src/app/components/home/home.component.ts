@@ -51,11 +51,16 @@ export class HomeComponent implements OnInit {
   }
 
   async getPost() {
+    this.text=[]
     try{
       var res:any = await this.deliveryService.getAll().toPromise()
-      console.log(res.item)
-
-      this.text=res.item
+      Object.keys(res.item).map(k => {
+      
+        if(!res.item[k].activity){
+          this.text.push(res.item[k])
+        }
+      })
+  
       
       for (let i = 0; i < this.text.length; i++) {
         console.log(this.text[i].user)

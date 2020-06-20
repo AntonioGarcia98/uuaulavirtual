@@ -17,7 +17,7 @@ export class ServiceBase<TClass> {
     }
 
     getAll() {
-        return this.http.get(this.url);
+        return this.http.get(this.url)
     }
 
 

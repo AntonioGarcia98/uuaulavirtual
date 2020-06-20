@@ -22,6 +22,7 @@
           <!--/.Featured Image-->
 
           <!--Card-->
+          
           <div class="card mb-4 wow fadeIn">
 
             <!--Card content-->
@@ -51,7 +52,11 @@
                 <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
                   <i class="fab fa-github mr-3"></i>
                 </a>
-
+                <br>
+                <div class="extra-buttons">
+                <button mat-raised-button color="primary" (click)="activities.openAll()" >Ver todo el contenido del post</button>
+               <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar el contenido del post</button>
+                </div>
 
               </div>
 
@@ -70,11 +75,11 @@
               <mat-icon>add</mat-icon>Agregar publicacion
             </button>
           </div>
-          <ng-container *ngFor="let post of text">
-            <!--Card-->
+         <!--- <ng-container *ngFor="let post of text">
+           
             <div class="card mb-4 wow fadeIn">
 
-              <!--Contenido cartas post-->
+           
               <div class="card-body">
 
                 <p class="h5 my-4">{{post.title}} </p>
@@ -86,6 +91,7 @@
                     {{post.autor}}
                   </footer>
                 </blockquote>
+               
               
 
                 <p class="h5 my-4">{{post.title}} </p>
@@ -94,7 +100,46 @@
 
               </div>
 
-            </div>
+            </div>-->
+
+
+            <mat-accordion multi #activities="matAccordion">
+              <!-- Activity -->
+              <mat-expansion-panel class="panel" *ngFor="let post of text">
+                <mat-expansion-panel-header class="activity-panel">
+                
+                  <mat-panel-title>
+                    <h2>
+                      {{post.title}}
+                    </h2>
+                   
+                  </mat-panel-title>
+                  <mat-panel-description style="justify-content: flex-end;">
+                   {{post.autor}}
+                    
+                  </mat-panel-description>
+                 
+                </mat-expansion-panel-header>
+          
+                <div class="activity-container">
+                 
+                  <div class="description">
+                    {{post.message}}
+                  </div>
+                  <div class="description">
+                    {{post.comments}}
+                  </div>
+                  <div class="description">
+                    <button mat-raised-button color="accent"></button>
+                  </div>
+                  <!--<div class="buttons">
+                    <mat-icon style="display: flex;flex-direction: row-reverse;">edit</mat-icon>
+                   
+        
+                  </div>-->
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
             <!--/.Card-->
 
 
@@ -125,7 +170,7 @@
 
               </div>
             </div>-->
-          </ng-container>
+  
 
 
 
