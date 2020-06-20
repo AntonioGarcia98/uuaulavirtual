@@ -70,7 +70,7 @@ export class EditGroupComponent implements OnInit {
             _control: "_id",
             _config: {
               _id: "_id",
-              _type: "string",
+              _type: "text",
               _hide: true,
             } as S2FormField
           } as S2FormGroupItemModel,
@@ -78,7 +78,7 @@ export class EditGroupComponent implements OnInit {
             _control: "user",
             _config: {
               _id: "user",
-              _type: "string",
+              _type: "text",
               _hide: true,
             } as S2FormField
           } as S2FormGroupItemModel,

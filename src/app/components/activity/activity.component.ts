@@ -39,11 +39,15 @@ export class ActivityComponent implements OnInit {
   formGroup_newDelivery: FormGroup = new FormGroup({
     title: new FormControl(null, Validators.required),
     message: new FormControl(null, []),
+    comments: new FormControl(null, Validators.required),
     activity: new FormControl(null, Validators.required),
     user: new FormControl(null, Validators.required),
+
+
     resources: new FormControl(null, Validators.required),
-    comments: new FormControl(null, Validators.required),
+   
     descriptionResource : new FormControl(null, []),
+    urlArchivo:new FormControl(null)
   });
 
   settings_form = {
@@ -59,7 +63,7 @@ export class ActivityComponent implements OnInit {
             _control: "title",
             _config: {
               _id: "title",
-              _type: "string",
+              _type: "text",
               _input: {
                 _label: 'Nombre de la entrega',
                 _placeholder: 'Ingresa un nombre',
@@ -71,7 +75,7 @@ export class ActivityComponent implements OnInit {
             _control: "message",
             _config: {
               _id: "message",
-              _type: "string",
+              _type: "text",
               _input: {
                 _label: 'Mensaje (opcional)',
                 _placeholder: 'Ingresa un mensaje',
@@ -83,7 +87,7 @@ export class ActivityComponent implements OnInit {
             _control: "comments",
             _config: {
               _id: "comments",
-              _type: "string",
+              _type: "text",
               _input: {
                 _label: 'Comentarios (opcional)',
                 _placeholder: 'Ingresa un comentario',
@@ -95,7 +99,7 @@ export class ActivityComponent implements OnInit {
             _control: "activity",
             _config: {
               _id: "activity",
-              _type: "string",
+              _type: "text",
               _hide: true,
             } as S2FormField
           } as S2FormGroupItemModel,
@@ -103,7 +107,7 @@ export class ActivityComponent implements OnInit {
             _control: "user",
             _config: {
               _id: "user",
-              _type: "string",
+              _type: "text",
               _hide: true,
             } as S2FormField
           } as S2FormGroupItemModel,
