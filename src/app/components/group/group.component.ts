@@ -25,9 +25,8 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 })
 export class GroupComponent implements OnInit {
 
-  group =[
-  
-]
+  group =[]
+  IsWait:boolean= true
 
   session : Observable<any>
 
@@ -43,13 +42,14 @@ export class GroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeSession()
-    this.getGroups()
+   
   }
 
   getGroups():void{
     this.groupService.getAll().toPromise()
     .then((res:any)=>{
       this.group = res.item
+      this.IsWait=false
     })
     .catch((rej)=>{
 
@@ -61,7 +61,7 @@ export class GroupComponent implements OnInit {
     this.groupService.getGroupsByIdUser(id).toPromise()
     .then((res:any)=>{
       this.group = res.item
-     // res.item
+      this.IsWait=false
     })
     .catch((rej)=>{
 

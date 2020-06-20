@@ -13,14 +13,17 @@ export class ClassComponent implements OnInit {
 
   
   classArray =[]
+  idGroup:string
+  IsWait:boolean= true
+  string_idUser:string
+
   constructor(
     private router: Router,
     private classService:ClassService,
     private activateRouter: ActivatedRoute,
     private sessionService: SessionService,
-    private groupService:GroupService,
   ) { }
-  idGroup:string
+
   ngOnInit(): void {
     this.idGroup = this.activateRouter.snapshot.params.id;
     this.subscribeSession()
@@ -31,7 +34,7 @@ export class ClassComponent implements OnInit {
    this.router.navigate([ '/course', clase._id  ]);
   }
 
-  string_idUser:string
+ 
   subscribeSession():void{
     this.sessionService._session.subscribe(data =>{
       if(data){
@@ -48,7 +51,7 @@ export class ClassComponent implements OnInit {
     .then((res:any)=>{
    
      this.classArray = res.item
-
+     this.IsWait=false
     })
     .catch((rej)=>{
       console.log(rej)
@@ -59,6 +62,7 @@ export class ClassComponent implements OnInit {
     this.classService.getClassByGroup(this.idGroup).toPromise()
     .then((res:any)=>{
      this.classArray = res.item
+     this.IsWait=false
 
     })
     .catch((rej)=>{

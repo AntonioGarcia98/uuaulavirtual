@@ -1,31 +1,40 @@
 <div class="container mt-5 d-flex flex-column">
-  <h2 class="mat-h2">Grupos</h2>
-  <div class="cards-container">
-    <ng-container *ngFor="let ItemGrup of group">
-      <mat-card class="group-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>class</mat-icon>
+  <mat-progress-spinner mode="indeterminate" *ngIf="IsWait">
+  </mat-progress-spinner>
+  <ng-container *ngIf="!IsWait">
 
-          <mat-card-title class="group-title" (click)="selectGroup(ItemGrup)">{{ItemGrup.name}} </mat-card-title>
-          <mat-card-subtitle>Grupo</mat-card-subtitle>
-          <mat-icon style="display: flex;flex-direction: row-reverse;" (click)="editGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">edit</mat-icon>
-          <mat-icon style="display: flex;flex-direction: row-reverse;margin-left: 5rem;" (click)="deleteGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">delete</mat-icon>
-        </mat-card-header>
-      
-        <mat-card-content>
-          <img mat-card-image src="https://img.icons8.com/plasticine/2x/classroom.png" alt="Photo of a Shiba Inu">
-          <p>
-            Escolaridad: {{ItemGrup.scholarship}}
-          </p>
-          <p>
-           Grado: {{ItemGrup.grade}}
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-        </mat-card-actions>
-      </mat-card>
-    </ng-container>
-  </div>
+    <h2 class="mat-h2">Grupos</h2>
+    <div class="cards-container">
+      <ng-container *ngFor="let ItemGrup of group">
+        <mat-card class="group-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>class</mat-icon>
+
+            <mat-card-title class="group-title" (click)="selectGroup(ItemGrup)">{{ItemGrup.name}} </mat-card-title>
+            <mat-card-subtitle>Grupo</mat-card-subtitle>
+            <mat-icon style="display: flex;flex-direction: row-reverse;" (click)="editGroup(ItemGrup)"
+              *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">edit</mat-icon>
+            <mat-icon style="display: flex;flex-direction: row-reverse;margin-left: 5rem;"
+              (click)="deleteGroup(ItemGrup)" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">delete
+            </mat-icon>
+          </mat-card-header>
+
+          <mat-card-content>
+            <img mat-card-image src="https://img.icons8.com/plasticine/2x/classroom.png" alt="Photo of a Shiba Inu">
+            <p>
+              Escolaridad: {{ItemGrup.scholarship}}
+            </p>
+            <p>
+              Grado: {{ItemGrup.grade}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+    </div>
+
+  </ng-container>
 
 
   <div style="display: flex; margin:  31px;" *ngIf="( session | async )?.user?.teacher?.role == 'ADMIN_ROLE'">
@@ -34,37 +43,5 @@
     </button>
   </div>
 
-
-
-
-  <!-- <div style="display: flex;
-align-items:flex-end;
-justify-content: flex-end; margin:1rem"> <a href="javascript:void(0)" (click)="fnNewGroup()" data-toggle="tooltip"
-    title="Nuevo grupo">
-    <mat-icon>add</mat-icon>
-  </a>
-</div> -->
-
-  <!-- <h2 class="m-2">Grupos</h2>
-<ng-container *ngFor="let grupo of group">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>group</mat-icon>
-
-      <mat-card-title>{{grupo._nombre}}</mat-card-title>
-      <mat-card-subtitle>Usuario</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="grupo._foto" alt="Photo of a Shiba Inu">
-    <mat-card-content>
-      <p>
-        {{grupo._cuerpo}}
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-
-      <button mat-button color="primary" (click)="seleccionGrupo(grupo)">Entrar</button>
-    </mat-card-actions>
-  </mat-card>
-</ng-container> -->
 
 </div>

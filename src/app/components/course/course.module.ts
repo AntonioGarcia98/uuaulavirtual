@@ -12,6 +12,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivityComponent } from '../activity/activity.component';
 import {MatListModule} from '@angular/material/list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 const routes: Routes = [
     { path: '', component: CourseComponent }
 ];
@@ -27,7 +28,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatDialogModule,
         MatIconModule,
-        MatListModule
+        MatListModule,
+        MatProgressSpinnerModule
     ],
     exports: [RouterModule],
     declarations: [CourseComponent,ActivityComponent],

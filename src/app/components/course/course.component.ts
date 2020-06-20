@@ -36,7 +36,7 @@ import { ResourcesService } from 'src/app/services/resources.service';
 })
 export class CourseComponent implements OnInit {
 
-
+  IsWait:boolean= true
   material = [/* {
     delivery_date: "20/06/2020",
     points : 10,
@@ -99,6 +99,7 @@ export class CourseComponent implements OnInit {
     this.classService.get(this.string_idClass).toPromise()
       .then((res: any) => {
         this.clasObj = res.item[0]
+        this.IsWait=false
 
       })
       .catch((rej) => {
@@ -132,7 +133,6 @@ export class CourseComponent implements OnInit {
   formDataFiles = new FormData();
 
   createActivity() {
-    console.log("hola")
     var inputColumns: S2BootstrapColumnsModel = { _lg: 12, _xl: 12, _md: 12, _xs: 12, _sm: 12 } as S2BootstrapColumnsModel;
 
     var form_newActivity: FormGroup = new FormGroup({

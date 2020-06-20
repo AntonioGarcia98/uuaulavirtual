@@ -1,4 +1,7 @@
 <div class="container">
+  <mat-progress-spinner mode="indeterminate" *ngIf="IsWait">
+  </mat-progress-spinner>
+  <ng-container *ngIf="!IsWait">
 
   <mat-accordion>
     <mat-expansion-panel class="group-header">
@@ -57,6 +60,6 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-
+  </ng-container>
 
 </div>
