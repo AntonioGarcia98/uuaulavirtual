@@ -1,0 +1,15 @@
+:host{
+
+    .loader-container{
+        height: 100%;
+        width: 100%;
+        z-index: 9999999999;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(0,0,0,35%);
+    }
+
+    
+}

@@ -25,6 +25,10 @@ import { StudentService } from './services/student.service';
 import { SchoolService } from './services/school.service';
 import { ClassParticipantsComponent } from './components/class-participants/class-participants.component';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderService } from './services/loader.service';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { ClassParticipantsComponent } from './components/class-participants/clas
     NavbarComponent,
     FormDialogComponent,
     MessageDialogComponent,
-    ClassParticipantsComponent
+    ClassParticipantsComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { ClassParticipantsComponent } from './components/class-participants/clas
     MatDividerModule,
     MatDialogModule,
     SithecSuiteModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     UserService,
@@ -54,6 +60,7 @@ import { ClassParticipantsComponent } from './components/class-participants/clas
     StudentService,
     SessionService,
     SchoolService,
+    LoaderService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
