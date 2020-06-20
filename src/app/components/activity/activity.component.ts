@@ -3,7 +3,7 @@ import { Activity } from './activity.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, Form } from '@angular/forms';
 import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
 import { S2FormGroupItemModel } from 'src/app/form-component/models/s2-form-group-item.model';
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
@@ -18,6 +18,7 @@ import { TableFormComponent } from 'src/app/form-component/controls/form-generat
 import { SithecSuiteService } from 'src/app/form-component/sithec-suite.service';
 import { Observable } from 'rxjs';
 import { SessionService } from 'src/app/services/session.service';
+import { DeliveryModel } from './delivery.model';
 
 @Component({
   selector: 'app-activity',
@@ -43,8 +44,8 @@ export class ActivityComponent implements OnInit {
   fileSend = null
 
   file = null
-  
-  session : Observable<any>
+
+  session: Observable<any>
 
   formGroup_newDelivery: FormGroup = new FormGroup({
     title: new FormControl(null, Validators.required),
@@ -55,9 +56,9 @@ export class ActivityComponent implements OnInit {
 
 
     resources: new FormControl(null, Validators.required),
-   
-    descriptionResource : new FormControl(null, []),
-    urlArchivo:new FormControl(null)
+
+    descriptionResource: new FormControl(null, []),
+    urlArchivo: new FormControl(null)
   });
 
   settings_form = {
@@ -202,12 +203,14 @@ export class ActivityComponent implements OnInit {
     } as S2ButtonModel
   } as S2SettingsFormGeneratorModel
 
+  user_id
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Activity,
     public dialogRef: MatDialogRef<ActivityComponent>,
     private resourcesService: ResourcesService,
     private sithecSuiteService_tools: SithecSuiteService,
-    private sessionService : SessionService
+    private sessionService: SessionService
   ) {
     console.log(this.data)
     Object.keys(this.data).map(k => {
@@ -221,22 +224,46 @@ export class ActivityComponent implements OnInit {
     this.sessionService._session.subscribe(s => {
       if (s && s.user.student) {
         this.formGroup_newDelivery.patchValue({
-          activity : this.data._id,
-          user :  s.user._id
+          activity: this.data._id,
+          user: s.user._id
         })
+        this.user_id = s.user._id
       }
       console.log(this.formGroup_newDelivery)
     })
 
+
+  }
+
+  fnOnSubmit(event) {
+
+    let formData: FormData = new FormData();
+    let newDelivery: DeliveryModel = new DeliveryModel();
+
+    if (this.file) {
+      formData.append('myFile', this.file, this.file.name)
+    }
+
+    formData.append('description', event.data['resource']['descriptionCourse'])
+    formData.append('user', this.user_id)
+
+    Object.keys(event.data['new-delivery']).map(k => {
+      newDelivery[k] = event.data['new-delivery'][k]
+    })
     
+    this.resourcesService.createResource(formData).toPromise()
+    .then((res) => {
+      newDelivery.resources = [];
+      newDelivery.resources.push(res.item._id)
+      /* this.activityService.create(newDelivery).toPromise()
+      .then((res) => {
+      })
+      .catch((err) => {
+      }) */
+    })
   }
 
-  fnOnSubmit(event)
-  {
-    console.log(event)
-  }
-
-  fnOnClickFormButton(event){
+  fnOnClickFormButton(event) {
     this.fileSend = []
     this.file = null
     let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-Delivery', 'table');
@@ -265,8 +292,9 @@ export class ActivityComponent implements OnInit {
       this.fileSend.push(aux)
       tableComponent.fnSetOptions(this.fileSend);//ingresa el nuevo archivo
 
+      //AQUI
       this.formGroup_newDelivery.patchValue({
-        resources : this.file.name
+        resources: this.file.name
       })
     }
     input.click()

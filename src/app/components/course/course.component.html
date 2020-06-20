@@ -17,7 +17,7 @@
       </p>
       <div class="extra-buttons">
         <button mat-raised-button color="primary" (click)="createActivity()" *ngIf="( session | async )?.user.teacher">Crear actividad</button>
-        <button mat-raised-button color="primary" (click)="showParticipants()" *ngIf="( session | async )?.user.teacher">Ver participantes de la clase</button>
+        <button mat-raised-button color="primary" (click)="showParticipants()" >Ver participantes de la clase</button>
         <button mat-raised-button color="primary" (click)="activities.openAll()" >Ver todas las actividades</button>
         <button mat-raised-button color="primary" (click)="activities.closeAll()">Ocultar todas las actividades</button>
       </div>
