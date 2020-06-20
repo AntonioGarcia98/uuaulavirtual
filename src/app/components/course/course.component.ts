@@ -313,6 +313,7 @@ export class CourseComponent implements OnInit {
 
     config.fnOnClickFormButton = (event, files) => {
       this.fileSend = [];//reinicia el array
+      this.file = null
       console.log(event)
       let tableComponent: TableFormComponent = this.sithecSuiteService_tools.fnGetFormElement('form-new-activity', 'table');
       var input = document.createElement("input");
