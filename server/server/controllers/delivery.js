@@ -15,7 +15,7 @@ let delivery = {
             user: body.user,
             resources: body.resources,
             comments: body.comments,
-            delivery_date: body.delivery_date,
+            delivery_date: new Date(),
             score: body.score
         })
         let res = null
