@@ -13,11 +13,11 @@ export class SessionService {
     private session: BehaviorSubject<any> = new BehaviorSubject(null);
     _session: Observable<any> = this.session.asObservable().pipe(delay(0));
 
-    private navbarState: BehaviorSubject<number> = new BehaviorSubject(0);
+    /* private navbarState: BehaviorSubject<number> = new BehaviorSubject(0);
     _navbarState: Observable<number> = this.navbarState.asObservable().pipe(delay(0));
 
     private topNavbarState: BehaviorSubject<number> = new BehaviorSubject(0);
-    _topNavbarState: Observable<number> = this.topNavbarState.asObservable().pipe(delay(0));
+    _topNavbarState: Observable<number> = this.topNavbarState.asObservable().pipe(delay(0)); */
 
     static readonly SESSION_TAG: string = "session";
 
@@ -76,13 +76,13 @@ export class SessionService {
         return this.session.getValue();
     }
 
-    setNavState(state) {
+    /* setNavState(state) {
         this.navbarState.next(state);
     }
 
     setTopNavState(state) {
         this.topNavbarState.next(state);
-    }
+    } */
 
     tokenToSession(token: string) {
         var decoded: any = this.decodeToken(token);
