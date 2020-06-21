@@ -23,6 +23,7 @@ import { DeliveryService } from 'src/app/services/delivery.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { UserService } from 'src/app/services/user.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-activity',
@@ -221,7 +222,8 @@ export class ActivityComponent implements OnInit {
     private sessionService: SessionService,
     private deliveryService: DeliveryService,
     private loader: LoaderService,
-    private userService : UserService
+    private userService : UserService,
+    private dialog : MatDialog
     //private dialog : MatDialog
   ) {
     this.loader.show()
@@ -314,10 +316,26 @@ export class ActivityComponent implements OnInit {
         newDelivery.resources.push(res.item._id)
         this.deliveryService.create(newDelivery).toPromise()
           .then((res) => {
-            console.log('done')
+            var successData = {
+              title : "Entrega de actividad",
+              message : "Actividad entregada correctamente"
+            }
+            this.dialog.open(MessageDialogComponent, {data : successData, panelClass: "dialog-fuchi"}).afterClosed().toPromise()
+            .then(() => {
+              this.dialogRef.close()
+            })
+
           })
           .catch((err) => {
             console.error(err)
+            var errorData = {
+              title : "Error",
+              message : "Ocurrio un error al entregar"
+            }
+            this.dialog.open(MessageDialogComponent, {data : errorData, panelClass: "dialog-fuchi"}).afterClosed().toPromise()
+            .then(() => {
+              this.dialogRef.close()
+            })
           })
       })
   }

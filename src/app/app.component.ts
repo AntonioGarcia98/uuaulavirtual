@@ -76,6 +76,7 @@ export class AppComponent implements OnInit {
   
   getUserInfo()
   {
+    this.user = null
     var id = this.sessionService.getSession()?.user._id
 
     this.userService.get(id)
@@ -525,16 +526,17 @@ export class AppComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
         } else if (res && res == 1) {
           //location.reload()
+          this.getUserInfo()
           this.cdr.detectChanges()
           this.cdr.markForCheck()
           this.loader.hide()
+          
         }
       })
   }
 
   logout() {
     this.sessionService.logout()
-    //location.reload()
     this.router.navigate(['/home'])
   }
 
