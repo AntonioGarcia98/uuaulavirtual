@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { S2FormField } from 'src/app/form-component/models/s2-form-field.model';
@@ -85,6 +85,7 @@ export class CourseComponent implements OnInit {
     private resourcesService : ResourcesService,
     private loader: LoaderService,
     private sithecSuiteService_tools: SithecSuiteService,
+    private cdr : ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -100,6 +101,8 @@ export class CourseComponent implements OnInit {
     })
 
     this.session = this.sessionService._session;
+
+    this.loader.hide()
   }
 
   getClassById() {
@@ -126,10 +129,10 @@ export class CourseComponent implements OnInit {
         var autor : any = await this.userService.get(autorID).toPromise()
         this.material[i]['autor'] = autor.item[0].user_name;
       }
-    } catch(err){
-      console.error(err);
-    }finally{
       this.loader.hide()
+    } catch(err){
+      this.loader.hide()
+      console.error(err);
     }
   }
 

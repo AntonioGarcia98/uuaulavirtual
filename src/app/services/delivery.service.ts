@@ -20,7 +20,7 @@ export class DeliveryService extends ServiceBase<DeliveryModel>{
 
   getDeliveriesByActivity(activityID : string) : Observable<any>
   {
-    return this.http.get(environment.server + 'deliveries/activity' + activityID)
+    return this.http.get(environment.server + 'deliveries/activity/' + activityID)
   }
 
 }

@@ -6,8 +6,7 @@
       <mat-expansion-panel-header class="course-panel" [collapsedHeight]="'200px'" [expandedHeight]="'300px'">
         <mat-panel-title>
           <div class="course-title">
-            <span>Clase</span>
-            <span>{{ this.clasObj?this.clasObj.name?this.clasObj.name:"":""}}</span>
+            <span>Clase {{ this.clasObj?this.clasObj.name?this.clasObj.name:"":""}}</span>
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -49,7 +48,7 @@
           <button mat-raised-button color="accent"></button>
         </div>
         <div class="buttons">
-          <button mat-icon-button color="primary"  (click)="deleteActivity(mat)" style="justify-content: flex-end;">
+          <button mat-icon-button color="primary"  (click)="deleteActivity(mat)" *ngIf="( session | async )?.user.teacher" style="justify-content: flex-end;">
             <mat-icon>delete</mat-icon>
           </button>
           <button mat-raised-button color="primary" (click)="editActivity(mat)" *ngIf="( session | async )?.user.teacher">Editar actividad</button>

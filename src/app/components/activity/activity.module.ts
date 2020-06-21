@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ResourcesService } from 'src/app/services/resources.service';
+import { UserService } from 'src/app/services/user.service';
 
 @NgModule({
     declarations: [ActivityComponent],
@@ -21,7 +22,8 @@ import { ResourcesService } from 'src/app/services/resources.service';
     ],
     exports: [ActivityComponent],
     providers: [
-        ResourcesService
+        ResourcesService,
+        UserService
     ],
 })
 export class ActivityModule { }

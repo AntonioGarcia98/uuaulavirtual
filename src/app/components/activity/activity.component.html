@@ -1,4 +1,4 @@
-<button mat-mini-fab color="warn" class="close-button" (click)="closeDialog()"> 
+<button mat-mini-fab color="warn" class="close-button" (click)="close()"> 
   <mat-icon>close</mat-icon>
 </button>
 <div class="all-container">
@@ -9,16 +9,37 @@
     <h2 class="desc-title">Descripcion de la actividad</h2>
     <span class="desc">{{description}}</span><br><br>
 
-    <a [href]="resource" mat-raised-button color="primary">Recurso</a>
+    <button (click)="openActivityResource(resource)" mat-raised-button color="primary" *ngIf="resource">Recurso</button>
     <h4 class="desc-date"><b>Fecha limite de entrega : {{delivery_date}}</b></h4>
   </div>
-  <div class="activity-actions" style="overflow: auto; height: 340px;">
-    <form-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSubmit($event)"
-    (onClickFormButton)="fnOnClickFormButton($event)">
-    </form-suite>
-    <!-- <button mat-raised-button color="primary">Agregar entrega</button> -->
-  </div><!-- 
-  <div class="activity-actions" style="overflow: auto;">
-    hola
-  </div> -->
+  <ng-container *ngIf="(session | async)?.user?.student">
+    <div class="activity-actions" style="overflow: auto; max-height: 300px" *ngIf="!delivered">
+      <form-suite [settings]="settings_form" [tool]="'form-generator'" (onSubmit)="fnOnSubmit($event) "
+      (onClickFormButton)="fnOnClickFormButton($event)">
+      </form-suite>
+    </div>
+    <div class="activity-actions" style="overflow: auto; display: flex; flex-flow: column; align-items: center; justify-content: center; height: 100%;" *ngIf="delivered">
+      <h1>Esta tarea ya fue entregada</h1>
+      <!-- <a [href]="delivered.link" mat-raised-button color="primary">Tu entrega</a> -->
+      <button (click)="openActivityResource(delivered.link)" mat-raised-button color="primary" >Recurso</button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(session | async)?.user?.teacher">
+    <div class="activity-actions" style="overflow: auto; display: flex; flex-flow: column; height: 100%;">
+      <h1>Alumnos que ya entregaron</h1>
+      <ng-container *ngIf="deliveries?.length > 0"> 
+        <div *ngFor="let d of deliveries" style="display: flex; align-items: baseline;">
+          <h4>{{d.madeBy?.name}} {{d.madeBy?.last_name}}</h4> <button style="margin: 0 5px;" (click)="openActivityResource(d.resources[0])" mat-raised-button color="primary" >Entrega</button>
+        </div>
+      </ng-container>
+      
+      <h4 *ngIf="!deliveries || deliveries?.length == 0">
+        Ningun alumno ha subido entrega
+      </h4>
+      <!-- <button (click)="openActivityResource(delivered.link)" mat-raised-button color="primary" >Recurso</button> -->
+    </div>
+  </ng-container>
+  
+  
+  
 </div>

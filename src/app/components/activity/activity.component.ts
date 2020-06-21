@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Activity } from './activity.model';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { S2BootstrapColumnsModel } from 'src/app/form-component/models/s2-bootstrap-columns.model';
 import { FormGroup, Validators, FormControl, Form } from '@angular/forms';
@@ -20,6 +20,9 @@ import { Observable } from 'rxjs';
 import { SessionService } from 'src/app/services/session.service';
 import { DeliveryModel } from './delivery.model';
 import { DeliveryService } from 'src/app/services/delivery.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-activity',
@@ -52,8 +55,8 @@ export class ActivityComponent implements OnInit {
     title: new FormControl(null, Validators.required),
     message: new FormControl(null, []),
     comments: new FormControl(null, Validators.required),
-    activity: new FormControl(null,Validators.required),
-    user: new FormControl(null,Validators.required),
+    activity: new FormControl(null, Validators.required),
+    user: new FormControl(null, Validators.required),
 
 
     resources: new FormControl(null, Validators.required),
@@ -208,42 +211,85 @@ export class ActivityComponent implements OnInit {
 
   deliveries
 
+  delivered = null;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Activity,
     public dialogRef: MatDialogRef<ActivityComponent>,
     private resourcesService: ResourcesService,
     private sithecSuiteService_tools: SithecSuiteService,
     private sessionService: SessionService,
-    private deliveryService : DeliveryService,
+    private deliveryService: DeliveryService,
+    private loader: LoaderService,
+    private userService : UserService
+    //private dialog : MatDialog
   ) {
+    this.loader.show()
     console.log(this.data)
     Object.keys(this.data).map(k => {
       this[k] = this.data[k];
     })
 
     if (this.data.resources && this.data.resources.length > 0) {
-      this.resource = environment.server + "download/" + this.data.resources[0]
+      this.resource = this.data.resources[0]
     }
 
-    this.sessionService._session.subscribe(s => {
+    this.session = this.sessionService._session
+
+    this.session.subscribe(s => {
       if (s && s.user.student) {
         this.formGroup_newDelivery.patchValue({
           activity: this.data._id,
           user: s.user._id
         })
         this.user_id = s.user._id
+        this.deliveryService.getDeliveriesByActivity(this.data._id).toPromise()
+          .then((res) => {
+            this.deliveries = res.item
+            this.delivered = this.deliveries.find(d => d.user == this.user_id)
+            if (this.delivered)
+              this.delivered['link'] = this.delivered.resources[0]
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+          .finally(() => {
+            this.loader.hide()
+          })
+      }else{
+        this.deliveryService.getDeliveriesByActivity(this.data._id).toPromise()
+          .then((res) => {
+            this.deliveries = res.item
+          })
+          .then(async () => {
+            for (let i = 0; i < this.deliveries.length; i++) {
+              var res : any = await this.userService.get(this.deliveries[i].user).toPromise()
+              this.deliveries[i]['madeBy'] = res.item[0]
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+          .finally(() => {
+            this.loader.hide()
+          })
       }
-      console.log(this.formGroup_newDelivery)
+
     })
 
-    this.deliveryService.getDeliveriesByActivity(this.data._id).toPromise()
-    .then((res) => {
-      console.log(res)
-    })
+
   }
 
-  checkDeliveryActivity()
-  {
+  openActivityResource(id: string) {
+    if (!id || id == "") {
+      var error = {
+        title: "Error",
+        message: "Ocurrio un error al abrir el recurso"
+      }
+      //this.dialog.open(MessageDialogComponent, { data: error, panelClass: "dialog-fuchi" });
+    } else {
+      window.open(environment.server + "download/" + id);
+    }
   }
 
   fnOnSubmit(event) {
@@ -261,19 +307,19 @@ export class ActivityComponent implements OnInit {
     Object.keys(event.data['new-delivery']).map(k => {
       newDelivery[k] = event.data['new-delivery'][k]
     })
-    
+
     this.resourcesService.createResource(formData).toPromise()
-    .then((res) => {
-      newDelivery.resources = [];
-      newDelivery.resources.push(res.item._id)
-      this.deliveryService.create(newDelivery).toPromise()
       .then((res) => {
-        console.log('done')
+        newDelivery.resources = [];
+        newDelivery.resources.push(res.item._id)
+        this.deliveryService.create(newDelivery).toPromise()
+          .then((res) => {
+            console.log('done')
+          })
+          .catch((err) => {
+            console.error(err)
+          })
       })
-      .catch((err) => {
-        console.error(err)
-      })
-    })
   }
 
   fnOnClickFormButton(event) {
@@ -319,6 +365,6 @@ export class ActivityComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  closeDialog(state?: number) { this.dialogRef.close(state) };
+  close(state?: number) { this.dialogRef.close(state) };
 
 }
