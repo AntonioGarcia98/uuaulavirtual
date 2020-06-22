@@ -65,7 +65,7 @@ export class NewGroupComponent implements OnInit {
     scholarship: new FormControl(null, Validators.required),
     grade: new FormControl(null, Validators.required),
     school: new FormControl(null, Validators.required),
-    urlArchivo: new FormControl(null)
+    // urlArchivo: new FormControl(null)
 
 
   });
@@ -129,7 +129,7 @@ export class NewGroupComponent implements OnInit {
               } as S2SelectFormModel
             } as S2FormField
           } as S2FormGroupItemModel,
-          {
+          /*{
             _config: {
               _id: "boton",
               _type: "button",
@@ -175,9 +175,7 @@ export class NewGroupComponent implements OnInit {
 
               } as S2TableFormModel
             } as S2FormField
-          } as S2FormGroupItemModel,
-
-
+          } as S2FormGroupItemModel,*/
         ],
 
       } as S2FormGroupModel,

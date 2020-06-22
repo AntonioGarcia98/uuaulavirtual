@@ -151,7 +151,7 @@ export class ActivityComponent implements OnInit {
               _id: "boton",
               _type: "button",
               _button: {
-                _text: "Cargar cosa de fuantos",
+                _text: "Subir archivo...",
                 _class: "btn btn-primary",
                 _columns: {
                   _xl: 12,
@@ -171,7 +171,7 @@ export class ActivityComponent implements OnInit {
               _type: "table",
               _table: {
                 _enableFilters: true,
-                _label: "Comprobante pago",
+                _label: "Archivos",
                 _checkbox: false,
                 _checkboxHeader: false,
                 _collapse: false,
@@ -184,14 +184,7 @@ export class ActivityComponent implements OnInit {
                     _filter: false
                   } as HeadersFormModel,
                 ],
-                _columns: this.inputColumns,
-                _iconsButtons: [
-                  {
-                    _id: "iconPrevisualizacion",
-                    _icon: "fa fa-eye"
-                  }
-                ]
-
+                _columns: this.inputColumns
               } as S2TableFormModel
             } as S2FormField
           } as S2FormGroupItemModel,
