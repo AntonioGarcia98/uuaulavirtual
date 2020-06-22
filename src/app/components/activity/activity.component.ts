@@ -38,7 +38,7 @@ export class ActivityComponent implements OnInit {
 
   description: string = ""
 
-  delivery_date: string = ""
+  limit_date: string = ""
 
   points: number = 0;
 
@@ -55,7 +55,7 @@ export class ActivityComponent implements OnInit {
   formGroup_newDelivery: FormGroup = new FormGroup({
     title: new FormControl(null, Validators.required),
     message: new FormControl(null, []),
-    comments: new FormControl(null, Validators.required),
+    //comments: new FormControl(null, []),
     activity: new FormControl(null, Validators.required),
     user: new FormControl(null, Validators.required),
 
@@ -99,7 +99,7 @@ export class ActivityComponent implements OnInit {
               } as S2InputForm
             } as S2FormField
           } as S2FormGroupItemModel,
-          {
+          /* {
             _control: "comments",
             _config: {
               _id: "comments",
@@ -110,7 +110,7 @@ export class ActivityComponent implements OnInit {
                 _columns: this.inputColumns
               } as S2InputForm
             } as S2FormField
-          } as S2FormGroupItemModel,
+          } as S2FormGroupItemModel, */
           {
             _control: "activity",
             _config: {
