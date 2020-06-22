@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"uaaulavirtual.rooms"},{"v":{"$numberInt":"2"},"key":{"_id":"hashed"},"name":"_id_hashed","ns":"uaaulavirtual.rooms"}],"uuid":"d72017eaa4c24339a622843c4b5348b5"}
