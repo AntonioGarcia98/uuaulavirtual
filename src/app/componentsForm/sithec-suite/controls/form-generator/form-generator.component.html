@@ -1,0 +1,20 @@
+<div>
+    <h3 *ngIf="spinner"> <i class="fas fa-spinner fa-spin"></i> Cargando formulario...</h3>
+    <form [formGroup]="S2FormGroup" (ngSubmit)="fnSubmit()"
+        [ngStyle]="{'visibility':!spinner ? 'visible' : 'hidden'}">
+        <ng-container *ngFor="let group of groups">
+            <s2-form-group [group]="group" [S2FormGroup]="S2FormGroup" [translate]="translate" 
+                [sending]="sending" [idForm]="idForm"
+                (onKeyup)="fnKeyup($event)" (onChange)="fnChange($event)" (onClick)="fnOnClick($event)"></s2-form-group>
+        </ng-container>
+        <ng-container *ngIf="button">
+            <button mat-raised-button  *ngIf="!sending" style="margin-left: 15px;" type="submit" color="primary" [disabled]="(button._validToSend && S2FormGroup.invalid)" [style.background-color]="'button._color' ? 'button._color' : 'blue'">
+                {{fnGetButtonText()|async}}
+            </button>
+            <button mat-raised-button  *ngIf="sending" style="margin-left: 15px;" type="button" disabled color="primary"  >
+                <i class="fas fa-spinner fa-spin"></i>
+            </button>
+        </ng-container>
+
+    </form>
+</div>

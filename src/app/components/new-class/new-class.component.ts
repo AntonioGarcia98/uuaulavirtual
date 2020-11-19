@@ -10,6 +10,7 @@ import { S2FormGroupModel } from 'src/app/form-component/models/s2-form-group.mo
 import { S2ButtonModel } from 'src/app/form-component/models/s2-button.model';
 import { S2SettingsFormGeneratorModel } from 'src/app/form-component/models/s2-settings-form-generator.model';
 import { UserService } from 'src/app/services/user.service';
+import { S2SelectFormModel } from 'src/app/componentsForm/sithec-suite/models/s2-select-form.model';
 
 @Component({
   selector: 'app-new-class',
@@ -74,6 +75,7 @@ export class NewClassComponent implements OnInit {
 
   formGroup_newClass: FormGroup = new FormGroup({
     name: new FormControl(null, Validators.required),
+    edad: new FormControl(null, Validators.required),
     teachers: new FormControl(null, Validators.required),
     students: new FormControl(null, Validators.required),
    // group: new FormControl(null,)user
@@ -99,6 +101,33 @@ export class NewClassComponent implements OnInit {
                 _placeholder: 'Ingresa un nombre',
                 _columns: this.inputColumns
               } as S2InputForm
+            } as S2FormField
+          } as S2FormGroupItemModel,
+          {
+            _control: 'edad',
+            _config: {
+              _id: '_edad',
+              _type: 'number',
+              _input: {
+                _label: 'Edad',
+                _placeholder: 'Ingresa una edad',
+                _columns: this.inputColumns
+              } as S2InputForm
+            } as S2FormField
+          } as S2FormGroupItemModel,
+          {
+            _control: "_idMunicipio",
+            _config: {
+              _id: "_idMunicipio",
+              _type: "select",
+              _select: {
+                _options: this.arrayAux,
+                _optionKey: '_name',
+                _valueKey: '_idUsuario',
+                _label: 'Municipio',
+                _columns: this.inputColumns
+
+              } as S2SelectFormModel
             } as S2FormField
           } as S2FormGroupItemModel,
 

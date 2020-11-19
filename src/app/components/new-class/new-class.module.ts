@@ -4,7 +4,8 @@ import { NewClassComponent } from './new-class.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { SithecSuiteModule } from 'src/app/form-component/sithec-tools-suite.module';
+import { SithecSuiteModule } from 'src/app/componentsForm/sithec-suite/sithec-tools-suite.module';
+
 
 
 const routes: Routes = [

@@ -89,6 +89,25 @@ export class CourseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    /* this.loader.show()
+    this.string_idClass = this.activateRouter.snapshot.params.id;
+    this.getClassById()
+    this.getActivities()
+
+    this.sessionService._session.subscribe(s => {
+      if (s && s.user.teacher) {
+        this.user_id = s.user._id;
+      }
+    })
+
+    this.session = this.sessionService._session;
+
+    this.loader.hide() */
+    this.getAll()
+  }
+
+  getAll()
+  {
     this.loader.show()
     this.string_idClass = this.activateRouter.snapshot.params.id;
     this.getClassById()
@@ -101,6 +120,8 @@ export class CourseComponent implements OnInit {
     })
 
     this.session = this.sessionService._session;
+
+    this.cdr.markForCheck()
 
     this.loader.hide()
   }
@@ -148,7 +169,7 @@ export class CourseComponent implements OnInit {
     var form_newActivity: FormGroup = new FormGroup({
       user: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
-      description: new FormControl(null, Validators.required),
+      description: new FormControl(null, []),
       room: new FormControl(null, Validators.required),
       limit_date: new FormControl(null, Validators.required),
       descriptionCourse: new FormControl(null, Validators.required),
@@ -393,13 +414,14 @@ export class CourseComponent implements OnInit {
             message: "Ocurrio un error al crear una actividad."
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
-          this.getActivities()
+          this.getAll()
         } else if (res && res == 1) {
           var message: MessageConfig = {
             title: "Crear actividad",
             message: "Actividad creada correctamente."
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
+          this.getAll()
         }
       })
 
@@ -555,6 +577,7 @@ export class CourseComponent implements OnInit {
             message: "Actividad actualizar correctamente."
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi", width: "200px", height: '350px' });
+          this.getActivities()
         }
       })
   }
@@ -569,8 +592,6 @@ export class CourseComponent implements OnInit {
   }
 
   deleteActivity(mat: any): void {
-    console.log(mat)
-
     this.activityService.delete(mat._id).toPromise()
       .then((res) => {
         if (res) {
@@ -580,7 +601,7 @@ export class CourseComponent implements OnInit {
             message: "La actividad se ha sido eliminado correctamente"
           }
           this.dialog.open(MessageDialogComponent, { data: message, panelClass: "dialog-fuchi" });
-          this.getActivities()
+          this.getAll()
         }
 
       })

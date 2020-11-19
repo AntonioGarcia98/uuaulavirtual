@@ -10,7 +10,7 @@
     <span class="desc">{{description}}</span><br><br>
 
     <button (click)="openActivityResource(resource)" mat-raised-button color="primary" *ngIf="resource">Recurso</button>
-    <h4 class="desc-date"><b>Fecha limite de entrega : {{delivery_date}}</b></h4>
+    <h4 class="desc-date"><b>Fecha limite de entrega : {{limit_date | date: 'dd-MM-yyyy'}}</b></h4>
   </div>
   <ng-container *ngIf="(session | async)?.user?.student">
     <div class="activity-actions" style="overflow: auto; max-height: 300px" *ngIf="!delivered">

@@ -1,0 +1,24 @@
+<form [formGroup]="S2FormGroup">
+  <div class="input-form">
+    <!--class="form-group"--> 
+<!-- [for]="id"-->
+    <mat-form-field   appearance="outline" class="example-full-width">
+      <mat-label  >{{fnGetInputLabel()|async}}</mat-label>
+      <input matInput *ngIf="!sending" [id]="id" [type]="type"
+        [placeholder]="fnGetInputPlaceholder()|async" [formControl]="S2FormControl" (keyup)="fnKeyup($event)"
+        (change)="fnChange($event)">
+      <input matInput *ngIf="sending" [type]="type" [placeholder]="fnGetInputPlaceholder()|async"
+        [value]="S2FormControl.value" disabled>
+     <!--- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Hint</mat-hint>-->
+    </mat-form-field>
+    <!--
+    <label [for]="id">{{fnGetInputLabel()|async}}</label>
+    <input  matInput *ngIf="!sending" [id]="id" [type]="type" class="form-control" [placeholder]="fnGetInputPlaceholder()|async"
+      [formControl]="S2FormControl" (keyup)="fnKeyup($event)" (change)="fnChange($event)">
+    <input   matInput *ngIf="sending" [type]="type" class="form-control" [placeholder]="fnGetInputPlaceholder()|async"
+      [value]="S2FormControl.value" disabled>-->
+  </div>
+</form>
+
+

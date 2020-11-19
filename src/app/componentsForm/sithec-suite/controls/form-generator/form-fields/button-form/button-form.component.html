@@ -1,0 +1,8 @@
+
+<button mat-raised-button  style="margin-top: 28px;margin-bottom: 20px"  color="primary" class="{{class}}" (click)="fnClickButton()"
+*ngIf="!bln_sending">{{fnGetInputLabel()|async}}</button>
+<button  mat-raised-button style="margin-top: 28px;margin-bottom: 20px"  color="primary" class="{{class}}" (click)="fnClickButton()"
+  disabled *ngIf="bln_sending">
+  <i class="fas fa-spinner fa-spin"></i>
+</button>
+

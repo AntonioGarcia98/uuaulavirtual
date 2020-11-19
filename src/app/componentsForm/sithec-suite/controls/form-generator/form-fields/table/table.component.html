@@ -1,0 +1,66 @@
+<form [formGroup]="S2FormGroup">
+  <div class="form-group">
+    <label [for]="id">{{fnGetInputLabel()|async}}</label>
+
+  
+  <!-- <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th *ngIf="checkbox">
+              
+              <i *ngIf="checkboxHeader && !limit && !bln_allSelected" class="far fa-square" (click)="fnCheckAll(true)"></i>
+              <i *ngIf="checkboxHeader && !limit && bln_allSelected" class="far fa-check-square" (click)="fnCheckAll(false)"></i>
+            </th>
+            <th *ngFor="let header of headers">
+              {{fnGetInputHeader(header)|async}}
+            </th>
+            <th *ngIf="collapse">
+              <i class="fas fa-chevron-up collapse-button" 
+                *ngIf="!bln_collapse"
+                (click)="fnCollapseTable()"></i>
+              <i class="fas fa-chevron-down collapse-button" 
+                *ngIf="bln_collapse"
+                (click)="fnCollapseTable()"></i>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody [ngbCollapse]="bln_collapse">
+          <tr *ngIf="enableFilters">
+            <td *ngIf="checkbox && !limit"> 
+              <i class="far fa-square" *ngIf="!bln_allFilterSelected" (click)="fnSelectAllFilterRows(true)"></i>
+              <i class="far fa-check-square" *ngIf="bln_allFilterSelected" (click)="fnSelectAllFilterRows(false)"></i>
+            </td>
+            <td *ngFor="let column of headers">
+              <ng-container *ngIf="column?._filter">
+                <input type="text" class="form-control" [(ngModel)]="column._filterValue"
+                  [ngModelOptions]="{standalone: true}" (keyup)="fnKeyupFilter()">
+              </ng-container>
+            </td>
+            <td *ngIf="collapse"></td>
+          </tr>
+          <tr *ngIf="bln_showSpinner">
+            <td>
+              <i class="fas fa-spinner fa-spin"></i>
+            </td>
+          </tr>
+          <tr *ngFor="let row of _tableOptions | async | ColumnSearchPipe:headers | paginate: { id:id, itemsPerPage: itemsPerPage, currentPage: actual_page };let i =  index">
+            <td *ngIf="checkbox">
+              <i *ngIf="!any_selected[row[primaryKey]]" class="far fa-square" (click)="fnSelectRow(row)"></i>
+              <i *ngIf="any_selected[row[primaryKey]]"class="far fa-check-square" (click)="fnSelectRow(row)"></i>
+            </td>
+            <td *ngFor="let column of headers">{{row[column._columName]}}</td>
+            <td *ngIf="collapse"></td>
+            <td >
+              <a href="javascript:void(0)" *ngFor="let icon of buttons; " style="padding-left: 1rem;padding-right: 1rem;" (click)="fnEmitIconButton(icon,row,i)">
+                <i [class]="icon._icon"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination-controls *ngIf="!bln_collapse" [id]="id" (pageChange)="actual_page = $event"></pagination-controls>
+    </div>-->
+  </div>
+</form>

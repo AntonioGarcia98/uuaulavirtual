@@ -832,10 +832,8 @@ export class AppComponent implements OnInit {
             role: "ADMIN_ROLE"
           }
           teacher["_id"] = this.user.teacher._id
-
         }
-          await this.teacherService.update(teacher._id, teacher).toPromise
-        
+          await this.teacherService.update(teacher._id, teacher).toPromise()
         ref.close(1)
       } catch (error) {
         ref.close(-1)
